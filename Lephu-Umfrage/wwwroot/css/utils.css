@@ -23,3 +23,8 @@
 .ck-powered-by {
     display: none;
 }
+
+/*Font Override*/
+* {
+    font-family: Inter, Helvetica, "sans-serif" !important;
+}
