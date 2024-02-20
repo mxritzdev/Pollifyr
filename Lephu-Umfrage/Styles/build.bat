@@ -1,1 +1,2 @@
-﻿sass main.scss ../build/css/theme.css --style=compressed
+@echo off
+sass style.scss ../wwwroot/css/theme.css
