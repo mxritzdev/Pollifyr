@@ -22,22 +22,6 @@ window.moonlight = {
             toast.show();
         }
     },
-    modals: {
-        show: function (id, focus)
-        {
-            let modal = new bootstrap.Modal(document.getElementById(id), {
-                focus: focus
-            });
-            
-            modal.show();
-        },
-        hide: function (id)
-        {
-            let element = document.getElementById(id)
-            let modal = bootstrap.Modal.getInstance(element)
-            modal.hide()
-        }
-    },
     alerts: {
         getHelper: function(){
             return Swal.mixin({
@@ -109,65 +93,4 @@ window.moonlight = {
             return text;
         }
     },
-    utils: {
-        download: async function (fileName, contentStreamReference) {
-            const arrayBuffer = await contentStreamReference.arrayBuffer();
-            const blob = new Blob([arrayBuffer]);
-            const url = URL.createObjectURL(blob);
-            const anchorElement = document.createElement('a');
-            anchorElement.href = url;
-            anchorElement.download = fileName ?? '';
-            anchorElement.click();
-            anchorElement.remove();
-            URL.revokeObjectURL(url);
-        },
-        vendo: function ()
-        {
-            try 
-            {
-                var request = new XMLHttpRequest();
-
-                request.open("GET", "https://pagead2.googlesyndication.com/pagead/js/aidsbygoogle.js?client=ca-pub-1234567890123456", false);
-                request.send();
-
-                if(request.status === 404)
-                    return false;
-
-                return true;
-            }
-            catch (e) 
-            {
-                return false;
-            }
-        }
-    },
-    textEditor: {
-        create: function(id)
-        {
-            BalloonEditor
-                .create(document.getElementById(id), {
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
-                        ]
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        },
-        get: function (id)
-        {
-            let editor = document.getElementById(id).ckeditorInstance;
-            return editor.getData();
-        },
-        set: function (id, data)
-        {
-            let editor = document.getElementById(id).ckeditorInstance;
-            editor.setData(data);
-        }
-    }
 }
