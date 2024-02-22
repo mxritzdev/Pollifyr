@@ -1,7 +1,24 @@
+using Lephu_Umfrage.App.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Logging.Net;
+using Lephu_Umfrage.App.Services;
+
+// Configurate Logger
+Logger.UseSBLogger();
+
+
+// Initialize Config
+ConfigHelper configHelper = new();
+configHelper.Perform();
+ConfigService configService = new();
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddSingleton<ConfigService>();
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -26,5 +43,7 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+app.Services.GetRequiredService<ConfigService>();
 
 app.Run();

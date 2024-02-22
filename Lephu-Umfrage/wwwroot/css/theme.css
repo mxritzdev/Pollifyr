@@ -130,18 +130,18 @@
   color-scheme: dark;
   --bs-body-color: #fcfcfc;
   --bs-body-color-rgb: 252, 252, 252;
-  --bs-body-bg: #060638;
-  --bs-body-bg-rgb: 6, 6, 56;
+  --bs-body-bg: #040422;
+  --bs-body-bg-rgb: 4, 4, 34;
   --bs-emphasis-color: #ffffff;
   --bs-emphasis-color-rgb: 255, 255, 255;
   --bs-secondary-color: rgba(252, 252, 252, 0.75);
   --bs-secondary-color-rgb: 252, 252, 252;
-  --bs-secondary-bg: #252F4A;
-  --bs-secondary-bg-rgb: 37, 47, 74;
+  --bs-secondary-bg: #090950;
+  --bs-secondary-bg-rgb: 9, 9, 80;
   --bs-tertiary-color: rgba(252, 252, 252, 0.5);
   --bs-tertiary-color-rgb: 252, 252, 252;
-  --bs-tertiary-bg: #162241;
-  --bs-tertiary-bg-rgb: 22, 34, 65;
+  --bs-tertiary-bg: #060c2d;
+  --bs-tertiary-bg-rgb: 6, 12, 45;
   --bs-primary-text-emphasis: #8bc1ff;
   --bs-secondary-text-emphasis: #faa4eb;
   --bs-success-text-emphasis: #96e1b8;
@@ -47460,9 +47460,9 @@ body[data-kt-sticky-landing-header=on] {
   --bs-app-bg-color: #151521;
   --bs-app-blank-bg-color: #151521;
   --bs-app-header-base-bg-color: #151521;
-  --bs-app-sidebar-base-bg-color: #060638;
+  --bs-app-sidebar-base-bg-color: #040422;
   --bs-app-sidebar-base-box-shadow: none;
-  --bs-app-sidebar-minimize-bg-color: #060638;
+  --bs-app-sidebar-minimize-bg-color: #040422;
 }
 
 html {
