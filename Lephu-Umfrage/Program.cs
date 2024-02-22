@@ -1,4 +1,6 @@
+using Lephu_Umfrage.App.Database;
 using Lephu_Umfrage.App.Helpers;
+using Lephu_Umfrage.App.Repository;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Logging.Net;
@@ -10,14 +12,22 @@ Logger.UseSBLogger();
 
 // Initialize Config
 ConfigHelper configHelper = new();
-configHelper.Perform();
+await configHelper.Perform();
 ConfigService configService = new();
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Services / Config
 builder.Services.AddSingleton<ConfigService>();
+
+// Services / Database
+DbHelper databaseCheckup = new (configService);
+await databaseCheckup.Perform();
+
+builder.Services.AddDbContext<DatabaseContext>();
+
+builder.Services.AddScoped(typeof(Repository<>));
 
 
 // Add services to the container.
