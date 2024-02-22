@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Logging.Net;
 using Lephu_Umfrage.App.Services;
 
-// Configurate Logger
+// Configure Logger
 Logger.UseSBLogger();
 
 
@@ -30,14 +30,12 @@ builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddScoped(typeof(Repository<>));
 
 
-// Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
