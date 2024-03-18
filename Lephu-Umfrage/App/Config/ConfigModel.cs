@@ -4,6 +4,14 @@ namespace Lephu_Umfrage.App.Config;
 
 public class ConfigModel
 {
+    
+    [JsonProperty("Information")] public InformationData Information { get; set; } = new();
+
+    public class InformationData
+    {
+        [JsonProperty("AppName")] public string AppName { get; set; } = "Umfrage App";
+    }
+    
     [JsonProperty("Database")] public DatabaseData Database { get; set; } = new();
     
     public class DatabaseData
@@ -24,14 +32,14 @@ public class ConfigModel
     public class SecurityData
     {
 
-        [JsonProperty("Accounts")] public AdminAccountData AdminAccounts { get; set; } = new();
+        [JsonProperty("Admin")] public AdminAccountData AdminAccounts { get; set; } = new();
 
         public class AdminAccountData
         {
 
-            [JsonProperty("AdminUsername")] public string AdminUsername { get; set; } = "admin";
+            [JsonProperty("Username")] public string AdminUsername { get; set; } = "admin";
 
-            [JsonProperty("AdminPassword")] public string AdminPassword { get; set; } = "s3cr3t";
+            [JsonProperty("Password")] public string AdminPassword { get; set; } = "s3cr3t";
         }
     }
 

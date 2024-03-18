@@ -1,0 +1,22 @@
+@using Lephu_Umfrage.App.Services.Partials
+
+@inject ImprintService imprintService
+
+@page "/impressum"
+
+@impressum
+
+@code {
+    MarkupString impressum = (MarkupString)"";
+    
+
+    protected override Task OnInitializedAsync()
+    {
+        impressum = imprintService.Get();
+        
+        StateHasChanged();
+        
+        return Task.CompletedTask;
+    }
+
+}

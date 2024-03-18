@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Logging.Net;
 using Lephu_Umfrage.App.Services;
+using Lephu_Umfrage.App.Services.Partials;
 
 // Configure Logger
 Logger.UseSBLogger();
@@ -29,6 +30,11 @@ builder.Services.AddDbContext<DatabaseContext>();
 
 builder.Services.AddScoped(typeof(Repository<>));
 
+// Imprint
+ImprintHelper imprintHelper = new();
+await imprintHelper.Perform();
+
+builder.Services.AddSingleton<ImprintService>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
