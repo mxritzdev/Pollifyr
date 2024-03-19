@@ -45,7 +45,7 @@
 
     <ItemGroup>
       <Folder Include="App\Database\Migrations\" />
-      <Folder Include="Shared\" />
+      <Folder Include="UI\" />
       <Folder Include="storage\" />
       <Folder Include="wwwroot\" />
     </ItemGroup>
