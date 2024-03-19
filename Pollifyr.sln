@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lephu-Umfrage", "Lephu-Umfrage\Lephu-Umfrage.csproj", "{A32B3D1F-3AEA-4E6A-8340-5B412299AF5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pollifyr", "Pollifyr\Pollifyr.csproj", "{A32B3D1F-3AEA-4E6A-8340-5B412299AF5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
