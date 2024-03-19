@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Lephu_Umfrage</RootNamespace>
+        <RootNamespace>Pollifyr</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
@@ -31,10 +31,21 @@
       <_ContentIncludedByDefault Remove="wwwroot\ajax\featuredcompanies.html" />
       <_ContentIncludedByDefault Remove="wwwroot\ajax\message.html" />
       <_ContentIncludedByDefault Remove="wwwroot\ajax\recentactivity.html" />
+      <_ContentIncludedByDefault Remove="Shared\Components\Navigation\Footer.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Components\Navigation\PageHeader.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Components\Navigation\Partials\ConnectionIndicator.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Components\Navigation\Sidebar.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Components\Utils\Title.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Layouts\DefaultLayout.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Layouts\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Views\Etc\Imprint.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Views\Index.razor" />
+      <_ContentIncludedByDefault Remove="Shared\Views\Results.razor" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="App\Database\Migrations\" />
+      <Folder Include="Shared\" />
       <Folder Include="wwwroot\" />
     </ItemGroup>
 

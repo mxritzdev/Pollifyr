@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Lephu_Umfrage.App.Database.Migrations
+namespace Pollifyr.App.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
@@ -18,7 +18,7 @@ namespace Lephu_Umfrage.App.Database.Migrations
                 .HasAnnotation("ProductVersion", "6.0.27")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Lephu_Umfrage.App.Database.Models.Answer", b =>
+            modelBuilder.Entity("Pollifyr.App.Database.Models.Answer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,7 +36,7 @@ namespace Lephu_Umfrage.App.Database.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("Lephu_Umfrage.App.Database.Models.Question", b =>
+            modelBuilder.Entity("Pollifyr.App.Database.Models.Question", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

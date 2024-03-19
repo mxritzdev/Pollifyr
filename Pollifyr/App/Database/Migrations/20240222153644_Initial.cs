@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Lephu_Umfrage.App.Database.Migrations
+namespace Pollifyr.App.Database.Migrations
 {
     public partial class Initial : Migration
     {
