@@ -1,7 +1,7 @@
-using Lephu_Umfrage.App.Database;
+using Pollifyr.App.Database;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lephu_Umfrage.App.Repository;
+namespace Pollifyr.App.Repository;
 
 public class Repository<TEntity> where TEntity : class
 {

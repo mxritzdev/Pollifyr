@@ -1,8 +1,8 @@
-using Lephu_Umfrage.App.Database.Models;
-using Lephu_Umfrage.App.Services;
+using Pollifyr.App.Database.Models;
+using Pollifyr.App.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lephu_Umfrage.App.Database;
+namespace Pollifyr.App.Database;
 
 public class DatabaseContext : DbContext
 {

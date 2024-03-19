@@ -1,15 +1,15 @@
-using Lephu_Umfrage.App.Config;
-using Lephu_Umfrage.App.Helpers;
+using Pollifyr.App.Config;
+using Pollifyr.App.Helpers;
 
 using Newtonsoft.Json;
 
 
-namespace Lephu_Umfrage.App.Services;
+namespace Pollifyr.App.Services;
 
 public class ConfigService
 {
     private readonly string Path = PathBuilder.File("storage", "config.json");
-    private ConfigModel Data;
+    private ConfigModel? Data;
     
     public ConfigService()
     {

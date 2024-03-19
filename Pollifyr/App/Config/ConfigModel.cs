@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Lephu_Umfrage.App.Config;
+namespace Pollifyr.App.Config;
 
 public class ConfigModel
 {
@@ -10,6 +10,8 @@ public class ConfigModel
     public class InformationData
     {
         [JsonProperty("AppName")] public string AppName { get; set; } = "Umfrage App";
+
+        [JsonProperty("Imprint")] public bool Imprint { get; set; } = false;
     }
     
     [JsonProperty("Database")] public DatabaseData Database { get; set; } = new();

@@ -1,11 +1,11 @@
-using Lephu_Umfrage.App.Database;
-using Lephu_Umfrage.App.Helpers;
-using Lephu_Umfrage.App.Repository;
+using Pollifyr.App.Database;
+using Pollifyr.App.Helpers;
+using Pollifyr.App.Repository;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Logging.Net;
-using Lephu_Umfrage.App.Services;
-using Lephu_Umfrage.App.Services.Partials;
+using Pollifyr.App.Services;
+using Pollifyr.App.Services.Partials;
 
 // Configure Logger
 Logger.UseSBLogger();

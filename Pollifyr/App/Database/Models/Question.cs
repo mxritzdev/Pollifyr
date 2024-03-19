@@ -1,4 +1,4 @@
-namespace Lephu_Umfrage.App.Database.Models;
+namespace Pollifyr.App.Database.Models;
 
 public class Question
 {

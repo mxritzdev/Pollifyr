@@ -1,9 +1,9 @@
-using Lephu_Umfrage.App.Database;
-using Lephu_Umfrage.App.Services;
+using Pollifyr.App.Database;
+using Pollifyr.App.Services;
 using Logging.Net;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lephu_Umfrage.App.Helpers;
+namespace Pollifyr.App.Helpers;
 
 public class DbHelper
 {

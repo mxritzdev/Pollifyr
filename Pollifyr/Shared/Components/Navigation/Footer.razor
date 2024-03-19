@@ -1,22 +1,28 @@
-@using Lephu_Umfrage.App.Services
+@using Pollifyr.App.Services
 @inject ConfigService configService
 
 <div class="app-footer">
     <div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3 ">
         <div class="text-gray-900 order-2 order-md-1">
             <span class="text-muted fw-semibold me-1">@DateTime.Now.Year©</span>
-            <a href="/" target="_blank" class="text-gray-800 text-hover-primary">@appName</a>
+            <a href="/" target="_blank" class="text-gray-800 text-hover-primary">@AppName</a>
         </div>
         <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
+            @if (ShowImprintLink) {
+                <li class="menu-item">
+                    <a href="/impressum" class="menu-link px-2">Impressum</a>
+                </li>
+            }
+            
             <li class="menu-item">
-                <a href="#" target="_blank" class="menu-link px-2">Link</a>
+                <a href="#" class="menu-link px-2">Admin Login</a>
             </li>
+            
             <li class="menu-item">
-                <a href="#" target="_blank" class="menu-link px-2">Link</a>
+                <a href="https://mxritz.xyz" target="_blank" class="menu-link px-2">made by Moritz</a>
             </li>
-            <li class="menu-item">
-                <a href="#" target="_blank" class="menu-link px-2">Link</a>
-            </li>
+            
+            
         </ul>
     </div>
 </div>
@@ -24,12 +30,18 @@
 
 @code {
 
-    private string appName = "";
+    private string AppName = "";
+
+    private bool ShowImprintLink;
     
     protected override Task OnInitializedAsync()
     {
-        appName = configService.Get().Information.AppName;
+        AppName = configService.Get().Information.AppName;
 
+        ShowImprintLink = configService.Get().Information.Imprint;  
+        
+        StateHasChanged();
+        
         return Task.CompletedTask;
     }
 

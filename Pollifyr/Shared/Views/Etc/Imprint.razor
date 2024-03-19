@@ -1,6 +1,9 @@
-@using Lephu_Umfrage.App.Services.Partials
+@using Pollifyr.App.Services.Partials
+@using Pollifyr.App.Services
 
 @inject ImprintService imprintService
+@inject ConfigService configService
+@inject NavigationManager navigationManager
 
 @page "/impressum"
 
@@ -10,8 +13,16 @@
     MarkupString impressum = (MarkupString)"";
     
 
+    
+    
     protected override Task OnInitializedAsync()
     {
+        if (!configService.Get().Information.Imprint)
+        {
+            navigationManager.NavigateTo("/");
+        }
+        
+        
         impressum = imprintService.Get();
         
         StateHasChanged();

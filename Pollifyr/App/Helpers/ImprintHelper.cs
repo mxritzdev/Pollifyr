@@ -1,6 +1,6 @@
 using Logging.Net;
 
-namespace Lephu_Umfrage.App.Helpers;
+namespace Pollifyr.App.Helpers;
 
 public class ImprintHelper
 {

@@ -1,9 +1,8 @@
-using Lephu_Umfrage.App.Helpers;
+using Pollifyr.App.Helpers;
 using CommonMark;
-using Lephu_Umfrage.Shared.Views.Etc;
 using Microsoft.AspNetCore.Components;
 
-namespace Lephu_Umfrage.App.Services.Partials;
+namespace Pollifyr.App.Services.Partials;
 
 public class ImprintService
 {
