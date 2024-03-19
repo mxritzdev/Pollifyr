@@ -1,5 +1,5 @@
-@using Pollifyr.App.Services.Partials
 @using Pollifyr.App.Services
+@using Pollifyr.App.Services.Partials
 
 @inject ImprintService imprintService
 @inject ConfigService configService
@@ -11,9 +11,6 @@
 
 @code {
     MarkupString impressum = (MarkupString)"";
-    
-
-    
     
     protected override Task OnInitializedAsync()
     {

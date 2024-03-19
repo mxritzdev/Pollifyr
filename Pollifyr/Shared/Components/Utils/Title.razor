@@ -1,0 +1,23 @@
+@using Pollifyr.App.Services
+@inject ConfigService configService
+
+
+<PageTitle>@ChildContent - @AppName</PageTitle>
+
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+
+    private string AppName = string.Empty;
+    
+    protected override Task OnInitializedAsync()
+    {
+        AppName = configService.Get().Information.AppName;
+        
+        return Task.CompletedTask;
+    }
+
+}

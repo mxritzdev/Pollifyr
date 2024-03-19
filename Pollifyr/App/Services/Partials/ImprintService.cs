@@ -1,13 +1,13 @@
-using Pollifyr.App.Helpers;
 using CommonMark;
 using Microsoft.AspNetCore.Components;
+using Pollifyr.App.Helpers;
 
 namespace Pollifyr.App.Services.Partials;
 
 public class ImprintService
 {
     private MarkupString Imprint;
-    private string path = PathBuilder.File(PathBuilder.File("storage", "imprint.md"));
+    private readonly string Path = PathBuilder.File(PathBuilder.File("storage", "imprint.md"));
     
     public ImprintService()
     {
@@ -22,7 +22,7 @@ public class ImprintService
     
     public void Set(string newImprintMarkdown)
     {
-        using (StreamWriter writer = new(path))
+        using (StreamWriter writer = new(Path))
         {
             writer.WriteLine(newImprintMarkdown);
             writer.Close();
@@ -36,7 +36,7 @@ public class ImprintService
     
     public MarkupString Reload()
     {
-        string[] lines = File.ReadAllLines(path);
+        string[] lines = File.ReadAllLines(Path);
 
         string markdownImprint = string.Join("\r\n", lines);
 

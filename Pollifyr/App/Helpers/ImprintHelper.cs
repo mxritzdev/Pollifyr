@@ -12,7 +12,6 @@ public class ImprintHelper
 
     public Task Perform()
     {
-        Logger.Info("Checking for Imprint");
         var path = PathBuilder.File("storage", "imprint.md");
 
         if (!Directory.Exists(PathBuilder.Dir("storage")))
@@ -22,7 +21,6 @@ public class ImprintHelper
         
         if (File.Exists(path))
         {
-            Logger.Info("Config file exists, continuing startup");
             return Task.CompletedTask;
         }
 
