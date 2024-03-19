@@ -35,10 +35,10 @@ ImprintHelper imprintHelper = new();
 await imprintHelper.Perform();
 
 builder.Services.AddSingleton<ImprintService>();
+builder.Logging.SetMinimumLevel(LogLevel.None);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
 
 var app = builder.Build();
 
