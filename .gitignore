@@ -22,10 +22,10 @@
 **/.idea/**/modules.xml
 
 
-Lephu_Umfrage/[Bb]in/
-Lephu_Umfrage/[Oo]bj/
-Lephu_Umfrage/_UpgradeReport_Files/
-Lephu_Umfrage/[Pp]ackages/
+Pollifyr[Bb]in/
+Pollifyr/[Oo]bj/
+Pollifyr/_UpgradeReport_Files/
+Pollifyr/[Pp]ackages/
 
 *.suo
 *.user
@@ -40,7 +40,7 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
-.idea/.idea.Moonlight/.idea/discord.xml
-Lephu_Umfrage/wwwroot/css/theme.css
-Lephu_Umfrage/wwwroot/css/theme.css.map
+.idea/.idea.Pollifyr/.idea/discord.xml
+Pollifyr/wwwroot/css/theme.css
+Pollifyr/wwwroot/css/theme.css.map
 storage/
