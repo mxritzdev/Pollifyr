@@ -33,12 +33,16 @@
     private string AppName = "";
 
     private bool ShowImprintLink;
+
+    private bool ShowMadeBy;
     
     protected override Task OnInitializedAsync()
     {
         AppName = configService.Get().Information.AppName;
 
-        ShowImprintLink = configService.Get().Information.Imprint;  
+        ShowImprintLink = configService.Get().Information.Imprint;
+
+        ShowMadeBy = configService.Get().Information.Credits;
         
         StateHasChanged();
         

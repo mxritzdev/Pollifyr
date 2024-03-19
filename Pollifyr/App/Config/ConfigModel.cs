@@ -9,9 +9,11 @@ public class ConfigModel
 
     public class InformationData
     {
-        [JsonProperty("AppName")] public string AppName { get; set; } = "Umfrage App";
+        [JsonProperty("AppName")] public string AppName { get; set; } = "Pollifyr";
 
         [JsonProperty("Imprint")] public bool Imprint { get; set; } = false;
+        
+        [JsonProperty("ShowCredits")] public bool Credits { get; set; } = true;
     }
     
     [JsonProperty("Database")] public DatabaseData Database { get; set; } = new();
