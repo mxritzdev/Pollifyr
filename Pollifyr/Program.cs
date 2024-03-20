@@ -2,8 +2,6 @@ using Pollifyr.App.Services.Partials;
 using Pollifyr.App.Database;
 using Pollifyr.App.Helpers;
 using Pollifyr.App.Repository;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Logging.Net;
 using Pollifyr.App.Services;
 
@@ -35,7 +33,6 @@ ImprintHelper imprintHelper = new();
 await imprintHelper.Perform();
 
 builder.Services.AddSingleton<ImprintService>();
-builder.Logging.SetMinimumLevel(LogLevel.None);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
