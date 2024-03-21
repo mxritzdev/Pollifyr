@@ -19,6 +19,11 @@ public class QuestionService
         return Questions.Get().FirstOrDefault(x => x.Id == id);
     }
 
+    public List<Question> GetAllFromSurvey(Survey survey)
+    {
+        return Questions.Get().Where(x => x.SurveyId == survey.Id).ToList();
+    }
+
     private void Delete(Question question)
     {
         // Delete all corresponding Answers

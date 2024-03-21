@@ -17,6 +17,11 @@ public class AnswerService
         return Answers.Get().FirstOrDefault(x => x.Id == id);
     }
 
+    public List<Answer> GetAllFromQuestion(Question question)
+    {
+        return Answers.Get().Where(x => x.QuestionId == question.Id).ToList();
+    }
+
     public void Delete(Answer answer)
     {
         Answers.Delete(answer);
