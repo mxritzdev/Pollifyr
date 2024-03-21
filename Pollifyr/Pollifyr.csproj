@@ -33,6 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="App\Models\" />
       <Folder Include="wwwroot\" />
     </ItemGroup>
 
