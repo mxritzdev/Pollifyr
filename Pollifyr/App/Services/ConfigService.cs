@@ -35,6 +35,8 @@ public class ConfigService
 
     public ConfigModel Get()
     {
-        return Data;
+        return Data!;
     }
+    
+    
 }
