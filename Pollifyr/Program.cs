@@ -1,8 +1,8 @@
+using Logging.Net;
 using Pollifyr.App.Services.Partials;
 using Pollifyr.App.Database;
 using Pollifyr.App.Helpers;
 using Pollifyr.App.Repository;
-using Logging.Net;
 using Pollifyr.App.Services;
 
 // Configure Logger

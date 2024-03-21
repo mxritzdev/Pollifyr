@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pollifyr", "Pollifyr\Pollifyr.csproj", "{A32B3D1F-3AEA-4E6A-8340-5B412299AF5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pollifyr", "Pollifyr\Pollifyr.csproj", "{45EAA4DB-E02D-4A9A-B725-2433924D8590}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A32B3D1F-3AEA-4E6A-8340-5B412299AF5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A32B3D1F-3AEA-4E6A-8340-5B412299AF5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A32B3D1F-3AEA-4E6A-8340-5B412299AF5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A32B3D1F-3AEA-4E6A-8340-5B412299AF5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45EAA4DB-E02D-4A9A-B725-2433924D8590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45EAA4DB-E02D-4A9A-B725-2433924D8590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45EAA4DB-E02D-4A9A-B725-2433924D8590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45EAA4DB-E02D-4A9A-B725-2433924D8590}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

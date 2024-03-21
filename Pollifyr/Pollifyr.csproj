@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Pollifyr</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
@@ -27,39 +26,26 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\ICON-LICENSE" />
       <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
       <_ContentIncludedByDefault Remove="wwwroot\css\site.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\ajax\contacts.html" />
-      <_ContentIncludedByDefault Remove="wwwroot\ajax\featuredcompanies.html" />
-      <_ContentIncludedByDefault Remove="wwwroot\ajax\message.html" />
-      <_ContentIncludedByDefault Remove="wwwroot\ajax\recentactivity.html" />
-      <_ContentIncludedByDefault Remove="Shared\Components\Navigation\Footer.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Components\Navigation\PageHeader.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Components\Navigation\Partials\ConnectionIndicator.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Components\Navigation\Sidebar.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Components\Utils\Title.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Layouts\DefaultLayout.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Layouts\MainLayout.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Views\Etc\Imprint.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Views\Index.razor" />
-      <_ContentIncludedByDefault Remove="Shared\Views\Results.razor" />
+      <_ContentIncludedByDefault Remove="Shared\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
+      <_ContentIncludedByDefault Remove="Shared\SurveyPrompt.razor" />
+      <_ContentIncludedByDefault Remove="storage\config.json" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="App\Database\Migrations\" />
-      <Folder Include="UI\" />
-      <Folder Include="storage\" />
       <Folder Include="wwwroot\" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="CommonMark.NET" Version="0.15.1" />
       <PackageReference Include="Logging.Net" Version="1.1.4" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.27" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.27">
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.17" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.17">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
+      <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
     </ItemGroup>
 
 </Project>
