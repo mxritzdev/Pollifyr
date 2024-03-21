@@ -30,6 +30,20 @@
       <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
       <_ContentIncludedByDefault Remove="Shared\SurveyPrompt.razor" />
       <_ContentIncludedByDefault Remove="storage\config.json" />
+      <_ContentIncludedByDefault Remove="UI\Components\Alerts\IconAlert.razor" />
+      <_ContentIncludedByDefault Remove="UI\Components\Navigation\Footer.razor" />
+      <_ContentIncludedByDefault Remove="UI\Components\Navigation\PageHeader.razor" />
+      <_ContentIncludedByDefault Remove="UI\Components\Navigation\Partials\ConnectionIndicator.razor" />
+      <_ContentIncludedByDefault Remove="UI\Components\Navigation\Sidebar.razor" />
+      <_ContentIncludedByDefault Remove="UI\Components\Utils\Title.razor" />
+      <_ContentIncludedByDefault Remove="UI\Layouts\DefaultLayout.razor" />
+      <_ContentIncludedByDefault Remove="UI\Layouts\MainLayout.razor" />
+      <_ContentIncludedByDefault Remove="UI\Views\Errors\NoPermission.razor" />
+      <_ContentIncludedByDefault Remove="UI\Views\Errors\NotFound.razor" />
+      <_ContentIncludedByDefault Remove="UI\Views\Etc\Imprint.razor" />
+      <_ContentIncludedByDefault Remove="UI\Views\Index.razor" />
+      <_ContentIncludedByDefault Remove="UI\Views\Results.razor" />
+      <_ContentIncludedByDefault Remove="UI\Views\Test.razor" />
     </ItemGroup>
 
     <ItemGroup>
@@ -47,6 +61,23 @@
       </PackageReference>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="App\UI\Components\Alerts\IconAlert.razor" />
+      <AdditionalFiles Include="App\UI\Components\Navigation\Footer.razor" />
+      <AdditionalFiles Include="App\UI\Components\Navigation\PageHeader.razor" />
+      <AdditionalFiles Include="App\UI\Components\Navigation\Partials\ConnectionIndicator.razor" />
+      <AdditionalFiles Include="App\UI\Components\Navigation\Sidebar.razor" />
+      <AdditionalFiles Include="App\UI\Components\Utils\Title.razor" />
+      <AdditionalFiles Include="App\UI\Layouts\DefaultLayout.razor" />
+      <AdditionalFiles Include="App\UI\Layouts\MainLayout.razor" />
+      <AdditionalFiles Include="App\UI\Views\Errors\NoPermission.razor" />
+      <AdditionalFiles Include="App\UI\Views\Errors\NotFound.razor" />
+      <AdditionalFiles Include="App\UI\Views\Etc\Imprint.razor" />
+      <AdditionalFiles Include="App\UI\Views\Index.razor" />
+      <AdditionalFiles Include="App\UI\Views\Results.razor" />
+      <AdditionalFiles Include="App\UI\Views\Test.razor" />
     </ItemGroup>
 
 </Project>
