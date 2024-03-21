@@ -11,7 +11,7 @@ public class ImprintService
     
     public ImprintService()
     {
-        Imprint = Reload();
+        Imprint = Load();
     }
 
     public MarkupString Get()
@@ -28,13 +28,11 @@ public class ImprintService
             writer.Close();
         }
         
-        
-        
-        Imprint = Reload();
+        Reload();
     }
     
     
-    public MarkupString Reload()
+    public MarkupString Load()
     {
         string[] lines = File.ReadAllLines(Path);
 
@@ -43,6 +41,11 @@ public class ImprintService
         MarkupString htmlString = (MarkupString)CommonMarkConverter.Convert(markdownImprint);
         
         return htmlString;
+    }
+
+    public void Reload()
+    {
+        Imprint = Load();
     }
 
     
