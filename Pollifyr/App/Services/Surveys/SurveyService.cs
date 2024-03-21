@@ -7,9 +7,12 @@ public class SurveyService
 {
     private Repository<Survey> Surveys;
 
-    public SurveyService(Repository<Survey> surveys)
+    private QuestionService QuestionService;
+
+    public SurveyService(Repository<Survey> surveys, QuestionService questionService)
     {
         Surveys = surveys;
+        QuestionService = questionService;
     }
 
     public Survey? GetById(int id)
@@ -32,25 +35,18 @@ public class SurveyService
         Surveys.Update(survey);
     }
 
-    public void New(string title)
+    public void New(Survey survey)
     {
         // Create a new Survey in the Database
-        Survey survey = new();
-
-        survey.Title = title;
-
         Surveys.Add(survey);
     }
 
-    public void Delete(int id)
+    public void Delete(Survey survey)
     {
         // Delete all Questions corresponding to the survey
+        QuestionService.DeleteAllFromSurvey(survey);
         
         // Then delete the survey
-        Survey survey = new();
-
-        survey.Id = id;
-        
         Surveys.Delete(survey);
     }
     

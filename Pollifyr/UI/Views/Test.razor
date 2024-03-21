@@ -1,0 +1,14 @@
+@using Pollifyr.UI.Views.Errors
+
+@page "/test"
+
+
+@if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+{
+    @* Put testing code here *@
+    <NoPermission/>
+}
+else
+{
+    <NotFound/>
+}

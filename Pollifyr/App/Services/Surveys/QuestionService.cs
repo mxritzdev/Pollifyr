@@ -5,11 +5,13 @@ namespace Pollifyr.App.Services.Surveys;
 
 public class QuestionService
 {
-    public Repository<Question> Questions;
+    private Repository<Question> Questions;
 
-    public QuestionService(Repository<Question> questions)
+    private AnswerService AnswerService;
+    public QuestionService(Repository<Question> questions, AnswerService answerService)
     {
         Questions = questions;
+        AnswerService = answerService;
     }
 
     public Question? GetById(int id)
@@ -17,13 +19,21 @@ public class QuestionService
         return Questions.Get().FirstOrDefault(x => x.Id == id);
     }
 
-    public void DeleteAllFromSurvey(int surveyId)
+    private void Delete(Question question)
     {
-        var questions = Questions.Get().Where(x => x.SurveyId == surveyId).ToList();
+        // Delete all corresponding Answers
+        AnswerService.DeleteAllFromQuestion(question.Id);
+        
+        Questions.Delete(question);
+    }
+    
+    public void DeleteAllFromSurvey(Survey survey)
+    {
+        var questions = Questions.Get().Where(x => x.SurveyId == survey.Id).ToList();
         
         foreach (var question in questions)
         {
-            Questions.Delete(question);
+            Delete(question);
         }
     }
 }
