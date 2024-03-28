@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Pollifyr.App.Config;
@@ -36,15 +37,12 @@ public class ConfigModel
     public class SecurityData
     {
 
-        [JsonProperty("Admin")] public AdminAccountData AdminAccounts { get; set; } = new();
+        [JsonProperty("TokenDuration")] public int TokenDuration { get; set; } = 30;
+        
+        [JsonProperty("TokenSecret")] public string Secret { get; set; } = "S1QFoCJQ2TAZDRGjO5eWD4g5gT0kUgdUcyWq4w0AVWUEW";
 
-        public class AdminAccountData
-        {
-
-            [JsonProperty("Username")] public string AdminUsername { get; set; } = "admin";
-
-            [JsonProperty("Password")] public string AdminPassword { get; set; } = "s3cr3t";
-        }
+        
+        
     }
 
 

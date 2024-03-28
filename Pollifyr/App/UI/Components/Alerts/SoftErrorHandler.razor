@@ -1,0 +1,94 @@
+@using Pollifyr.App.Exceptions
+@using Pollifyr.App.Services
+@using Logging.Net
+@inherits ErrorBoundaryBase
+
+@inject NavigationManager NavigationManager
+
+@if (HardCrashed)
+{
+    <IconAlert Title="Error" Icon="bx-error-circle">
+        
+        @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+        {
+            <pre>
+                @ErrorMessage
+            </pre>
+        }
+        else
+        {
+            <span>This Page Crashed, this incident has been logged and reported! Try <a @onclick:preventDefault @onclick="Reload"></a></span>
+        }
+
+    </IconAlert>
+}
+else if (SoftCrashed)
+{
+    <div class="card card-body bg-danger mb-5">
+        <span class="text-center">
+            @(ErrorMessage)
+        </span>
+    </div>
+    
+    @ChildContent
+}
+else
+{
+    @ChildContent
+}
+
+@code
+{
+    private bool HardCrashed = false;
+    private bool SoftCrashed = false;
+    private string ErrorMessage = "";
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += OnPathChanged;
+    }
+
+    private void OnPathChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (SoftCrashed)
+            SoftCrashed = false;
+
+        StateHasChanged();
+    }
+
+    protected override async Task OnErrorAsync(Exception exception)
+    {
+
+        if (exception is DisplayException displayException)
+        {
+            if (displayException.DoNotTranslate)
+            {
+                await SoftCrash(displayException.Message);
+            }
+            else
+            {
+                await SoftCrash(displayException.Message);
+            }
+        }
+
+        else
+        {
+            Logger.Warn(exception);
+            HardCrashed = true;
+            ErrorMessage = exception.ToString();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private Task SoftCrash(string message)
+    {
+        SoftCrashed = true;
+        ErrorMessage = message;
+        return Task.CompletedTask;
+    }
+
+    private async Task Reload()
+    {
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
+}

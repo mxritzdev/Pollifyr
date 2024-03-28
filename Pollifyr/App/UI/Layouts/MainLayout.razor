@@ -1,9 +1,12 @@
 ﻿@using Pollifyr.App.UI.Components.Utils
+@using Pollifyr.App.UI.Components.Alerts
 
 @inherits LayoutComponentBase
 
 <Title>App</Title>
 
 <DefaultLayout>
-    @Body
+    <SoftErrorHandler>
+        @Body
+    </SoftErrorHandler>
 </DefaultLayout>
