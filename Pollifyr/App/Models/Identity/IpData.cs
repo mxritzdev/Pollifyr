@@ -16,9 +16,9 @@ public class IpData
     
     [JsonProperty("zip")] public string ZipCode { get; set; } = "N/A";
 
-    [JsonProperty("lat")] public double Latitude { get; set; } = 1.0;
+    [JsonProperty("lat")] public double Latitude { get; set; } = 0.0;
 
-    [JsonProperty("lon")] public double Longitude { get; set; } = 1.0;
+    [JsonProperty("lon")] public double Longitude { get; set; } = 0.0;
     
     [JsonProperty("timezone")] public string TimeZone { get; set; } = "N/A";
     
