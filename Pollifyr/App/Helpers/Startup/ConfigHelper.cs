@@ -1,6 +1,7 @@
 using Logging.Net;
+using Pollifyr.App.Helpers.Utils;
 
-namespace Pollifyr.App.Helpers;
+namespace Pollifyr.App.Helpers.Startup;
 
 public class ConfigHelper
 {

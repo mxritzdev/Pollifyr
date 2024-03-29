@@ -1,0 +1,23 @@
+@using Pollifyr.App.Services.Auth
+@inject IdentityService IdentityService
+
+@code {
+
+    [CascadingParameter]
+    public PermissionCheck PermissionCheck { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        
+        if (!IdentityService.IsAdmin)
+        {
+            
+            PermissionCheck.IsAllowed(false);
+            
+        }
+        
+        return Task.CompletedTask;
+    }
+    
+
+}

@@ -1,4 +1,4 @@
-namespace Pollifyr.App.Helpers;
+namespace Pollifyr.App.Helpers.Utils;
 
 public class PathBuilder
 {

@@ -1,9 +1,9 @@
-using Pollifyr.App.Database;
-using Pollifyr.App.Services;
 using Logging.Net;
 using Microsoft.EntityFrameworkCore;
+using Pollifyr.App.Database;
+using Pollifyr.App.Services;
 
-namespace Pollifyr.App.Helpers;
+namespace Pollifyr.App.Helpers.Startup;
 
 public class DbHelper
 {

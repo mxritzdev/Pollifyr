@@ -1,6 +1,7 @@
 @using Pollifyr.App.Services
 @using Pollifyr.App.Services.Partials
 @using Pollifyr.App.UI.Views.Errors
+@using Pollifyr.App.UI.Components.Utils
 
 @inject ImprintService imprintService
 @inject ConfigService configService
@@ -11,7 +12,9 @@
 
 @if (configService.Get().Information.Imprint)
 {
-    @impressum
+    <Title>Imprint</Title>
+    
+    @imprint
 }
 else
 {
@@ -19,7 +22,7 @@ else
 }
 
 @code {
-    MarkupString impressum = (MarkupString)"";
+    MarkupString imprint = (MarkupString)"";
     
     protected override Task OnInitializedAsync()
     {
@@ -29,7 +32,7 @@ else
         }
         
         
-        impressum = imprintService.Get();
+        imprint = imprintService.Get();
         
         StateHasChanged();
         

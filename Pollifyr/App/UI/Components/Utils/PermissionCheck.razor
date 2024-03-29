@@ -1,0 +1,80 @@
+@using Pollifyr.App.Helpers
+@using Pollifyr.App.UI.Views.Errors
+@using Pollifyr.App.UI.Components.Utils
+@using Logging.Net
+@using Pollifyr.App.Services
+@using System.Runtime.InteropServices.JavaScript
+@using Microsoft.AspNetCore.Http.Extensions
+@using Pollifyr.App.Services.Auth
+
+@implements IDisposable
+@inject IdentityService IdentityService
+@inject NavigationManager NavigationManager
+
+<CascadingValue Value="this">
+    @if (Allowed)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <NoPermission />
+    }
+</CascadingValue>
+@code
+{
+    
+    
+    
+    /*[CascadingParameter(Name = "TargetPageType")]
+    public Type TargetPageType { get; set; }*/
+    
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private bool Allowed = true;
+
+    public void IsAllowed(bool allowed = false)
+    { 
+        Allowed = allowed;
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged!;
+    }
+
+    private async void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        Allowed = true;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged!;
+    }
+    
+    /*protected override Task OnParametersSetAsync()
+    {
+        var attributes = TargetPageType.GetCustomAttributes(true);
+
+        Allowed = false;
+
+        foreach (var attribute in attributes)
+        {
+            if (attribute is AdminRequired { Required: true })
+            {
+                if (IdentityService.IsAdmin)
+                {
+                    Allowed = true;
+                }
+            }
+
+        }
+
+        return Task.CompletedTask;
+    }*/
+}

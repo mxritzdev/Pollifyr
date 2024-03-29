@@ -1,11 +1,44 @@
 @using Pollifyr.App.UI.Views.Errors
+@using Pollifyr.App.Services.Auth
+@inject AuthService AuthService
+@inject CookieService CookieService
+@inject NavigationManager NavigationManager
+@inject IdentityService IdentityService
 
 @page "/test"
 
+@* This file is used only for testing purposes and will be deleted *@
 
 @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
 {
-    @* Put testing code here *@
+    
+    <input type="text" placeholder="Email" @bind="Email"/>
+    <input type="text" placeholder="username" @bind="Username"/>
+    <input type="text" placeholder="password" @bind="Password"/>
+    
+    <button class="btn btn-primary" @onclick="CreateUser">Create User</button>
+    
+    @IdentityService.User.Username
+    
+    @code {
+
+        string Email = "";
+        string Username = "";
+        string Password = "";
+        
+        private async Task CreateUser()
+        {
+            var token = await AuthService.Register(Email, Password, Username);
+            await CookieService.SetValue("token", token, 10);
+
+            if (NavigationManager.Uri.EndsWith("register"))
+                NavigationManager.NavigateTo("/", true);
+            else
+                NavigationManager.NavigateTo(NavigationManager.Uri, true);
+        }
+        
+
+    }
     
 }
 else

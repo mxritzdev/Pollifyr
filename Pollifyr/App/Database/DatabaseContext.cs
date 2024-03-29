@@ -19,6 +19,8 @@ public class DatabaseContext : DbContext
     public DbSet<Answer>? Answers { get; set; }
     
     public DbSet<Answer>? Surveys { get; set; }
+    
+    public DbSet<User>? Users { get; set; }
 
     public DatabaseContext(ConfigService configService)
     {
