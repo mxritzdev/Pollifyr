@@ -25,6 +25,7 @@ To get started with Pollifyr locally, follow these steps:
 - **.NET 7**: A cross-platform framework for building various types of applications.
 - **Bootstrap**: A popular front-end framework for building responsive and mobile-first websites.
 - **C#**: A powerful and versatile programming language used for building .NET applications.
+- **Blazor**: C#-based web framework that allows developers to build web apps using reusable components, running both on the client and server . 
 
 ## Contributing 🤝
 
