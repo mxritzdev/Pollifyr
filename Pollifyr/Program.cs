@@ -47,6 +47,7 @@ builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddHttpContextAccessor();
 
+// Required Services
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
@@ -59,7 +60,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("Ztirom221008"));
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
