@@ -18,6 +18,8 @@ public class IdentityService
     public User User { get; private set; }
     public string Ip { get; private set; } = "N/A";
     
+    public bool LoggedIn { get; private set; } = false;
+    
     public bool IsAdmin { get; set; } = false;
     
     private readonly string Secret;
@@ -60,7 +62,7 @@ public class IdentityService
 
             if (token == "none")
             {
-                return;
+                LoggedIn = false;
             }
 
             if (string.IsNullOrEmpty(token))
@@ -123,8 +125,11 @@ public class IdentityService
 
             ConstructPermissions();
 
+            
             User.LastIp = Ip;
             Users.Update(User);
+
+            LoggedIn = true;
         }
         catch (Exception e)
         {

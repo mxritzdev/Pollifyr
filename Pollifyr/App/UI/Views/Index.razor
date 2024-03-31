@@ -1,7 +1,30 @@
 ﻿@using Pollifyr.App.UI.Components.Utils
+@using Pollifyr.App.Services.Auth
 
 @page "/"
+
+@inject AuthService AuthService
+@inject CookieService CookieService
+@inject IdentityService IdentityService
+@inject NavigationManager NavigationManager
 
 <Title>Home</Title>
 
 <h1>Hello, world!</h1>
+
+@if (IdentityService.LoggedIn) {
+    <button @onclick="Logout" class="btn btn-secondary">
+        Logout
+    </button>
+}
+
+
+@code{
+    private async Task Logout()
+    {
+        
+        await CookieService.SetValue("token", "", 1);
+        await IdentityService.Load();
+        NavigationManager.NavigateTo("/login", true);
+    }
+}

@@ -1,43 +1,67 @@
 @page "/login"
+@using Pollifyr.App.Models.Forms
+@using MoonCoreUI.Components.Forms
+@using Pollifyr.App.Services.Auth
 
-<form>
-  <!-- Email input -->
+@inject AuthService AuthService
+@inject CookieService CookieService
+@inject IdentityService IdentityService
+@inject NavigationManager NavigationManager
+
+<div class="p-2 px-md-12">
+  
+  <div class="d-flex justify-content-center">
+    <img src="/img/logo.svg" alt="Logo" class="h-40px">
+    <span>Login</span>
+  </div>
+  
   <div class="form-outline mb-4">
-    <input type="email" id="form2Example1" class="form-control" />
-    <label class="form-label" for="form2Example1">Email address</label>
+    <label class="form-label fs-2" for="email">Email Address</label>
+    <input type="email" id="email" class="form-control" @bind="Form.Email"/>
   </div>
-
-  <!-- Password input -->
+  
   <div class="form-outline mb-4">
-    <input type="password" id="form2Example2" class="form-control" />
-    <label class="form-label" for="form2Example2">Password</label>
+    <label class="form-label fs-2" for="password">Password</label>
+    <input type="password" id="password" class="form-control" @bind="Form.Password"/>
+    <label class="form-label" for="password"><a href="#">Forgot password?</a></label>
   </div>
 
-  <!-- 2 column grid layout for inline styling -->
-  <div class="row mb-4">
-    <div class="col d-flex justify-content-center">
-      <!-- Checkbox -->
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-        <label class="form-check-label" for="form2Example31"> Remember me </label>
-      </div>
-    </div>
 
-    <div class="col">
-      <!-- Simple link -->
-      <a href="#!">Forgot password?</a>
-    </div>
+
+  <div class="d-flex justify-content-center">
+    <WButton Text="Log In" CssClasses="btn-primary btn-block mb-4 w-50 w-md-100" WorkingText="Logging you in" OnClick="Callback"/>
+    
   </div>
-
-  <!-- Submit button -->
-  <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+  
 
   <!-- Register buttons -->
   <div class="text-center">
-    <p>Not a member? <a href="#!">Register</a></p>
+    <p>Not signed up yet? <a href="/register">Register</a></p>
   </div>
-</form>
+</div>
 
 @code {
-    
+
+  private LoginForm Form = new();
+
+  protected override void OnAfterRender(bool firstRender)
+  {
+    if (IdentityService.LoggedIn)
+    { 
+      NavigationManager.NavigateTo("/", true);
+    }
+  }
+
+
+  private async Task Callback()
+  {
+      Form.Email = Form.Email.ToLower().Trim();
+      
+      var token = await AuthService.Login(Form.Email, Form.Password);
+      await CookieService.SetValue("token", token, 10);
+      
+      NavigationManager.NavigateTo("/", true);
+      
+  }
+
 }
