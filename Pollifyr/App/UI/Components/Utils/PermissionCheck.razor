@@ -49,6 +49,7 @@
     private async void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
         Allowed = true;
+        await IdentityService.Load();
         StateHasChanged();
     }
 
