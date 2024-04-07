@@ -1,0 +1,68 @@
+@page "/admin/users"
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Exceptions
+@using Pollifyr.App.Services.Auth
+@using MoonCoreUI.Components.Forms
+@using MoonCoreUI.Services
+@using Pollifyr.App.Models.Forms.Users
+@using Pollifyr.App.UI.Components.Utils
+
+@inject AuthService AuthService
+@inject AlertService AlertService
+
+<NeedsAdmin/>
+
+<Title>Admin Users</Title>
+
+<AutoCrud TItem="User"
+                  TCreateForm="CreateUserForm"
+                  TUpdateForm="UpdateUserForm"
+                  Title="Users"
+                  Load="Load"
+                  CustomAdd="Add"
+                  ValidateUpdate="ValidateUpdate">
+    <View>
+        <CrudColumn TItem="User" Field="@(x => x.Id)" Title="Id" Filterable="true"/>
+        <CrudColumn TItem="User" Field="@(x => x.Email)" Title="Email" Filterable="true"/>
+        <CrudColumn TItem="User" Field="@(x => x.Username)" Title="Username" Filterable="true"/>
+        <CrudColumn TItem="User" Field="@(x => x.CreatedAt)" Title="Created at" />
+    </View>
+    <Actions>
+        <WButton OnClick="() => ChangePassword(context)" CssClasses="btn btn-icon btn-primary">
+            <i class="bx bx-sm bxs-key"></i>
+        </WButton>
+    </Actions>
+</AutoCrud>
+@code
+{
+    private User[] Load(MoonCore.Abstractions.Repository<User> repository)
+    {
+        return repository.Get().ToArray();
+    }
+
+    private async Task ChangePassword(User user)
+    {
+        var newPassword = await AlertService.Text($"Enter a new password for {user.Username}", "");
+
+        // This handles empty and canceled input
+        if (string.IsNullOrEmpty(newPassword))
+            return;
+
+        await AuthService.ChangePassword(user, newPassword);
+    }
+
+    private async Task Add(User user)
+    {
+        var result = await AuthService.Register(user.Username, user.Email, user.Password);
+
+        if (result == null)
+            throw new DisplayException("An unknown error occured while creating user");
+    }
+
+    // To notify the authentication provider before we update the data in the database, we call it here
+    private async Task ValidateUpdate(User user)
+    {
+        await AuthService.ChangeDetails(user, user.Email, user.Username, user.Admin);
+    }
+    
+}

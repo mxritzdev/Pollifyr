@@ -1,9 +1,9 @@
 using JWT.Algorithms;
 using JWT.Builder;
+using MoonCore.Abstractions;
 using Pollifyr.App.Database.Models;
 using Pollifyr.App.Exceptions;
 using Pollifyr.App.Helpers.Utils;
-using Pollifyr.App.Repository;
 using Pollifyr.App.Services.Partials;
 
 namespace Pollifyr.App.Services.Auth;
@@ -99,6 +99,18 @@ public class AuthService
         await ChangePassword(user, newPassword, true);
         
     }
+
+    public async Task ChangeDetails(User user, string email, string username, bool admin)
+    {
+        user.Email = email;
+
+        user.Username = username;
+
+        user.Admin = admin;
+        
+        Users.Update(user);
+    }
+    
     
 }
 
