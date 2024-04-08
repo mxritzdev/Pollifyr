@@ -19,26 +19,21 @@ Console.WriteLine();
 // Configure Logger
 Logger.UseSBLogger();
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Services / Config
-
 ConfigHelper configHelper = new();
 await configHelper.Perform();
 ConfigService configService = new();
 builder.Services.AddSingleton<ConfigService>();
 
 // Services / Database
-
 DbHelper databaseCheckup = new (configService);
 await databaseCheckup.Perform();
 builder.Services.AddDbContext<DatabaseContext>();
 builder.Services.AddScoped(typeof(Repository<>), typeof(GenericRepository<>));
 
 // Services / Imprint
-
 ImprintHelper imprintHelper = new();
 await imprintHelper.Perform();
 builder.Services.AddSingleton<ImprintService>();
