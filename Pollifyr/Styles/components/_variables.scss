@@ -46,8 +46,8 @@ $primary-light: 				#F1FAFF !default;
 $primary-inverse: 				$white !default;
 
 // Secondary colors
-$secondary: 					#3f37c9;
-$secondary-active: 				#4361ee;
+$secondary: 					$gray-700;
+$secondary-active: 				darken($gray-700, 5);
 $secondary-light: 				$gray-100 !default;
 $secondary-inverse:				$gray-700 !default; 
 
