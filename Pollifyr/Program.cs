@@ -50,16 +50,16 @@ builder.Services.AddScoped<IdentityService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddHttpContextAccessor();
 
+// Services / Alerts
+builder.Services.AddScoped<AlertService>();
+
+// Services / MoonCore
 ToastService.Prefix = "pollifyr.toasts";
 ModalService.Prefix = "pollifyr.modals";
 AlertService.Prefix = "pollifyr.alerts";
 ClipboardService.Prefix = "pollifyr.clipboard";
 FileDownloadService.Prefix = "pollifyr.utils";
 
-// Services / Alerts
-builder.Services.AddScoped<AlertService>();
-
-// Mooncore
 builder.Services.AddScoped<ClipboardService>();
 builder.Services.AddScoped<ModalService>();
 builder.Services.AddScoped<ToastService>();
@@ -80,7 +80,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
