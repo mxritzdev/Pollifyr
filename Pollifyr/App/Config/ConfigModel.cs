@@ -18,9 +18,9 @@ public class ConfigModel
     {
         [JsonProperty("App-Name")] public string AppName { get; set; } = "Pollifyr";
 
-        [JsonProperty("Imprint")] public bool Imprint { get; set; }
+        [JsonProperty("Use-Imprint")] public bool UseImprint { get; set; }
         
-        [JsonProperty("Show-Credits")] public bool Credits { get; set; } = true;
+        [JsonProperty("Show-Credits")] public bool ShowCredits { get; set; } = true;
     }
     
     public class DatabaseData

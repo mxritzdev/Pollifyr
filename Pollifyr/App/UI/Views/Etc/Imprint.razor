@@ -3,18 +3,17 @@
 @using Pollifyr.App.UI.Views.Errors
 @using Pollifyr.App.UI.Components.Utils
 
-@inject ImprintService imprintService
-@inject ConfigService configService
-@inject NavigationManager navigationManager
+@inject ImprintService ImprintService
+@inject ConfigService ConfigService
 
 @page "/imprint"
 
 
-@if (configService.Get().Information.Imprint)
+@if (ConfigService.Get().Information.UseImprint)
 {
     <Title>Imprint</Title>
     
-    @imprint
+    @ImprintText
 }
 else
 {
@@ -22,17 +21,11 @@ else
 }
 
 @code {
-    MarkupString imprint = (MarkupString)"";
+    MarkupString ImprintText = (MarkupString)"";
     
     protected override Task OnInitializedAsync()
     {
-        if (!configService.Get().Information.Imprint)
-        {
-            navigationManager.NavigateTo("/");
-        }
-        
-        
-        imprint = imprintService.Get();
+        ImprintText = ImprintService.Get();
         
         StateHasChanged();
         

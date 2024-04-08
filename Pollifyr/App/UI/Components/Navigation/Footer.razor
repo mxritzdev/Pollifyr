@@ -1,14 +1,14 @@
 @using Pollifyr.App.Services
-@inject ConfigService configService
+@inject ConfigService ConfigService
 
 <div class="app-footer">
     <div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3 ">
         <div class="text-gray-900 order-2 order-md-1">
             <span class="text-muted fw-semibold me-1">@DateTime.Now.Year©</span>
-            <a href="/" target="_blank" class="text-gray-800 text-hover-primary">@AppName</a>
+            <a href="/" target="_blank" class="text-gray-800 text-hover-primary">@ConfigService.Get().Information.AppName</a>
         </div>
         <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-            @if (ShowImprintLink) {
+            @if (ConfigService.Get().Information.UseImprint) {
                 <li class="menu-item">
                     <a href="/imprint" class="menu-link px-2">Imprint</a>
                 </li>
@@ -18,35 +18,13 @@
                 <a href="#" class="menu-link px-2">Admin Login</a>
             </li>
             
-            <li class="menu-item">
-                <a href="https://mxritz.xyz" target="_blank" class="menu-link px-2">made by Moritz</a>
-            </li>
-            
-            
+            @if (ConfigService.Get().Information.ShowCredits)
+            {
+                <li class="menu-item">
+                    <a href="https://mxritz.xyz" target="_blank" class="menu-link px-2">made with ♥️ by Moritz</a>
+                </li>
+            }
         </ul>
     </div>
 </div>
 
-
-@code {
-
-    private string AppName = "";
-
-    private bool ShowImprintLink;
-
-    private bool ShowMadeBy;
-    
-    protected override Task OnInitializedAsync()
-    {
-        AppName = configService.Get().Information.AppName;
-
-        ShowImprintLink = configService.Get().Information.Imprint;
-
-        ShowMadeBy = configService.Get().Information.Credits;
-        
-        StateHasChanged();
-        
-        return Task.CompletedTask;
-    }
-
-}
