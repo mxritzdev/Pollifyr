@@ -7,19 +7,21 @@ public class ConfigModel
 {
     
     [JsonProperty("Information")] public InformationData Information { get; set; } = new();
-
-    public class InformationData
-    {
-        [JsonProperty("AppName")] public string AppName { get; set; } = "Pollifyr";
-
-        [JsonProperty("Imprint")] public bool Imprint { get; set; } = false;
-        
-        [JsonProperty("ShowCredits")] public bool Credits { get; set; } = true;
-
-        [JsonProperty("AppPort")] public int Port { get; set; } = 6969;
-    }
+    
+    [JsonProperty("Properties")] public PropertyData Properties { get; set; } = new();
     
     [JsonProperty("Database")] public DatabaseData Database { get; set; } = new();
+    
+    [JsonProperty("Security")] public SecurityData Security { get; set; } = new();
+    
+    public class InformationData
+    {
+        [JsonProperty("App-Name")] public string AppName { get; set; } = "Pollifyr";
+
+        [JsonProperty("Imprint")] public bool Imprint { get; set; }
+        
+        [JsonProperty("Show-Credits")] public bool Credits { get; set; } = true;
+    }
     
     public class DatabaseData
     {
@@ -33,18 +35,19 @@ public class ConfigModel
         
         [JsonProperty("Database")] public string Database { get; set; } = "database";
     }
-    
-    [JsonProperty("Security")] public SecurityData Security { get; set; } = new();
 
     public class SecurityData
     {
+        [JsonProperty("Token-Duration")] public int TokenDuration { get; set; } = 30;
+        
+        [JsonProperty("Token-Secret")] public string Secret { get; set; } = "S1QFoCJQ2TAZDRGjO5eWD4g5gT0kUgdUcyWq4w0AVWUEW";
+    }
 
-        [JsonProperty("TokenDuration")] public int TokenDuration { get; set; } = 30;
+    public class PropertyData
+    {
+        [JsonProperty("Application-Port")] public int Port { get; set; } = 80;
         
-        [JsonProperty("TokenSecret")] public string Secret { get; set; } = "S1QFoCJQ2TAZDRGjO5eWD4g5gT0kUgdUcyWq4w0AVWUEW";
-
-        
-        
+        [JsonProperty("Allow-Register")] public bool AllowRegister { get; set; }
     }
 
 
