@@ -1,5 +1,10 @@
 @using Pollifyr.App.UI.Layouts
 @using Pollifyr.App.UI.Components.Navigation.Partials
+@using Pollifyr.App.Services.Auth
+
+@inject CookieService CookieService
+@inject IdentityService IdentityService
+@inject NavigationManager NavigationManager
 
 <div class="app-header">
     <div class="app-container container-fluid d-flex align-items-stretch flex-stack">
@@ -17,6 +22,68 @@
 
             <div class="app-navbar-item ms-1 ms-md-3">
                 <ConnectionIndicator/>
+                
+                <div class="app-navbar-item ms-2 ms-lg-6 me-8">
+
+                    <div class="cursor-pointer symbol symbol-circle symbol-40px symbol-lg-45px w-40px w-lg-45px h-40px h-lg-45px bg-gray-200 d-flex justify-content-center align-items-center ms-2" id="dropdownMenuLink" data-bs-toggle="dropdown">
+                        <i class="bx bx-user bx-sm text-white"></i>
+                    </div>
+
+                    <div class="dropdown-menu dropdown-menu-end menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" aria-labelledby="dropdownMenuLink">
+                        <div class="menu-item px-3">
+                            <div class="menu-content d-flex align-items-center px-3">
+                                <div class="symbol symbol-50px symbol-circle w-40px w-lg-45px h-40px h-lg-45px me-5 d-flex justify-content-center align-items-center bg-gray-200">
+                                    <i class="bx bx-user bx-sm text-white"></i>
+                                </div>
+                                
+                                @if (IdentityService.LoggedIn)
+                                {
+                                    <div class="d-flex flex-column">
+                                        <div class="fw-bold d-flex align-items-center fs-5">
+                                            @IdentityService.User.Username
+                                        </div>
+                                        <span class="fw-semibold text-muted fs-7">
+                                            @IdentityService.User.Email
+                                        </span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="d-flex flex-column">
+                                        <div class="fw-bold d-flex align-items-center fs-5">
+                                            Not Logged in
+                                        </div>
+                                    </div>
+                                }
+                                
+                            </div>
+                        </div>
+                        <div class="separator my-2"></div>
+                        
+                        @if (IdentityService.LoggedIn)
+                        {
+                            <div class="menu-item px-5">
+                                <a href="/account" class="menu-link px-5">
+                                    Account
+                                </a>
+                            </div>
+                            <div class="separator my-2"></div>
+                            <div class="menu-item px-5">
+                                <a href="#" @onclick="Logout" @onclick:preventDefault class="menu-link px-5">
+                                    Log Out
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="menu-item px-5">
+                                <a href="/login" class="menu-link px-5">
+                                    Log In
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -28,4 +95,13 @@
 {
     [CascadingParameter]
     public DefaultLayout? Layout { get; set; }
+    
+    private async Task Logout()
+    {
+        
+        await CookieService.SetValue("token", "", 1);
+        await IdentityService.Load();
+        NavigationManager.NavigateTo("/login", true);
+    }
+    
 }
