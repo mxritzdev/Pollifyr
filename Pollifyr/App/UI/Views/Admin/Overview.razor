@@ -1,0 +1,78 @@
+@page "/admin"
+
+@using MoonCoreUI.Components
+@using Pollifyr.App.Services.Surveys
+@using Pollifyr.App.UI.Components.Utils
+@using Pollifyr.App.Services.Auth
+
+@inject SurveyService SurveyService
+@inject AuthService AuthService
+
+<Title>Admin Overview</Title>
+
+<NeedsAdmin/>
+
+<LazyLoader Load="Load">
+    <div class="row mb-5">
+        <div class="col-12 col-lg-6 col-xl">
+            <a class="mt-4 card" href="/admin/surveys">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2">
+                                Surveys
+                            </h6>
+                            <span class="h2 mb-0">
+                                @(SurveyCount)
+                            </span>
+                        </div>
+                        <div class="col-auto">
+                            <span class="h2 text-muted mb-0">
+                                <i class="text-primary bx bx-check-square bx-lg"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-6 col-xl">
+            <a class="mt-4 card" href="/admin/users">
+                <div class="card-body">
+                    <div class="row align-items-center gx-0">
+                        <div class="col">
+                            <h6 class="text-uppercase text-muted mb-2">
+                                Users
+                            </h6>
+                            <span class="h2 mb-0">
+                                @(UserCount)
+                            </span>
+                        </div>
+                        <div class="col-auto">
+                            <span class="h2 text-muted mb-">
+                                <i class="text-primary bx bx-user bx-lg"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</LazyLoader>
+
+@code {
+
+    private int SurveyCount = 0;
+    private int UserCount = 0;
+    
+    private async Task Load(LazyLoader lazyLoader)
+    {
+        await lazyLoader.SetText("Loading Stats");
+
+        
+        
+        SurveyCount = SurveyService.GetAll().Count;
+
+        UserCount = AuthService.GetAll().Count;
+    }
+
+}
