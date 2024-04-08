@@ -15,17 +15,18 @@
 <Title>Admin Users</Title>
 
 <AutoCrud TItem="User"
-                  TCreateForm="CreateUserForm"
-                  TUpdateForm="UpdateUserForm"
-                  Title="Users"
-                  Load="Load"
-                  CustomAdd="Add"
-                  ValidateUpdate="ValidateUpdate">
+          TCreateForm="CreateUserForm"
+          TUpdateForm="UpdateUserForm"
+          Title="Users"
+          Load="Load"
+          CustomAdd="Add"
+          ValidateUpdate="ValidateUpdate">
     <View>
         <CrudColumn TItem="User" Field="@(x => x.Id)" Title="Id" Filterable="true"/>
         <CrudColumn TItem="User" Field="@(x => x.Email)" Title="Email" Filterable="true"/>
         <CrudColumn TItem="User" Field="@(x => x.Username)" Title="Username" Filterable="true"/>
         <CrudColumn TItem="User" Field="@(x => x.CreatedAt)" Title="Created at" />
+        <CrudColumn TItem="User" Field="@(x => x.LastIp)" Title="Last Ip" />
     </View>
     <Actions>
         <WButton OnClick="() => ChangePassword(context)" CssClasses="btn btn-icon btn-primary">
