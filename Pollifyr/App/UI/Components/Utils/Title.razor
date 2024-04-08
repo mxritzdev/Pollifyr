@@ -2,22 +2,12 @@
 @inject ConfigService ConfigService
 
 
-<PageTitle>@ChildContent - @AppName</PageTitle>
+<PageTitle>@ChildContent - @ConfigService.Get().Information.AppName</PageTitle>
 
 
 @code {
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-
-
-    private string AppName = string.Empty;
-    
-    protected override Task OnInitializedAsync()
-    {
-        AppName = ConfigService.Get().Information.AppName;
-        
-        return Task.CompletedTask;
-    }
 
 }
