@@ -59,12 +59,18 @@ FileDownloadService.Prefix = "pollifyr.utils";
 // Services / Alerts
 builder.Services.AddScoped<AlertService>();
 
-
 // Mooncore
 builder.Services.AddScoped<ClipboardService>();
 builder.Services.AddScoped<ModalService>();
 builder.Services.AddScoped<ToastService>();
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(configService.Get().Information.Port);
+});
+
+Logger.Info("Running on http://localhost:"+configService.Get().Information.Port);
+    
 // Required Services
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

@@ -15,6 +15,8 @@ public class ConfigModel
         [JsonProperty("Imprint")] public bool Imprint { get; set; } = false;
         
         [JsonProperty("ShowCredits")] public bool Credits { get; set; } = true;
+
+        [JsonProperty("AppPort")] public int Port { get; set; } = 6969;
     }
     
     [JsonProperty("Database")] public DatabaseData Database { get; set; } = new();
