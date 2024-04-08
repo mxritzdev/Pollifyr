@@ -156,15 +156,6 @@ public class IdentityService
         Ip = HttpContextAccessor.HttpContext.Connection.RemoteIpAddress!.ToString();
         return Task.CompletedTask;
     }
-    
-    public Task UpdatePermission(User user, bool admin)
-    {
-        user.Admin = true;
-        
-        Users.Update(user);
-
-        return Task.CompletedTask;
-    }
 
     private void ConstructPermissions()
     {
