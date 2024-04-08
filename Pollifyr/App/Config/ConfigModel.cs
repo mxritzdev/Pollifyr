@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Newtonsoft.Json;
 
 namespace Pollifyr.App.Config;

@@ -1,5 +1,7 @@
 @using Pollifyr.App.UI.Layouts
+@using Pollifyr.App.Services.Auth
 
+@inject IdentityService IdentityService
 
 <div class="app-sidebar flex-column @(Layout!.ShowMobileSidebar ? "drawer drawer-start drawer-on" : "")" id="kt_app_sidebar">
     <div class="app-sidebar-header d-flex flex-start flex-lg-stack gap-2 gap-lg-0 align-items-center pb-4 pt-lg-8 pt-4 ps-lg-7 ps-4">
@@ -26,6 +28,36 @@
                         </span>
                     </a>
                 </div>
+                @if (IdentityService.IsAdmin) {
+                    
+                    <div class="menu-item pt-2">
+                        <div class="menu-content">
+                            <span class="menu-heading fw-bold text-uppercase fs-7">Admin</span>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <a class="menu-link " href="/admin">
+                            <span class="menu-icon">
+                                <i class="bx bx-sm bx-list-ul"></i>
+                            </span>
+                            <span class="menu-title">
+                                Overview
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link " href="/admin/users">
+                            <span class="menu-icon">
+                                <i class="bx bx-sm bx-user"></i>
+                            </span>
+                            <span class="menu-title">
+                                Users
+                            </span>
+                        </a>
+                    </div>
+                }
             </div>
         </div>
     </div>

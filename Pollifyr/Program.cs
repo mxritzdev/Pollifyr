@@ -1,11 +1,9 @@
 using Logging.Net;
-using Microsoft.AspNetCore.Components;
 using MoonCore.Abstractions;
 using MoonCoreUI.Services;
 using Pollifyr.App.Services.Partials;
 using Pollifyr.App.Database;
 using Pollifyr.App.Helpers.Startup;
-using Pollifyr.App.Helpers.Identity;
 using Pollifyr.App.Repository;
 using Pollifyr.App.Services;
 using Pollifyr.App.Services.Auth;
@@ -13,7 +11,7 @@ using CookieService = Pollifyr.App.Services.Auth.CookieService;
 
 Console.WriteLine();
 Console.WriteLine("Pollifyr");
-Console.WriteLine($"Copyright © {DateTime.UtcNow.Year} mxritz.xyz");
+Console.WriteLine($"Copyright © 2023-{DateTime.UtcNow.Year} mxritz.xyz");
 Console.WriteLine();
 
 // Configure Logger
