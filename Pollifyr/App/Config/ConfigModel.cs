@@ -48,6 +48,8 @@ public class ConfigModel
         [JsonProperty("Application-Port")] public int Port { get; set; } = 80;
         
         [JsonProperty("Allow-Register")] public bool AllowRegister { get; set; }
+
+        [JsonProperty("Use-HSTS")] public bool UseHsts { get; set; } = true;
     }
 
 

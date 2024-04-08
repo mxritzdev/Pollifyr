@@ -64,6 +64,7 @@ builder.Services.AddScoped<ClipboardService>();
 builder.Services.AddScoped<ModalService>();
 builder.Services.AddScoped<ToastService>();
 
+// Configure the Webserver to run on the port specified in the config file
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenAnyIP(configService.Get().Properties.Port);
@@ -77,9 +78,8 @@ builder.Services.AddServerSideBlazor();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+if (configService.Get().Properties.UseHsts)
 {
-    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
