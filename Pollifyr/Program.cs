@@ -7,6 +7,7 @@ using Pollifyr.App.Helpers.Startup;
 using Pollifyr.App.Repository;
 using Pollifyr.App.Services;
 using Pollifyr.App.Services.Auth;
+using Pollifyr.App.Services.Surveys;
 using CookieService = Pollifyr.App.Services.Auth.CookieService;
 
 Console.WriteLine();
@@ -45,6 +46,11 @@ builder.Services.AddHttpContextAccessor();
 
 // Services / Alerts
 builder.Services.AddScoped<AlertService>();
+
+// Services / Surveys
+builder.Services.AddScoped<SurveyService>();
+builder.Services.AddScoped<QuestionService>();
+builder.Services.AddScoped<AnswerService>();
 
 // Services / MoonCore
 ToastService.Prefix = "pollifyr.toasts";

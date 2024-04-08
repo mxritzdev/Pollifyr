@@ -5,7 +5,7 @@ namespace Pollifyr.App.Services.Surveys;
 
 public class QuestionService
 {
-    private Repository<Question> Questions;
+    public Repository<Question> Questions;
 
     private AnswerService AnswerService;
     public QuestionService(Repository<Question> questions, AnswerService answerService)

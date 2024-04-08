@@ -60,7 +60,11 @@ public class AuthService
         
         return await GenerateToken(user!);
     }
-    
+
+    public List<User> GetAll()
+    {
+        return Users.Get().ToList();
+    }
     
     public async Task<string> GenerateToken(User user)
     {

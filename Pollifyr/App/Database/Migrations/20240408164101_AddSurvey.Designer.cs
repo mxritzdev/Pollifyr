@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pollifyr.App.Database;
 
@@ -10,9 +11,11 @@ using Pollifyr.App.Database;
 namespace Pollifyr.App.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240408164101_AddSurvey")]
+    partial class AddSurvey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace Pollifyr.App.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answer");
                 });
 
             modelBuilder.Entity("Pollifyr.App.Database.Models.Question", b =>
@@ -59,24 +62,6 @@ namespace Pollifyr.App.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("Pollifyr.App.Database.Models.Survey", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("Visible")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Surveys");
                 });
 
             modelBuilder.Entity("Pollifyr.App.Database.Models.User", b =>

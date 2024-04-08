@@ -5,7 +5,7 @@ namespace Pollifyr.App.Services.Surveys;
 
 public class SurveyService
 {
-    private Repository<Survey> Surveys;
+    public Repository<Survey> Surveys;
 
     private QuestionService QuestionService;
 
@@ -13,6 +13,11 @@ public class SurveyService
     {
         Surveys = surveys;
         QuestionService = questionService;
+    }
+
+    public List<Survey> GetAll()
+    {
+        return Surveys.Get().ToList();
     }
 
     public Survey? GetById(int id)
