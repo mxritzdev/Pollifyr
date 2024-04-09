@@ -14,25 +14,35 @@ public class QuestionService
         AnswerService = answerService;
     }
 
-    public Question? GetById(int id)
+    public async Task<Question?> GetById(int id)
     {
         return Questions.Get().FirstOrDefault(x => x.Id == id);
     }
 
-    public List<Question> GetAllFromSurvey(Survey survey)
+    public async Task Add(Question question)
+    {
+        Questions.Add(question);
+    }
+    
+    public async Task<List<Question>> GetAllFromSurvey(Survey survey)
     {
         return Questions.Get().Where(x => x.SurveyId == survey.Id).ToList();
     }
 
-    private void Delete(Question question)
+    public async Task Delete(Question question)
     {
         // Delete all corresponding Answers
-        AnswerService.DeleteAllFromQuestion(question.Id);
+        await AnswerService.DeleteAllFromQuestion(question.Id);
         
         Questions.Delete(question);
     }
+
+    public async Task Update(Question question)
+    {
+        Questions.Update(question);
+    }
     
-    public void DeleteAllFromSurvey(Survey survey)
+    public async Task DeleteAllFromSurvey(Survey survey)
     {
         var questions = Questions.Get().Where(x => x.SurveyId == survey.Id).ToList();
         

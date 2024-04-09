@@ -1,0 +1,153 @@
+@page "/admin/survey/{IdProperty}"
+@using Pollifyr.App.Services.Surveys
+@using MoonCoreUI.Services
+@using MoonCoreUI.Components
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.UI.Views.Errors
+@using Pollifyr.App.UI.Components.Utils
+@using Pollifyr.App.UI.Components.Admin.Questions
+
+@inject SurveyService SurveyService
+@inject AlertService AlertService
+@inject QuestionService QuestionService
+
+<NeedsAdmin/>
+
+<LazyLoader Load="Load">
+    @if (Survey == null)
+    {
+        <RessourceNotFound/>
+    }
+    else
+    {
+        <Title>Admin Edit @Survey.Name</Title>
+        
+        <div class="p-4 p-md-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="row align-items-center gx-0">
+                                    <div class="col">
+                                        <h6 class="text-uppercase text-muted mb-2">
+                                            Survey
+                                        </h6>
+                                        <span class="h2 mb-0">
+                                            @Survey.Name
+                                        </span>
+                                        
+                                        <h6 class="text-uppercase text-muted mb-2 mt-4">
+                                            Properties
+                                        </h6>
+                                        
+                                        <h6 class="mb-2">
+                                            Id: @Survey.Id
+                                        </h6>
+                                        <h6 class="mb-2">
+                                            Visible: @Survey.Visible
+                                        </h6>
+                                        
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="h2 text-muted mb-0">
+                                            <i class="text-muted bx bx-check-square bx-lg"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <form>
+                                    <h6 class="text-uppercase text-muted mb-2 mt-4">
+                                        Add Question
+                                    </h6>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="What do you think about ...?" @bind="Question"/>
+                                        <button type="submit" @onclick="AddQuestion" @onclick:preventDefault class="btn btn-primary"><i class="bx bx-sm bx-plus"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h6 class="text-uppercase text-muted mb-2 mt-4">
+                            Questions
+                        </h6>
+                        <CascadingValue Value="this">
+                            @if (Questions.Any()) {
+                                foreach (var question in Questions)
+                                {
+                                    <AdminQuestion Question="question"/>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted p-2 pt-4 fs-6">
+                                    No questions here yet, why dont you add one?
+                                </span>
+                            }
+                        </CascadingValue>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</LazyLoader>
+
+@code {
+    [Parameter] public string IdProperty { get; set; } = "";
+
+    private int Id { get; set; }
+
+    Survey? Survey;
+
+    List<Question> Questions;
+
+    private string Question { get; set; } = string.Empty;
+
+    private async Task Load(LazyLoader arg)
+    {
+        await Reload();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task AddQuestion()
+    {
+        Question question = new()
+        {
+            SurveyId = Survey!.Id,
+            Text = Question
+        };
+
+        await QuestionService.Add(question);
+
+        Questions = await QuestionService.GetAllFromSurvey(Survey!);
+
+        Question = string.Empty;
+        
+        StateHasChanged();
+    }
+    
+    public async Task Reload()
+    {
+        try
+        {
+            Id = Int32.Parse(IdProperty);
+        }
+        catch (FormatException)
+        {
+            Survey = null;
+            return;
+        }
+
+        Survey = await SurveyService.GetById(Id);
+
+        Questions = await QuestionService.GetAllFromSurvey(Survey!);
+        
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

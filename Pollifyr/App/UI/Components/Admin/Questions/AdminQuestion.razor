@@ -1,0 +1,106 @@
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Services.Surveys
+@using Pollifyr.App.UI.Components.Admin.Answers
+@using MoonCoreUI.Services
+@using Pollifyr.App.UI.Views.Admin.Surveys
+@using MoonCore.Exceptions
+
+@inject QuestionService QuestionService
+@inject AnswerService AnswerService
+@inject AlertService AlertService
+
+
+<CascadingValue Value="this">
+    <div class="p-2 border-bottom border-1 border-gray-400">
+        <div class="container d-flex justify-content-between">
+            <span class="col fs-4 d-flex align-items-center">@Question.Text</span>
+            <span class="col-auto btn-group">
+                <a class="btn btn-icon btn-primary btn-sm" @onclick="AddAnswer" @onclick:preventDefault>
+                                    <i class="bx bx-xs bx-plus"></i>
+                                </a>
+                <a class="btn btn-icon btn-secondary btn-sm" @onclick="Edit" @onclick:preventDefault>
+                    <i class="bx bx-xs bx-edit"></i>
+                </a>
+                <a class="btn btn-icon btn-danger btn-sm" @onclick="DeleteQuestion" @onclick:preventDefault>
+                    <i class="bx bx-xs bxs-trash"></i>
+                </a>
+            </span>
+        </div>
+        <div class="container pt-2">  
+            @foreach (var answer in Answers)
+            {
+                <AdminAnswer Answer="answer"/>
+            }
+        </div>
+    </div>
+</CascadingValue>
+
+
+@code {
+
+    [Parameter]
+    public Question Question { get; set; }
+
+    private List<Answer> Answers;
+
+    [CascadingParameter]
+    public Edit? ParentEdit { get; set; }
+    
+    private string NewAnswer = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Reload();
+    }
+
+    private async Task AddAnswer()
+    {
+        var text = await AlertService.Text("Input the new text for your new answer.");
+
+        var answer = new Answer
+        {
+            Text = text,
+            QuestionId = Question.Id
+        };
+
+        await AnswerService.Add(answer);
+
+        await Reload();
+    }
+
+    private async Task DeleteQuestion()
+    {
+        var confirm = await AlertService.YesNo("Do you really want to delete this question? This cannot be undone.");
+
+        if (!confirm)
+        {
+            return;
+        }
+        
+        await QuestionService.Delete(Question);
+
+        await ParentEdit!.Reload();
+    }
+    
+    public async Task Reload()
+    {
+        Answers = await AnswerService.GetAllFromQuestion(Question);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task Edit()
+    {
+        var text = await AlertService.Text("Input the new text for your question.","", Question!.Text);
+
+        if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
+            return;
+        
+        Question.Text = text;
+
+        await QuestionService.Update(Question);
+        
+        StateHasChanged();
+    }
+
+
+}

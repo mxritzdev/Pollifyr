@@ -1,5 +1,7 @@
 ﻿@using Pollifyr.App.UI.Components.Utils
 @using Pollifyr.App.Services.Auth
+@using CookieService = Pollifyr.App.Services.Auth.CookieService
+@using MoonCoreUI.Services
 
 @page "/"
 
@@ -7,6 +9,7 @@
 @inject CookieService CookieService
 @inject IdentityService IdentityService
 @inject NavigationManager NavigationManager
+@inject AlertService AlertService
 
 <Title>Home</Title>
 

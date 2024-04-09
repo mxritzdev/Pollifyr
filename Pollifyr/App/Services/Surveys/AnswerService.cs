@@ -12,22 +12,32 @@ public class AnswerService
         Answers = answers;
     }
 
-    public Answer? GetById(int id)
+    public async Task<Answer?> GetById(int id)
     {
         return Answers.Get().FirstOrDefault(x => x.Id == id);
     }
 
-    public List<Answer> GetAllFromQuestion(Question question)
+    public async Task<List<Answer>> GetAllFromQuestion(Question question)
     {
         return Answers.Get().Where(x => x.QuestionId == question.Id).ToList();
     }
 
-    public void Delete(Answer answer)
+    public async Task Delete(Answer answer)
     {
         Answers.Delete(answer);
     }
+    
+    public async Task Update(Answer answer)
+    {
+        Answers.Update(answer);
+    }
 
-    public void DeleteAllFromQuestion(int questionId)
+    public async Task Add(Answer answer)
+    {
+        Answers.Add(answer);
+    }
+
+    public async Task DeleteAllFromQuestion(int questionId)
     {
         var answers = Answers.Get().Where(x => x.QuestionId == questionId).ToList();
 

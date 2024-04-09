@@ -1,0 +1,79 @@
+@page "/admin/surveys"
+@using Pollifyr.App.Exceptions
+@using MoonCoreUI.Components.Forms
+@using MoonCoreUI.Services
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Models.Forms.Surveys
+@using Pollifyr.App.Services.Surveys
+@using Pollifyr.App.UI.Components.Utils
+
+
+@inject SurveyService SurveyService
+@inject AlertService AlertService
+
+<NeedsAdmin/>
+
+<Title>Admin Surveys</Title>
+
+<AutoCrud TItem="Survey"
+          TCreateForm="CreateSurveyForm"
+          TUpdateForm="UpdateSurveyForm"
+          Title="Surveys"
+          Load="Load"
+          CustomAdd="Add">
+    <View>
+        <CrudColumn TItem="Survey" Field="@(x => x.Id)" Title="Id" Filterable="true"/>
+        <CrudColumn TItem="Survey" Field="@(x => x.Name)" Title="Name" Filterable="true"/>
+        <CrudColumn TItem="Survey" Field="@(x => x.Visible)" Title="Visible" Filterable="true"/>
+    </View>
+    <Actions>
+        <WButton OnClick="() => ChangeVisibility(context)" CssClasses="btn btn-icon btn-primary">
+            @if (context.Visible)
+            {
+                <i class="bx bx-sm bxs-bulb"></i>
+            }
+            else
+            {
+                <i class="bx bx-sm bx-bulb"></i>
+            }
+        </WButton>
+        <a class="btn btn-icon btn-secondary" href="/admin/survey/@context.Id">
+            <i class="bx bx-sm bx-edit"></i>
+        </a>
+    </Actions>
+</AutoCrud>
+
+@code
+{
+    private Survey[] Load(MoonCore.Abstractions.Repository<Survey> repository)
+    {
+        return repository.Get().ToArray();
+    }
+
+    private async Task Add(Survey survey)
+    {
+        try
+        {
+            SurveyService.New(survey);
+        }
+        catch (Exception e)
+        {
+            throw new DisplayException("An unknown error occured while creating survey.");
+        }
+        
+    }
+
+    private async Task ChangeVisibility(Survey survey)
+    {
+        string newVisibilityStatus = !survey.Visible ? "visible" : "invisible";
+        
+        bool confirm = await AlertService.YesNo($"Change the visibility of '{survey.Name}' to {newVisibilityStatus}?");
+
+        if (!confirm)
+            return;
+        
+        SurveyService.Visibility(survey, !survey.Visible);
+        
+        await InvokeAsync(StateHasChanged);
+    }
+}

@@ -1,0 +1,61 @@
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Services.Surveys
+@using MoonCoreUI.Services
+@using System.ComponentModel.DataAnnotations
+@using MoonCore.Exceptions
+@using Pollifyr.App.UI.Components.Admin.Questions
+
+@inject AnswerService AnswerService
+@inject AlertService AlertService
+
+<div class="row d-flex align-items-center px-2">
+    <span class="col text-muted fs-5">@Answer.Text</span>
+    <span class="col-auto btn-group fs-7">
+        <a @onclick:preventDefault @onclick="Edit" class="text-secondary">
+            <i class="bx bx-sm bx-edit"></i>
+        </a>
+        <a @onclick:preventDefault @onclick="Delete" class="text-danger">
+            <i class="bx bx-sm bxs-trash"></i>
+        </a>
+    </span>
+</div>
+
+@code {
+    
+    [Parameter]
+    public Answer Answer { get; set; }
+    
+    [CascadingParameter]
+    public AdminQuestion? ParentQuestion { get; set; }
+
+    private async Task Delete()
+    {
+        
+        var confirm = await AlertService.YesNo("Do you really want to delete this answer? This cannot be undone.");
+
+        if (!confirm)
+        {
+            return;
+        }
+
+        await AnswerService.Delete(Answer);
+
+        await ParentQuestion!.Reload();
+
+    }
+
+    private async Task Edit()
+    {
+        var text = await AlertService.Text("Input the new text for your answer.", "", Answer!.Text);
+
+        if (string.IsNullOrEmpty(text))
+            return;
+        
+        
+        Answer.Text = text;
+
+        await AnswerService.Update(Answer);
+        
+        StateHasChanged();
+    }
+}

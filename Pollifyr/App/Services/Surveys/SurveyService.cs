@@ -20,36 +20,26 @@ public class SurveyService
         return Surveys.Get().ToList();
     }
 
-    public Survey? GetById(int id)
+    public async Task<Survey?> GetById(int id)
     {
-        // Get a survey by id
-        
         return Surveys.Get().FirstOrDefault(x => x.Id == id);
     }
 
-    public void Visibility(int id, bool visible)
+    public async Task Visibility(Survey survey, bool visible)
     {
-        // Toggle a surveys visibility
-        // Visible   = SurveyStates.Visible
-        // Invisible = SurveyStates.Invisible
-        var survey = GetById(id);
-
-        if (survey == null) return;
-        
         survey.Visible = visible;
         Surveys.Update(survey);
     }
 
-    public void New(Survey survey)
+    public async Task New(Survey survey)
     {
-        // Create a new Survey in the Database
         Surveys.Add(survey);
     }
 
-    public void Delete(Survey survey)
+    public async Task Delete(Survey survey)
     {
         // Delete all Questions corresponding to the survey
-        QuestionService.DeleteAllFromSurvey(survey);
+        await QuestionService.DeleteAllFromSurvey(survey);
         
         // Then delete the survey
         Surveys.Delete(survey);
