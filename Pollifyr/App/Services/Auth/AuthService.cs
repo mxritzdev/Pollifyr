@@ -1,6 +1,7 @@
 using JWT.Algorithms;
 using JWT.Builder;
 using MoonCore.Abstractions;
+using MoonCore.Helpers;
 using Pollifyr.App.Database.Models;
 using Pollifyr.App.Exceptions;
 using Pollifyr.App.Helpers.Utils;
@@ -27,36 +28,45 @@ public class AuthService
 
     public async Task<string> Register(string email, string password, string username)
     {
-        
-        // Check if the email is already taken
-        var emailTaken = Users.Get().FirstOrDefault(x => x.Email == email) != null;
 
-        if (emailTaken)
+        var user = await AddUser(email, password, username);
+        
+
+        if (user == null)
         {
-            throw new DisplayException("The email is already in use");
+            throw new DisplayException("Error while creating the user, maybe the email or username is taken.");
         }
         
-        var user = Users.Add(new()
+        return await GenerateToken(user);
+    }
+
+    public async Task<User?> AddUser(string email, string password, string username)
+    {
+        var emailTaken = Users.Get().FirstOrDefault(x => x.Email == email) != null;
+
+        var usernameTaken = Users.Get().FirstOrDefault(x => x.Username == username) != null;
+
+        if (emailTaken || usernameTaken)
+            return null;
+        
+        
+        var user = Users.Add(new User()
         {
             Email = email.ToLower(),
-            Password = BCrypt.Net.BCrypt.HashPassword(password),
+            Password = HashHelper.HashToString(password),
             Username = username,
             TokenValidTimestamp = DateTimeService.GetCurrent().AddDays(-5),
         });
-        
 
-        return await GenerateToken(user);
+        return user;
     }
     
-    public async Task<string> Login(string email, string password, string totpCode = "")
+    public async Task<string> Login(string email, string password)
     {
-      
-        var user = Users.Get()
-            .FirstOrDefault(
-                x => x.Email.Equals(
-                    email
-                )
-            );
+        var user = VerifyEmailAndPassword(email, password);
+
+        if (user == null)
+            throw new DisplayException("Invalid email or password.");
         
         return await GenerateToken(user!);
     }
@@ -81,7 +91,7 @@ public class AuthService
     
     public Task ChangePassword(User user, string password, bool isSystemAction = false)
     {
-        user.Password = BCrypt.Net.BCrypt.HashPassword(password);
+        user.Password = HashHelper.HashToString(password);
         user.TokenValidTimestamp = DateTimeService.GetCurrent();
         Users.Update(user);
 
@@ -90,11 +100,9 @@ public class AuthService
     
     public async Task ResetPassword(string email)
     {
-        email = email.ToLower();
-        
-        var user = Users
-            .Get()
-            .FirstOrDefault(x => x.Email == email);
+        email = email.ToLower().Trim();
+
+        var user = GetUserByEmail(email);
 
         if (user == null)
             throw new DisplayException("A user with this email can not be found");
@@ -113,6 +121,31 @@ public class AuthService
         user.Admin = admin;
         
         Users.Update(user);
+    }
+    
+    
+    private User? VerifyEmailAndPassword(string email, string password)
+    {
+        var user = GetUserByEmail(email);
+
+        if (user == null) // Unknown email
+            return null;
+
+        // Verify password
+        return !HashHelper.Verify(password, user.Password) ? null : user;
+    }
+
+    private User? GetUserByEmail(string email)
+    {
+        email = email
+            .Trim()
+            .ToLower();
+
+        var user = Users
+            .Get()
+            .FirstOrDefault(x => x.Email == email);
+
+        return user;
     }
     
     

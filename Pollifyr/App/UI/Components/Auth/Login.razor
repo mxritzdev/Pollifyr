@@ -13,22 +13,20 @@
 <div class="p-2 px-md-12">
   
   <div class="d-flex justify-content-center align-items-center flex-column">
-    <img src="/img/logo.svg" alt="Logo" class="h-40px">
+    <img src="/img/logo.svg" alt="Logo" class="h-30px">
     <span class="fs-1 d-block fw-bold">Login</span>
   </div>
   
   <div class="form-outline mb-4">
     <label class="form-label fs-3" for="email">Email Address</label>
-    <input type="email" id="email" class="form-control" @bind="Form.Email"/>
+    <input type="email" id="email" class="form-control" placeholder="mail@example.com" @bind="Form.Email"/>
   </div>
   
   <div class="form-outline mb-4">
     <label class="form-label fs-3" for="password">Password</label>
-    <input type="password" id="password" class="form-control" @bind="Form.Password"/>
-    <label class="form-label" for="password"><a href="#">Forgot password?</a></label>
+    <input type="@(ShowPassword ? "text" : "password")" class="form-control" placeholder="Password" id="password" @bind="Form.Password">
+    <label class="form-label" for="password"> <a class="text-secondary cursor-pointer" @onclick="() => { ShowPassword = !ShowPassword; StateHasChanged(); }">@(ShowPassword ? "Hide" : "Show") Password</a></label>
   </div>
-
-
 
   <div class="d-flex justify-content-center">
     <WButton Text="Log In" CssClasses="btn-primary btn-block mb-4 w-100 w-md-50" WorkingText="Logging you in" OnClick="Callback"/>
@@ -47,6 +45,8 @@
 
   private LoginForm Form = new();
 
+  private bool ShowPassword;
+
   protected override void OnAfterRender(bool firstRender)
   {
     if (IdentityService.LoggedIn)
@@ -57,13 +57,14 @@
 
   private async Task Callback()
   {
-      Form.Email = Form.Email.ToLower().Trim();
-      
-      var token = await AuthService.Login(Form.Email, Form.Password);
-      await CookieService.SetValue("token", token, 10);
-      
-      NavigationManager.NavigateTo("/", true);
-      
-  }
+    Form.Email = Form.Email.ToLower().Trim();
 
+    var token = await AuthService.Login(Form.Email, Form.Password);
+
+    if (token != string.Empty)
+    {
+      await CookieService.SetValue("token", token, 10);
+      NavigationManager.NavigateTo("/", true);
+    }
+  }
 }
