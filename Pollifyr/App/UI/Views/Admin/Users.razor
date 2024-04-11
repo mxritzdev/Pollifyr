@@ -49,15 +49,14 @@
         if (string.IsNullOrEmpty(newPassword))
             return;
 
+        Console.WriteLine(newPassword);
+        
         await AuthService.ChangePassword(user, newPassword);
     }
 
     private async Task Add(User user)
     {
-        var result = await AuthService.Register(user.Username, user.Email, user.Password);
-
-        if (result == null)
-            throw new DisplayException("An unknown error occured while creating user");
+        await AuthService.AddUser(user.Username, user.Email.Trim().ToLower(), user.Password);
     }
 
     // To notify the authentication provider before we update the data in the database, we call it here
