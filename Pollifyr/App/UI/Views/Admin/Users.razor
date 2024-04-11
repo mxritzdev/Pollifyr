@@ -44,8 +44,7 @@
     private async Task ChangePassword(User user)
     {
         var newPassword = await AlertService.Text($"Enter a new password for {user.Username}", "");
-
-        // This handles empty and canceled input
+        
         if (string.IsNullOrEmpty(newPassword))
             return;
 
@@ -58,8 +57,7 @@
     {
         await AuthService.AddUser(user.Username, user.Email.Trim().ToLower(), user.Password);
     }
-
-    // To notify the authentication provider before we update the data in the database, we call it here
+    
     private async Task ValidateUpdate(User user)
     {
         await AuthService.ChangeDetails(user, user.Email, user.Username, user.Admin);
