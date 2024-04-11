@@ -1,4 +1,4 @@
-using Logging.Net;
+using MoonCore.Helpers;
 using Pollifyr.App.Helpers.Utils;
 
 namespace Pollifyr.App.Helpers.Startup;

@@ -1,4 +1,4 @@
-using Pollifyr.App.Helpers.Utils;
+using MoonCore.Helpers;
 
 namespace Pollifyr.App.Helpers.Startup;
 

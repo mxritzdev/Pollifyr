@@ -1,5 +1,6 @@
 using CommonMark;
 using Microsoft.AspNetCore.Components;
+using MoonCore.Helpers;
 using Pollifyr.App.Helpers;
 using Pollifyr.App.Helpers.Utils;
 
@@ -8,7 +9,7 @@ namespace Pollifyr.App.Services.Partials;
 public class ImprintService
 {
     private MarkupString Imprint;
-    private readonly string Path = PathBuilder.File(PathBuilder.File("storage", "imprint.md"));
+    private readonly string Path = PathBuilder.File("storage", "imprint.md");
     
     public ImprintService()
     {

@@ -2,7 +2,7 @@ using System.Text;
 using JWT.Algorithms;
 using JWT.Builder;
 using JWT.Exceptions;
-using Logging.Net;
+using MoonCore.Helpers;
 using MoonCore.Abstractions;
 using Pollifyr.App.Database.Models;
 using Pollifyr.App.Services.Partials;

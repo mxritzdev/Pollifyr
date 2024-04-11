@@ -1,4 +1,4 @@
-using Logging.Net;
+using MoonCore.Helpers;
 using MoonCore.Abstractions;
 using MoonCoreUI.Services;
 using Pollifyr.App.Services.Partials;
@@ -15,10 +15,13 @@ Console.WriteLine("Pollifyr");
 Console.WriteLine($"Copyright © 2023-{DateTime.UtcNow.Year} mxritz.xyz");
 Console.WriteLine();
 
-// Configure Logger
-Logger.UseSBLogger();
-
 var builder = WebApplication.CreateBuilder(args);
+
+Logger.Setup(
+    logInConsole: true,
+    logInFile: false,
+    isDebug: builder.Environment.IsDevelopment()
+);
 
 // Services / Config
 ConfigHelper configHelper = new();
@@ -49,7 +52,7 @@ builder.Services.AddScoped<AlertService>();
 
 // Services / Surveys
 builder.Services.AddScoped<SurveyService>();
-builder.Services.AddScoped<QuestionService>();
+builder.Services.AddScoped<QuestionService>();  
 builder.Services.AddScoped<AnswerService>();
 
 // Services / MoonCore
