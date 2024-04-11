@@ -57,10 +57,25 @@
     {
         var text = await AlertService.Text("Input the new text for your new answer.");
 
+        var lastSortingIdList = await AnswerService.GetAllFromQuestion(Question);
+
+        int lastSortingId;
+
+        if (lastSortingIdList.Any())
+        {
+            lastSortingIdList.Sort((a, b) => b.SortingId.CompareTo(a.SortingId));
+            lastSortingId = lastSortingIdList[0].SortingId + 1;
+        }
+        else
+        {
+            lastSortingId = 1;
+        }
+        
         var answer = new Answer
         {
             Text = text,
-            QuestionId = Question.Id
+            QuestionId = Question.Id,
+            SortingId = lastSortingId
         };
 
         await AnswerService.Add(answer);

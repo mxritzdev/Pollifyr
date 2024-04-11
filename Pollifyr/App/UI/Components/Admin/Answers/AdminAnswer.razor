@@ -8,15 +8,52 @@
 @inject AnswerService AnswerService
 @inject AlertService AlertService
 
-<div class="row d-flex align-items-center px-2">
-    <span class="col text-muted fs-5">@Answer.Text</span>
+<div class="row px-2">
+    <span class="col fs-5 d-flex align-items-center">
+        <span class="text-muted me-2 d-flex align-items-center">
+            <i class="bx bx-xs bx-minus"></i>
+        </span>
+        <span>
+            @Answer.Text
+        </span>
+    </span>
+    
     <span class="col-auto btn-group fs-7">
-        <a @onclick:preventDefault @onclick="Edit" class="text-secondary">
-            <i class="bx bx-sm bx-edit"></i>
-        </a>
-        <a @onclick:preventDefault @onclick="Delete" class="text-danger">
-            <i class="bx bx-sm bxs-trash"></i>
-        </a>
+        <div class="dropdown">
+            <span class="text-muted" role="button" data-bs-toggle="dropdown">
+                <i class="bx bx-sm bx-dots-vertical-rounded"></i>
+            </span>
+            <ul class="dropdown-menu">
+                <li class="cursor-pointer">
+                    <a class="dropdown-item text-muted d-flex align-items-center" @onclick:preventDefault @onclick="Edit">
+                        <i class="bx bx-sm bx-edit me-2"></i><span>Edit</span>
+                    </a>
+                </li>
+                
+                <li><hr class="dropdown-divider"></li>
+                
+                <li class="cursor-pointer">
+                    <a class="dropdown-item text-muted d-flex align-items-center" @*@onclick:preventDefault @onclick="Edit"*@>
+                        <i class="bx bx-sm bx-chevron-up me-2"></i><span>Move Up</span>
+                    </a>
+                </li>
+                
+                <li class="cursor-pointer">
+                    <a class="dropdown-item text-muted d-flex align-items-center" @*@onclick:preventDefault @onclick="Edit"*@>
+                        <i class="bx bx-sm bx-chevron-down me-2"></i><span>Move Down</span>
+                    </a>
+                </li>
+                
+                <li><hr class="dropdown-divider"></li>
+                
+                <li class="cursor-pointer">
+                    <a class="dropdown-item text-muted d-flex align-items-center" @onclick:preventDefault @onclick="Delete">
+                        <i class="bx bx-sm bxs-trash me-2"></i><span>Delete</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
     </span>
 </div>
 

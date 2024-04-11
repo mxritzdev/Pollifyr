@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MoonCore.Abstractions;
 using Pollifyr.App.Database.Models;
 
@@ -37,6 +38,11 @@ public class AnswerService
         Answers.Add(answer);
     }
 
+    public async Task<DbSet<Answer>> Get()
+    {
+        return Answers.Get();
+    }
+    
     public async Task DeleteAllFromQuestion(int questionId)
     {
         var answers = Answers.Get().Where(x => x.QuestionId == questionId).ToList();
