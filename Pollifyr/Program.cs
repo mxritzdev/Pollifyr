@@ -1,4 +1,6 @@
-using MoonCore.Helpers;
+
+/*
+using Logging.Net;
 using MoonCore.Abstractions;
 using MoonCoreUI.Services;
 using Pollifyr.App.Services.Partials;
@@ -17,13 +19,8 @@ Console.WriteLine();
 
 var builder = WebApplication.CreateBuilder(args);
 
-Logger.Setup(
-    logInConsole: true,
-    logInFile: false,
-    isDebug: builder.Environment.IsDevelopment()
-);
+Logger.UseMBLogger();
 
-// Services / Config
 ConfigHelper configHelper = new();
 await configHelper.Perform();
 ConfigService configService = new();
@@ -91,3 +88,28 @@ app.UseRouting();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 app.Run();
+*/
+
+
+namespace Pollifyr
+{
+    public class Program
+    {
+        private static readonly Startup Startup = new();
+
+        public static async Task Main(string[] args)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Pollifyr");
+            Console.WriteLine($"Copyright © 2023-{DateTime.UtcNow.Year} mxritz.xyz");
+            Console.WriteLine();
+
+            await Startup.Init(args);
+            await Startup.Start();
+        }
+    }
+}
+
+
+
+
