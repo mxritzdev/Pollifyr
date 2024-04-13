@@ -9,6 +9,5 @@ public class Answer
     public int QuestionId { get; set; }
 
     public int Answers { get; set; } = 0;
-
-    public int SortingId { get; set; } = 0;
+    
 }

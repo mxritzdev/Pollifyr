@@ -31,16 +31,13 @@ namespace Pollifyr.App.Database.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortingId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("Pollifyr.App.Database.Models.Question", b =>
@@ -61,7 +58,7 @@ namespace Pollifyr.App.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("Pollifyr.App.Database.Models.Survey", b =>
@@ -79,7 +76,7 @@ namespace Pollifyr.App.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Surveys");
+                    b.ToTable("Surveys", (string)null);
                 });
 
             modelBuilder.Entity("Pollifyr.App.Database.Models.User", b =>
@@ -119,7 +116,7 @@ namespace Pollifyr.App.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 #pragma warning restore 612, 618
         }
