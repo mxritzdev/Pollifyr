@@ -32,7 +32,7 @@ public class QuestionService
     public async Task Delete(Question question)
     {
         // Delete all corresponding Answers
-        await AnswerService.DeleteAllFromQuestion(question.Id);
+        await AnswerService.DeleteAllFromQuestion(question);
         
         Questions.Delete(question);
     }

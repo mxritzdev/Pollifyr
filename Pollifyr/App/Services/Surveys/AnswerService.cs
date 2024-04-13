@@ -43,13 +43,13 @@ public class AnswerService
         return Answers.Get();
     }
     
-    public async Task DeleteAllFromQuestion(int questionId)
+    public async Task DeleteAllFromQuestion(Question question)
     {
-        var answers = Answers.Get().Where(x => x.QuestionId == questionId).ToList();
+        var answers = Answers.Get().Where(x => x.QuestionId == question.Id).ToList();
 
         foreach (var answer in answers)
         {
-            Delete(answer);
+            await Delete(answer);
         }
     }
 }
