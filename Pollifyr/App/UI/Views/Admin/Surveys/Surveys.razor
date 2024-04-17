@@ -54,11 +54,11 @@
     {
         try
         {
-            SurveyService.New(survey);
+            await SurveyService.New(survey);
         }
         catch (Exception e)
         {
-            throw new DisplayException("An unknown error occured while creating survey.");
+            throw new DisplayException("An unknown error occured while creating a new survey.");
         }
         
     }
@@ -72,7 +72,7 @@
         if (!confirm)
             return;
         
-        SurveyService.Visibility(survey, !survey.Visible);
+        await SurveyService.Visibility(survey, !survey.Visible);
         
         await InvokeAsync(StateHasChanged);
     }
