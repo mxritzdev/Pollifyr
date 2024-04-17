@@ -1,6 +1,6 @@
 # Pollifyr 📊
 
-Pollifyr is a web application built with .NET 7, Bootstrap, and C# that allows users to create and conduct surveys or polls easily.
+Pollifyr is a web application built with .NET 7, Bootstrap, and C# that allows users to create and conduct surveys or polls easily. This project was created with lots of 80s music 💿
 
 ## Features ✨
 
@@ -24,7 +24,7 @@ To get started with Pollifyr locally, follow these steps:
 
 - **.NET 7**: A cross-platform framework for building various types of applications.
 - **C#**: A powerful and versatile programming language used for building .NET applications.
-- **Blazor**: C#-based web framework that allows developers to build web apps using reusable components, running both on the client and server . 
+- **Blazor**: C#-based web framework that allows developers to build web apps using reusable components, running both on the client and server .
 - **Bootstrap**: A popular front-end framework for building responsive and mobile-first websites.
 
 ## Contributing 🤝
