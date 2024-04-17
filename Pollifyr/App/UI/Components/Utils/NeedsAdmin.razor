@@ -4,7 +4,7 @@
 @code {
 
     [CascadingParameter]
-    public PermissionCheck PermissionCheck { get; set; }
+    public PermissionCheck? PermissionCheck { get; set; }
 
     protected override Task OnInitializedAsync()
     {
@@ -12,7 +12,7 @@
         if (!IdentityService.IsAdmin)
         {
             
-            PermissionCheck.IsAllowed(false);
+            PermissionCheck!.IsAllowed(false);
             
         } 
         
