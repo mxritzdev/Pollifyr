@@ -13,7 +13,7 @@
 
 <NeedsAdmin/>
 
-<Title>Admin Surveys</Title>
+<Name>Admin Surveys</Name>
 
 <AutoCrud TItem="Survey"
           TCreateForm="CreateSurveyForm"
@@ -27,16 +27,6 @@
         <CrudColumn TItem="Survey" Field="@(x => x.Visible)" Title="Visible" Filterable="true"/>
     </View>
     <Actions>
-        <WButton OnClick="() => ChangeVisibility(context)" CssClasses="btn btn-icon btn-primary">
-            @if (context.Visible)
-            {
-                <i class="bx bx-sm bxs-bulb"></i>
-            }
-            else
-            {
-                <i class="bx bx-sm bx-bulb"></i>
-            }
-        </WButton>
         <a class="btn btn-icon btn-secondary" href="/admin/survey/@context.Id">
             <i class="bx bx-sm bx-edit"></i>
         </a>

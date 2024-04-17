@@ -20,7 +20,7 @@
     }
     else
     {
-        <Title>Admin Edit-Survey @Survey.Id</Title>
+        <Name>Admin Edit-Survey @Survey.Id</Name>
         
         <div class="p-4 p-md-2">
             <div class="container">
@@ -97,7 +97,8 @@
 </LazyLoader>
 
 @code {
-    [Parameter] public string IdProperty { get; set; } = "";
+    [Parameter]
+    public string IdProperty { get; set; } = "";
 
     private int Id { get; set; }
 
@@ -109,6 +110,7 @@
 
     private async Task Load(LazyLoader arg)
     {
+        await arg.SetText("Loading Survey...");
         await Reload();
 
         await InvokeAsync(StateHasChanged);
@@ -148,6 +150,12 @@
 
         Survey = await SurveyService.GetById(Id);
 
+        if (Survey == null)
+        {
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+        
         Questions = await QuestionService.GetAllFromSurvey(Survey!);
         
         await InvokeAsync(StateHasChanged);
