@@ -1,0 +1,173 @@
+@page "/Survey/{IdProperty}"
+
+@using MoonCore.Exceptions
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Services.Surveys
+@using Pollifyr.App.UI.Views.Errors
+@using MoonCoreUI.Components
+@using Pollifyr.App.Models.Survey
+@using Pollifyr.App.UI.Components.Utils
+
+@inject SurveyService SurveyService
+@inject QuestionService QuestionService
+@inject AnswerService AnswerService
+@inject NavigationManager NavigationManager
+
+<LazyLoader Load="Load">
+    @if (Survey == null)
+    {
+        <RessourceNotFound/>
+    }
+    else
+    {
+        <Name>@Survey.Name</Name>
+        
+        <div class="p-5 p-md-8">
+            <div class="card">
+                <div class="card-body position-relative">
+                    <h2 class="card-title mb-2">@Survey.Name</h2>
+                    <h5 class="card-subtitle mb-2 text-muted">@Survey.Description - Question @(QuestionId + 1)/@Questions.Count</h5>
+                    <hr class="mb-4"/>
+                    
+                    <h3 class="mb-4">@Questions[QuestionId].Text</h3>
+                    <div class="mb-4">
+                        @foreach (var answer in Answers.Where(x => x.QuestionId == Questions[QuestionId].Id))
+                        {
+                            <div class="form-check mb-2 d-block position-relative">
+                                <label class="form-check-label w-100 d-flex align-items-center gap-2 cursor-pointer" for="@(answer.Id)" @onclick="() => SetAnswer(Questions[QuestionId], answer)">
+                                    @if (CheckSelected(Questions[QuestionId], answer))
+                                    {
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="@(answer.Id)" checked/>
+                                    }
+                                    else
+                                    {
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="@(answer.Id)"/>
+                                    }
+                                    <span class="fs-3">@answer.Text</span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    
+                    <div class="d-flex w-100 justify-content-between">
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-primary btn-sm btn-icon @(QuestionId == 0 ? "disabled" : "")" @onclick:preventDefault @onclick="() => { if (QuestionId != 0) { QuestionId--; StateHasChanged();} }">
+                                <i class='bx bx-sm bx-left-arrow-alt'></i>
+                            </a>
+                            <a class="btn btn-info btn-sm btn-icon @(QuestionId + 1 == Questions.Count ? "disabled" : "")" @onclick:preventDefault @onclick="() => { if (QuestionId + 1 != Questions.Count) { QuestionId++; StateHasChanged();} }">
+                                <i class='bx bx-sm bx-right-arrow-alt'></i>
+                            </a>
+                        </div>
+                        
+                        <div>
+                            <a class="btn btn-primary btn-sm @(QuestionsAndAnswers.Any(x => x.Answer == null) ? "disabled" : "")" @onclick:preventDefault @onclick="Submit">
+                                <i class='bx bxs-paper-plane'></i> Submit
+                            </a>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    }
+</LazyLoader>
+
+@code {
+    [Parameter] public string IdProperty { get; set; }
+
+    private int Id;
+
+    private Survey? Survey;
+
+    private List<Question> Questions;
+    private List<Answer> Answers;
+
+    private List<QuestionAndAnswer> QuestionsAndAnswers;
+
+    private int QuestionId = 0;
+
+    private async Task Load(LazyLoader arg)
+    {
+        await Reload();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task Reload()
+    {
+        try
+        {
+            Id = Int32.Parse(IdProperty);
+        }
+        catch (FormatException)
+        {
+            Survey = null;
+            return;
+        }
+
+        Survey = await SurveyService.GetById(Id);
+
+        if (Survey == null)
+        {
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+
+        QuestionsAndAnswers = new List<QuestionAndAnswer>();
+
+        Questions = await QuestionService.GetAllFromSurvey(Survey);
+        Answers = await AnswerService.GetAllFromSurvey(Survey);
+
+        foreach (Question question in Questions)
+        {
+            var questionAndAnswer = new QuestionAndAnswer
+            {
+                Question = question,
+                Answer = null
+            };
+            QuestionsAndAnswers.Add(questionAndAnswer);
+        }
+    }
+
+    private Task SetAnswer(Question question, Answer answer)
+    {
+        QuestionAndAnswer? questionAndAnswer = QuestionsAndAnswers.FirstOrDefault(x => x.Question == question);
+
+        if (questionAndAnswer == null)
+            return Task.CompletedTask;
+
+        int index = QuestionsAndAnswers.IndexOf(questionAndAnswer);
+
+        questionAndAnswer.Answer = answer;
+
+        QuestionsAndAnswers[index] = questionAndAnswer;
+
+        return Task.CompletedTask;
+    }
+
+    private bool CheckSelected(Question question, Answer answer)
+    {
+        QuestionAndAnswer? questionAndAnswer = QuestionsAndAnswers.FirstOrDefault(x => x.Question == question);
+
+        if (questionAndAnswer == null)
+            return false;
+
+        return questionAndAnswer.Answer == answer;
+    }
+
+    private async Task Submit()
+    {
+        if (QuestionsAndAnswers.Any(x => x.Answer == null))
+            throw new DisplayException("You need to answer every question.");
+
+        foreach (var answer in QuestionsAndAnswers.Select(submission => submission.Answer).OfType<Answer>())
+        {
+            answer.Answers++;
+            await AnswerService.Update(answer);
+        }
+        
+        NavigationManager.NavigateTo("/survey/success/" + Survey!.Id);
+    }
+
+}

@@ -47,8 +47,6 @@
         
         if (string.IsNullOrEmpty(newPassword))
             return;
-
-        Console.WriteLine(newPassword);
         
         await AuthService.ChangePassword(user, newPassword);
     }

@@ -8,9 +8,12 @@ public class AnswerService
 {
     public Repository<Answer> Answers;
 
-    public AnswerService(Repository<Answer> answers)
+    public Repository<Question> Questions;
+
+    public AnswerService(Repository<Answer> answers, Repository<Question> questions)
     {
         Answers = answers;
+        Questions = questions;
     }
 
     public async Task<Answer?> GetById(int id)
@@ -18,6 +21,22 @@ public class AnswerService
         return Answers.Get().FirstOrDefault(x => x.Id == id);
     }
 
+    public async Task<List<Answer>> GetAllFromSurvey(Survey survey)
+    {
+        List<Answer> answers = new List<Answer>();
+        
+        List<Question> questions = Questions.Get().Where(x => x.SurveyId == survey.Id).ToList();
+
+        foreach (var question in questions)
+        {
+            var answersFromQuestion = await GetAllFromQuestion(question);
+            
+            answers.AddRange(answersFromQuestion);
+        }
+
+        return answers;
+    }
+    
     public async Task<List<Answer>> GetAllFromQuestion(Question question)
     {
         return Answers.Get().Where(x => x.QuestionId == question.Id).ToList();

@@ -68,7 +68,7 @@ public class AuthService
         if (user == null)
             throw new DisplayException("Invalid email or password.");
         
-        return await GenerateToken(user!);
+        return await GenerateToken(user);
     }
 
     public List<User> GetAll()

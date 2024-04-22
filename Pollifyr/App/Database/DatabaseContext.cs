@@ -43,7 +43,7 @@ public class DatabaseContext : DbContext
         {
             version = ServerVersion.AutoDetect(connectionString);
         }
-        catch (Exception e)
+        catch
         {
             version = ServerVersion.Parse("5.7.37-mysql");
         }
