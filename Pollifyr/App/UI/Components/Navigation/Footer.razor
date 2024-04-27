@@ -7,7 +7,7 @@
 <div class="app-footer">
     <div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3 ">
         <div class="text-gray-900 order-2 order-md-1">
-            <span class="text-muted fw-semibold me-1">@DateTime.Now.Year©</span>
+            <span class="text-muted fw-semibold me-1">@DateTime.Now.Year <i class='bx bxs-copyright'></i></span>
             <a href="/" target="_blank" class="text-gray-800 text-hover-primary">@ConfigService.Get().Information.AppName</a>
         </div>
         <ul class="menu menu-gray-700 menu-hover-primary fw-semibold order-1">
@@ -16,14 +16,20 @@
                 <li class="menu-item">
                     <a href="/login" class="menu-link px-2"><i class='bx bx-log-in me-1' ></i> Login</a>
                 </li>
-                
-                <li class="menu-item">
-                    <a href="/register" class="menu-link px-2"><i class='bx bx-log-in me-1' ></i> Register</a>
-                </li>
+                if (ConfigService.Get().Properties.AllowRegister)
+                {
+                    <li class="menu-item">
+                        <a href="/register" class="menu-link px-2"><i class='bx bx-log-in me-1'></i> Register</a>
+                    </li>
+                }
             }
 
             <li class="menu-item">
                 <a href="/results" class="menu-link px-2"><i class='bx bx-pie-chart-alt-2 me-1'></i> Results</a>
+            </li>
+
+            <li class="menu-item">
+                <a href="/surveys" class="menu-link px-2"><i class='bx bx-list-ul me-1'></i> Surveys</a>
             </li>
             
             @if (ConfigService.Get().Information.UseImprint)
