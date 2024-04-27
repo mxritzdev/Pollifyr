@@ -7,11 +7,11 @@ public class ConfigModel
     
     [JsonProperty("Information")] public InformationData Information { get; set; } = new();
     
-    [JsonProperty("Properties")] public PropertyData Properties { get; set; } = new();
-    
     [JsonProperty("Database")] public DatabaseData Database { get; set; } = new();
     
     [JsonProperty("Security")] public SecurityData Security { get; set; } = new();
+    
+    [JsonProperty("Properties")] public PropertyData Properties { get; set; } = new();
     
     public class InformationData
     {
