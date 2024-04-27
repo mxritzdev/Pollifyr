@@ -1,7 +1,9 @@
+@using Pollifyr.App.Services
 @using Pollifyr.App.UI.Layouts
 @using Pollifyr.App.Services.Auth
 
 @inject IdentityService IdentityService
+@inject ConfigService ConfigService
 
 <div class="app-sidebar flex-column @(Layout!.ShowMobileSidebar ? "drawer drawer-start drawer-on" : "")" id="kt_app_sidebar">
     <div class="app-sidebar-header d-flex flex-start flex-lg-stack gap-2 gap-lg-0 align-items-center pb-4 pt-lg-8 pt-4 ps-lg-7 ps-4">
@@ -10,9 +12,8 @@
                 <i class="bx bx-sm bx-menu"></i>
             </a>
         </div>
-        <a href="/" class="app-sidebar-logo">
-            <img alt="Logo" src="/img/logo.png" class="h-50px d-none d-lg-inline app-sidebar-logo-default">
-            <img alt="Logo" src="/img/logo.svg" class="h-30px d-inline d-lg-none">
+        <a href="/" class="app-sidebar-logo d-flex align-items-center">
+            <img alt="Logo" src="/img/logo.svg" class="h-30px d-inline app-sidebar-logo-default ms-0 ms-lg-4"><span class="ms-3 d-none fs-2 text-white d-lg-inline fw-bold">@ConfigService.Get().Information.AppName</span>
         </a>
     </div>
     <div class="app-sidebar-navs flex-column-fluid py-6" id="kt_app_sidebar_navs">
