@@ -83,6 +83,7 @@ public class Startup
         WebApplicationBuilder.Services.AddScoped<CookieService>();
         WebApplicationBuilder.Services.AddScoped<IdentityService>();
         WebApplicationBuilder.Services.AddScoped<AuthService>();
+        WebApplicationBuilder.Services.AddScoped<UserService>();
         
         WebApplicationBuilder.Services.AddScoped<SurveyService>();
         WebApplicationBuilder.Services.AddScoped<QuestionService>();  
