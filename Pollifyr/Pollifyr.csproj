@@ -51,6 +51,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Blazor-ApexCharts" Version="3.2.0" />
       <PackageReference Include="CommonMark.NET" Version="0.15.1" />
       <PackageReference Include="JWT" Version="10.1.1" />
       <PackageReference Include="Logging.Net" Version="1.1.4" />
@@ -78,7 +79,6 @@
       <AdditionalFiles Include="App\UI\Views\Errors\NotFound.razor" />
       <AdditionalFiles Include="App\UI\Views\Etc\Imprint.razor" />
       <AdditionalFiles Include="App\UI\Views\Index.razor" />
-      <AdditionalFiles Include="App\UI\Views\Results.razor" />
     </ItemGroup>
 
 </Project>
