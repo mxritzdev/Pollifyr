@@ -1,22 +1,19 @@
 <div id="components-reconnect-modal" class="my-reconnect-modal components-reconnect-hide">
     <div class="default">
-        <button class="btn btn-outline btn-light-success" style="pointer-events: none;">
-            <i class="bx bx-wifi ms-1"></i>
-        </button>
     </div>
     <div class="show">
-        <button class="btn btn-outline btn-light-danger" style="pointer-events: none;">
-            <i class="bx bx-wifi-off ms-1"></i>
+        <button class="btn btn-outline btn-light-danger btn-sm d-flex align-items-center gap-2" style="pointer-events: none;">
+            <span class="spinner-border spinner-border-sm" role="status"></span><span>Reconnecting</span>
         </button>
     </div>
     <div class="failed">
-        <a href="javascript:location.reload()" class="btn btn-outline btn-primary">
-            Reconnect
+        <a href="javascript:location.reload()" class="btn btn-outline btn-sm btn-primary">
+            <i class='bx bx-undo'></i>Reconnect
         </a>
     </div>
     <div class="rejected">
-        <a href="javascript:location.reload()" class="btn btn-outline btn-primary">
-            Reconnect
+        <a href="javascript:location.reload()" class="btn btn-outline btn-sm btn-primary">
+            <i class='bx bx-undo'></i>Reconnect
         </a>
     </div>
 </div>

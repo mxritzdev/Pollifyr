@@ -1,5 +1,8 @@
 @using Pollifyr.App.Services
+@using Pollifyr.App.Services.Auth
+
 @inject ConfigService ConfigService
+@inject IdentityService IdentityService
 
 <div class="app-footer">
     <div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3 ">
@@ -7,16 +10,32 @@
             <span class="text-muted fw-semibold me-1">@DateTime.Now.Year©</span>
             <a href="/" target="_blank" class="text-gray-800 text-hover-primary">@ConfigService.Get().Information.AppName</a>
         </div>
-        <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-            @if (ConfigService.Get().Information.UseImprint) {
+        <ul class="menu menu-gray-700 menu-hover-primary fw-semibold order-1">
+            @if (!IdentityService.LoggedIn)
+            {
                 <li class="menu-item">
-                    <a href="/imprint" class="menu-link px-2">Imprint</a>
+                    <a href="/login" class="menu-link px-2"><i class='bx bx-log-in me-1' ></i> Login</a>
+                </li>
+                
+                <li class="menu-item">
+                    <a href="/register" class="menu-link px-2"><i class='bx bx-log-in me-1' ></i> Register</a>
+                </li>
+            }
+
+            <li class="menu-item">
+                <a href="/results" class="menu-link px-2"><i class='bx bx-pie-chart-alt-2 me-1'></i> Results</a>
+            </li>
+            
+            @if (ConfigService.Get().Information.UseImprint)
+            {
+                <li class="menu-item">
+                    <a href="/imprint" class="menu-link px-2"><i class='bx bx-file me-1'></i> Imprint</a>
                 </li>
             }
             @if (ConfigService.Get().Information.ShowCredits)
             {
                 <li class="menu-item">
-                    <a href="https://mxritz.xyz" target="_blank" class="menu-link px-2">made with ♥️ by Moritz</a>
+                    <a href="https://mxritz.xyz" target="_blank" class="menu-link px-2"><i class='bx bx-code-alt me-1'></i> made by Moritz</a>
                 </li>
             }
         </ul>
