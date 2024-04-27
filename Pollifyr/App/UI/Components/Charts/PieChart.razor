@@ -1,0 +1,52 @@
+@using System.Reflection.Metadata.Ecma335
+@using Pollifyr.App.Database.Models
+@using MoonCoreUI.Components
+@using ApexCharts
+
+@typeparam TItem where TItem : class
+
+<LazyLoader Load="Load">
+    <ApexChart TItem="TItem" Title="@Title" Options="options">
+        <ApexPointSeries TItem="TItem"
+                         Items="Items"
+                         SeriesType="SeriesType.Pie"
+                         XValue="XValue"
+                         YAggregate="YAggregate"
+                         OrderByDescending="@(e => e.Y)"
+        />
+    </ApexChart>
+</LazyLoader>
+
+@code {
+
+
+    [Parameter]
+    public string Title { get; set; } = typeof(TItem).Name;
+    
+    [Parameter]
+    public List<TItem> Items { get; set; } = new();
+    
+    [Parameter]
+    public Func<TItem, object> XValue { get; set; }
+    
+    [Parameter]
+    public Func<IEnumerable<TItem>, Decimal?> YAggregate { get; set; }
+
+    private ApexChartOptions<TItem> options;
+    
+    private async Task Load(LazyLoader arg)
+    {
+        options = new ApexChartOptions<TItem>
+        {
+            Theme = new Theme
+            {
+                Mode = Mode.Dark,
+                Palette = PaletteType.Palette10
+            }
+        };
+
+       
+    }
+    
+
+}

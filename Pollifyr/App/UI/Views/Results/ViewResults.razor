@@ -1,0 +1,101 @@
+@page "/results/{SurveyId}"
+@using MoonCoreUI.Components
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Services.Surveys
+@using Pollifyr.App.UI.Components.Charts
+@using Pollifyr.App.UI.Views.Errors
+@using Pollifyr.App.UI.Components.Alerts
+
+@inject SurveyService SurveyService
+@inject QuestionService QuestionService
+@inject AnswerService AnswerService
+
+<LazyLoader Load="Load">
+    <div class="mx-2 mx-lg-6">
+        @if (Survey == null || Survey.Visible == false)
+        {
+            <RessourceNotFound/>
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-body position-relative">
+                    <div>
+                        <h2>@Survey.Name</h2>
+                        <h4 class="text-muted">@Survey.Description</h4>
+                    </div>
+                    <hr class="mb-4"/>
+                    
+                    @if(Questions.Any())
+                    {
+                        foreach (var question in Questions)
+                        {
+                            var list = Answers.Where(x => x.QuestionId == question.Id).ToList();
+                            
+                            if (list.Any())
+                            {
+                                <div class="mw-500px w-100">
+                                    <h3>@question.Text</h3>
+                                    <PieChart Title="" TItem="Answer" Items="list" XValue="@(x => x.Text)" YAggregate="@(x => x.Sum(y => y.Answers))"></PieChart>
+                                </div>
+                                <hr class="mb-4 mw-500px"/>
+                            }
+                            else
+                            {
+                                <span class="fs-2 text-muted">No answers provided for this question.</span>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <IconAlert Color="warning" Title="No questions found for this survey!" Icon="bx-file-find">
+                            There are no questions assigned to this survey, contact an administrator if that's not true.
+                        </IconAlert>
+                    }
+                </div>
+            </div>
+        }
+        </div>
+</LazyLoader>
+
+@code {
+    [Parameter]
+    public string SurveyId { get; set; }
+
+    private int Id;
+
+    private Survey? Survey;
+
+    private List<Question> Questions;
+    private List<Answer> Answers;
+
+    private async Task Load(LazyLoader arg)
+    {
+        await Reload();
+    }
+
+    private async Task Reload()
+    {
+        try
+        {
+            Id = Int32.Parse(SurveyId);
+        }
+        catch (FormatException)
+        {
+            Survey = null;
+            return;
+        }
+        
+        Survey = await SurveyService.GetById(Id);
+        
+        if (Survey == null)
+        {
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+        
+        Questions = await QuestionService.GetAllFromSurvey(Survey);
+        Answers = await AnswerService.GetAllFromSurvey(Survey);
+    }
+
+}
