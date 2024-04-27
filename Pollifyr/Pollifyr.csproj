@@ -72,7 +72,6 @@
       <AdditionalFiles Include="App\UI\Components\Navigation\PageHeader.razor" />
       <AdditionalFiles Include="App\UI\Components\Navigation\Partials\ConnectionIndicator.razor" />
       <AdditionalFiles Include="App\UI\Components\Navigation\Sidebar.razor" />
-      <AdditionalFiles Include="App\UI\Components\Utils\Title.razor" />
       <AdditionalFiles Include="App\UI\Layouts\DefaultLayout.razor" />
       <AdditionalFiles Include="App\UI\Layouts\MainLayout.razor" />
       <AdditionalFiles Include="App\UI\Views\Errors\NoPermission.razor" />
