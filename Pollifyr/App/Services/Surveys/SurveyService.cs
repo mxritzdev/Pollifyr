@@ -44,6 +44,11 @@ public class SurveyService
         // Then delete the survey
         Surveys.Delete(survey);
     }
+
+    public async Task Update(Survey survey)
+    {
+        Surveys.Update(survey);
+    }
     
     
 }

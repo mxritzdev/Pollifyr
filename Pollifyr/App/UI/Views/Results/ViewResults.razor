@@ -20,31 +20,38 @@
         {
             <div class="card">
                 <div class="card-body position-relative">
-                    <div>
-                        <h2>@Survey.Name</h2>
+                    <div class="mb-2">
+                        <h1>@Survey.Name</h1>
                         <h4 class="text-muted">@Survey.Description</h4>
                     </div>
+                    
+                    <h4 class="text-muted">Attended @Survey.Attends Times</h4>
+                        
                     <hr class="mb-4"/>
                     
                     @if(Questions.Any())
                     {
-                        foreach (var question in Questions)
-                        {
-                            var list = Answers.Where(x => x.QuestionId == question.Id).ToList();
-                            
-                            if (list.Any())
+                        <div class="row row-deck row-cards">
+                            @foreach (var question in Questions)
                             {
-                                <div class="mw-500px w-100">
-                                    <h3>@question.Text</h3>
-                                    <PieChart Title="" TItem="Answer" Items="list" XValue="@(x => x.Text)" YAggregate="@(x => x.Sum(y => y.Answers))"></PieChart>
+                                var list = Answers.Where(x => x.QuestionId == question.Id).ToList();
+                                
+                                
+                                <div class="col-12 col-md-6 mb-4 p-4 ">
+                                    <h2>@question.Text</h2>
+                                    @if (list.Any())
+                                    {
+
+                                        <PieChart Title="" TItem="Answer" Items="list" XValue="@(x => x.Text)" YAggregate="@(x => x.Sum(y => y.Answers))"></PieChart>
+                                    }
+                                    else
+                                    {
+                                        <span class="fs-4 text-muted">No answers provided for this question.</span>
+                                    }
                                 </div>
-                                <hr class="mb-4 mw-500px"/>
+                                
                             }
-                            else
-                            {
-                                <span class="fs-2 text-muted">No answers provided for this question.</span>
-                            }
-                        }
+                        </div>
                     }
                     else
                     {

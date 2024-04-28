@@ -9,4 +9,8 @@ public class Survey
     public string Description { get; set; } = "";
 
     public bool Visible { get; set; } = false;
+
+    public int Attends { get; set; } = 0;
+    
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

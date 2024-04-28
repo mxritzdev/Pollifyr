@@ -24,13 +24,37 @@
     <View>
         <CrudColumn TItem="Survey" Field="@(x => x.Id)" Title="Id" Filterable="true"/>
         <CrudColumn TItem="Survey" Field="@(x => x.Name)" Title="Name" Filterable="true"/>
-        <CrudColumn TItem="Survey" Field="@(x => x.Visible)" Title="Visible" Filterable="true"/>
+        <CrudColumn TItem="Survey" Title="Visibility" Filterable="true">
+            <Template>
+                <span>@(context!.Visible ? "Visible" : "Invisible")</span>
+            </Template>
+        </CrudColumn>
+        <CrudColumn TItem="Survey" Title="Controls">
+            <Template>
+                <span class="btn-group">
+                    <a class="btn btn-icon btn-secondary" href="/admin/survey/@context.Id" title="Edit">
+                        <i class="bx bx-sm bx-edit"></i>
+                    </a>
+                    @if (context.Visible)
+                    {
+                        <a class="btn btn-icon btn-success" href="/results/@context.Id" title="View Results">
+                            <i class="bx bx-sm bx-pie-chart-alt-2"></i>
+                        </a>
+                    }
+                    <a class="btn btn-icon btn-info" @onclick:preventDefault @onclick="() => ChangeVisibility(context)" title="Visibility">
+                        @if (context.Visible)
+                        {
+                            <i class="bx bx-sm bx-user-check"></i>
+                        } else
+                        {
+                            <i class="bx bx-sm bx-user-x"></i>
+                        }
+                    </a>
+                </span>
+            </Template>
+        </CrudColumn>
+        <CrudColumn TItem="Survey" Field="@(x => x.CreatedAt)" Title="Created at" />
     </View>
-    <Actions>
-        <a class="btn btn-icon btn-secondary" href="/admin/survey/@context.Id">
-            <i class="bx bx-sm bx-edit"></i>
-        </a>
-    </Actions>
 </AutoCrud>
 
 @code

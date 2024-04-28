@@ -199,6 +199,10 @@
         if (QuestionsAndAnswers.Any(x => x.Answer == null))
             throw new DisplayException("You need to answer every question.");
 
+        Survey!.Attends += 1;
+
+        SurveyService.Update(Survey);
+        
         foreach (var answer in QuestionsAndAnswers.Select(submission => submission.Answer).OfType<Answer>())
         {
             answer.Answers++;
