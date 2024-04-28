@@ -26,18 +26,11 @@
     } 
     else 
     {
-        if (attendedSurveysCookie!.Split(";").Any(x => x == Survey.Id.ToString())
-            || attendedSurveysUser.Split(";").Any(x => x == Survey.Id.ToString()))
+        if (attendedSurveysCookie!.Split("/").Any(x => x == Survey.Id.ToString())
+            || attendedSurveysUser!.Split("/").Any(x => x == Survey.Id.ToString()))
         {
             <Name>@Survey.Name</Name>
             <SurveyAlreadyAttended/>
-        } else if (IdentityService.LoggedIn)
-        {
-            if (IdentityService.User.CompletedSurveys.Split(";").Any(x => x == Survey.Id.ToString()))
-            {
-                <Name>@Survey.Name</Name>
-                <SurveyAlreadyAttended/>
-            }
         }
         else
         {
@@ -119,9 +112,9 @@
     private List<QuestionAndAnswer> QuestionsAndAnswers;
 
     private int QuestionId = 0;
-    
+
     string? attendedSurveysCookie = "";
-    string attendedSurveysUser = "";
+    string? attendedSurveysUser = "";
 
     private async Task Load(LazyLoader arg)
     {
@@ -144,13 +137,13 @@
 
         Survey = await SurveyService.GetById(Id);
 
-        await LoadCompletedSurveys();
-        
         if (Survey == null)
         {
             await InvokeAsync(StateHasChanged);
             return;
         }
+
+        await LoadCompletedSurveys();
 
         QuestionsAndAnswers = new List<QuestionAndAnswer>();
 
@@ -202,23 +195,23 @@
         Survey!.Attends += 1;
 
         SurveyService.Update(Survey);
-        
+
         foreach (var answer in QuestionsAndAnswers.Select(submission => submission.Answer).OfType<Answer>())
         {
             answer.Answers++;
             await AnswerService.Update(answer);
         }
-        
-        attendedSurveysCookie = attendedSurveysCookie + Survey!.Id + ";";
-        
+
+        attendedSurveysCookie = attendedSurveysCookie + Survey!.Id + "/";
+
         await CookieService.SetValue("attendedSurveys", attendedSurveysCookie, 100);
 
         if (IdentityService.LoggedIn)
         {
-            IdentityService.User.CompletedSurveys = attendedSurveysUser + ";";
+            IdentityService.User.CompletedSurveys = attendedSurveysUser + "/";
             await UserService.Update(IdentityService.User);
         }
-        
+
 
         NavigationManager.NavigateTo("/survey/success/" + Survey!.Id);
     }
@@ -234,14 +227,14 @@
                 attendedSurveysCookie = request.Cookies["attendedSurveys"];
             }
         }
-        else 
+        else
         {
             attendedSurveysCookie = await CookieService.GetValue("attendedSurveys", "none");
         }
-        
+
         if (IdentityService.LoggedIn)
         {
-            attendedSurveysUser = IdentityService.User.CompletedSurveys + Survey!.Id + ";";
+            attendedSurveysUser = IdentityService.User.CompletedSurveys + Survey!.Id + "/";
         }
     }
 
