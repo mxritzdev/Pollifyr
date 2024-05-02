@@ -1,16 +1,113 @@
 ﻿@using Pollifyr.App.UI.Components.Utils
+@using Pollifyr.App.Services
+@using MoonCoreUI.Components
+@using Pollifyr.App.Database.Models
 @using Pollifyr.App.Services.Auth
-@using CookieService = Pollifyr.App.Services.Auth.CookieService
-@using MoonCoreUI.Services
+@using Pollifyr.App.Services.Surveys
+
+@inject ConfigService ConfigService
+@inject IdentityService IdentityService
+@inject SurveyService SurveyService
 
 @page "/"
 
-@inject AuthService AuthService
-@inject CookieService CookieService
-@inject IdentityService IdentityService
-@inject NavigationManager NavigationManager
-@inject AlertService AlertService
-
 <Name>Home</Name>
 
-<h1>Hello, world!</h1>
+
+<LazyLoader Load="Load">
+    <div class="card card-body bg-info mb-5 border-none">
+        <h3 class="m-0">
+            <span>
+                <i class="bx bxs-bar-chart-alt-2"></i> @ConfigService.Get().Information.AppName - Welcome
+            </span>
+            <span>
+                @if (IdentityService.LoggedIn)
+                {
+                    @IdentityService.User.Username
+                }
+            </span>
+            <span>!</span>
+        </h3>
+    </div>
+    
+    <div class="row">
+        <div class="col-md mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title mb-2">Your opinion is important!</h3>
+                    <h4 class="card-subtitle text-muted mb-2">Here are some surveys where you can attend.</h4>
+                    <hr class="mb-4"/>
+                    
+                    @if (AttendableSurveys.Any())
+                    {
+                        foreach (var survey in AttendableSurveys)
+                        {
+                            <div class="row d-flex align-items-center">
+                                <span class="col fs-4">
+                                    @survey.Name
+                                </span>
+                                <span class="col-auto">
+                                    <a class="btn btn-primary btn-sm" href="/survey/@survey.Id">Attend</a>
+                                </span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h5 class="text-muted fw-normal">Currently, there are no surveys to participate.</h5>
+                    }
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title mb-2">Results for surveys</h3>
+                    <h4 class="card-subtitle text-muted mb-2">Surveys where you can see the results are listed here.</h4>
+                    <hr class="mb-4"/>
+
+                    @if (VisibleSurveys.Any())
+                    {
+                        foreach (var survey in VisibleSurveys)
+                        {
+                            <div class="row d-flex align-items-center">
+                                <span class="col fs-4">
+                                    @survey.Name
+                                </span>
+                                <span class="col-auto">
+                                    <a class="btn btn-info btn-sm" href="/results/@survey.Id">View Results</a>
+                                </span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h5 class="text-muted fw-normal">Currently, there are no surveys where you can visit the results.</h5>
+                    }
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</LazyLoader>
+
+
+@code {
+
+    public List<Survey> AttendableSurveys;
+    
+    public List<Survey> VisibleSurveys;
+    
+    private async Task Load(LazyLoader arg)
+    {
+        AttendableSurveys = new List<Survey>();
+        VisibleSurveys = new List<Survey>();
+        
+        await arg.SetText("Loading");
+
+        AttendableSurveys = SurveyService.GetAll().Where(x => x.Attendable).ToList();
+        VisibleSurveys = SurveyService.GetAll().Where(x => x.Visible).ToList();
+        
+    }
+}

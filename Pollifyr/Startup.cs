@@ -8,7 +8,6 @@ using Pollifyr.App.Services;
 using Pollifyr.App.Services.Auth;
 using Pollifyr.App.Services.Partials;
 using Pollifyr.App.Services.Surveys;
-using CookieService = Pollifyr.App.Services.Auth.CookieService;
 
 namespace Pollifyr;
 

@@ -4,8 +4,8 @@ using JWT.Builder;
 using JWT.Exceptions;
 using MoonCore.Helpers;
 using MoonCore.Abstractions;
+using MoonCoreUI.Services;
 using Pollifyr.App.Database.Models;
-using Pollifyr.App.Services.Partials;
 
 namespace Pollifyr.App.Services.Auth;
 

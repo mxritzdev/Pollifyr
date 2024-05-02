@@ -19,4 +19,7 @@ public class CreateSurveyForm
     
     [Description("This toggles if the survey is visible to the public")]
     public bool Visible { get; set; } = false;
+    
+    [Description("This toggles if the survey is attendable")]
+    public bool Attendable { get; set; } = false;
 }

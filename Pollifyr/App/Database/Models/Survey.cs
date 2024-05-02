@@ -8,6 +8,8 @@ public class Survey
 
     public string Description { get; set; } = "";
 
+    public bool Attendable { get; set; } = false;
+    
     public bool Visible { get; set; } = false;
 
     public int Attends { get; set; } = 0;

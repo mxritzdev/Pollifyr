@@ -18,6 +18,9 @@ public class UpdateSurveyForm
     [Description("A description for your survey")]
     public string Description { get; set; }
     
-    [Description("This toggles if the survey is visible to the public")]
+    [Description("This toggles if the survey's results are visible to the public")]
     public bool Visible { get; set; } = false;
+    
+    [Description("This toggles if the survey is attendable")]
+    public bool Attendable { get; set; } = false;
 }

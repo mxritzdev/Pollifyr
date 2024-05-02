@@ -5,6 +5,7 @@
 @using Pollifyr.App.Services.Surveys
 @using Pollifyr.App.UI.Views.Errors
 @using MoonCoreUI.Components
+@using MoonCoreUI.Services
 @using Pollifyr.App.Models.Survey
 @using Pollifyr.App.Services.Auth
 @using Pollifyr.App.UI.Components.Utils
@@ -20,7 +21,7 @@
 @inject UserService UserService
 
 <LazyLoader Load="Load">
-    @if (Survey == null || Survey.Visible == false)
+    @if (Survey == null || Survey.Attendable == false)
     {
         <RessourceNotFound/>
     } 
