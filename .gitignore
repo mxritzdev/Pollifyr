@@ -44,3 +44,5 @@ Desktop.ini
 Pollifyr/wwwroot/css/theme.css
 Pollifyr/wwwroot/css/theme.css.map
 storage/
+
+build/
