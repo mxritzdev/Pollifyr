@@ -6,10 +6,13 @@
 @using Pollifyr.App.Services.Auth
 @using Pollifyr.App.Services.Surveys
 @using Pollifyr.App.UI.Components.Alerts
+@using Pollifyr.App.UI.Components.Utils
 
 @inject ConfigService ConfigService
 @inject SurveyService SurveyService
 @inject IdentityService IdentityService
+
+<Name>Surveys</Name>
 
 <LazyLoader Load="Load">
     <div class="card card-body bg-info mb-5 border-none">
