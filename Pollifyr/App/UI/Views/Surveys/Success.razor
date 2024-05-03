@@ -1,0 +1,72 @@
+@page "/survey/success/{SurveyId}"
+@using Pollifyr.App.UI.Components.Alerts
+@using Pollifyr.App.UI.Components.Utils
+@using MoonCoreUI.Components
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Services.Auth
+@using Pollifyr.App.Services.Surveys
+
+@inject SurveyService SurveyService
+@inject IdentityService IdentityService
+
+<Name>Thanks for participating!</Name>
+
+<IconAlert Icon="bx-check-circle" Color="success" Title="Thanks for participating">
+    Thanks for participating, have a nice day!
+</IconAlert>
+
+<LazyLoader Load="Load">
+    <div class="d-flex w-100 justify-content-center mt-7">
+        @if (ResultsVisible)
+        {
+            <a class="btn btn-primary btn-lg fs-3" href="/results/@SurveyId">
+                Check the results
+            </a>
+        }
+        else
+        {
+            <a class="btn btn-info btn-lg fs-3" href="/">
+                Go back home
+            </a>
+        }
+    </div>
+</LazyLoader>
+
+@code {
+
+    [Parameter] 
+    public string SurveyId { get; set; }
+
+    private Survey? Survey;
+    private int Id;
+    
+    private bool ResultsVisible;
+
+
+    private async Task Load(LazyLoader arg)
+    {
+        try
+        {
+            Id = Int32.Parse(SurveyId);
+        }
+        catch (FormatException)
+        {
+            Survey = null;
+            return;
+        }
+
+        Survey = await SurveyService.GetById(Id);
+
+        if (Survey == null)
+        {
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+
+        if (Survey.Visible || IdentityService.IsAdmin)
+        {
+            ResultsVisible = true;
+        }
+    }
+
+}
