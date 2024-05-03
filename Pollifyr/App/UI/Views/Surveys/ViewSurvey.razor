@@ -212,8 +212,7 @@
             IdentityService.User.CompletedSurveys = attendedSurveysUser + "/";
             await UserService.Update(IdentityService.User);
         }
-
-
+        
         NavigationManager.NavigateTo("/survey/success/" + Survey!.Id);
     }
 
