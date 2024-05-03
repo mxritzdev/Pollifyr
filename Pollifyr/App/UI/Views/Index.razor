@@ -16,7 +16,7 @@
 
 <LazyLoader Load="Load">
     <div class="card card-body bg-info mb-5 border-none">
-        <h3 class="m-0">
+        <h2 class="m-0">
             <span>
                 <i class="bx bxs-bar-chart-alt-2"></i> @ConfigService.Get().Information.AppName - Welcome
             </span>
@@ -27,34 +27,40 @@
                 }
             </span>
             <span>!</span>
-        </h3>
+        </h2>
     </div>
     
     <div class="row">
         <div class="col-md mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title mb-2">Your opinion is important!</h3>
-                    <h4 class="card-subtitle text-muted mb-2">Here are some surveys where you can attend.</h4>
+                    <h3 class="card-title mb-2"><i class='bx bxs-bar-chart-alt-2 bx-sm' ></i> Your opinion is important!</h3>
+                    <h5 class="card-subtitle text-muted mb-2">Here are some surveys where you can attend.</h5>
                     <hr class="mb-4"/>
                     
                     @if (AttendableSurveys.Any())
                     {
-                        foreach (var survey in AttendableSurveys)
+                        foreach (var survey in AttendableSurveys.Take(SurveysCount).ToList())
                         {
-                            <div class="row d-flex align-items-center">
+                            <div class="row d-flex align-items-center mb-1">
                                 <span class="col fs-4">
                                     @survey.Name
                                 </span>
                                 <span class="col-auto">
-                                    <a class="btn btn-primary btn-sm" href="/survey/@survey.Id">Attend</a>
+                                    <a class="btn btn-primary btn-sm" href="/survey/@survey.Id"><i class='bx bx-bar-chart'></i> Attend</a>
                                 </span>
+                            </div>
+                        }
+                        if (AttendableSurveys.Count >= SurveysCount)
+                        {
+                            <div class="d-flex justify-content-center">
+                                <a href="/surveys">View All</a>
                             </div>
                         }
                     }
                     else
                     {
-                        <h5 class="text-muted fw-normal">Currently, there are no surveys to participate.</h5>
+                        <h5 class="text-muted fw-normal mt-2">Currently, there are no surveys to participate.</h5>
                     }
                     
                 </div>
@@ -63,27 +69,34 @@
         <div class="col-md mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title mb-2">Results for surveys</h3>
-                    <h4 class="card-subtitle text-muted mb-2">Surveys where you can see the results are listed here.</h4>
+                    <h3 class="card-title mb-2"><i class='bx bxs-pie-chart-alt-2 bx-sm'></i> Results for surveys</h3>
+                    <h5 class="card-subtitle text-muted mb-2">Surveys where you can see the results are listed here.</h5>
                     <hr class="mb-4"/>
 
                     @if (VisibleSurveys.Any())
                     {
-                        foreach (var survey in VisibleSurveys)
+                        foreach (var survey in VisibleSurveys.Take(SurveysCount).ToList())
                         {
-                            <div class="row d-flex align-items-center">
+                            <div class="row d-flex align-items-center mb-1">
                                 <span class="col fs-4">
                                     @survey.Name
                                 </span>
                                 <span class="col-auto">
-                                    <a class="btn btn-info btn-sm" href="/results/@survey.Id">View Results</a>
+                                    <a class="btn btn-info btn-sm" href="/results/@survey.Id"><i class='bx bx-pie-chart-alt-2'></i> View Results</a>
                                 </span>
+                            </div>
+                        }
+
+                        if (VisibleSurveys.Count >= SurveysCount)
+                        {
+                            <div class="d-flex justify-content-center">
+                                <a href="/results">View All</a>
                             </div>
                         }
                     }
                     else
                     {
-                        <h5 class="text-muted fw-normal">Currently, there are no surveys where you can visit the results.</h5>
+                        <h5 class="text-muted fw-normal mt-2">Currently, there are no surveys where you can visit the results.</h5>
                     }
                     
                 </div>
@@ -95,19 +108,29 @@
 
 @code {
 
-    public List<Survey> AttendableSurveys;
+    private List<Survey> Surveys;
     
-    public List<Survey> VisibleSurveys;
+    private List<Survey> AttendableSurveys;
+    
+    private List<Survey> VisibleSurveys;
+
+    private int SurveysCount;
     
     private async Task Load(LazyLoader arg)
     {
+        SurveysCount = ConfigService.Get().Information.VisibleSurveysOnHomePage;
+        
+        Surveys = new List<Survey>();
+        
         AttendableSurveys = new List<Survey>();
         VisibleSurveys = new List<Survey>();
         
         await arg.SetText("Loading");
 
-        AttendableSurveys = SurveyService.GetAll().Where(x => x.Attendable).ToList();
-        VisibleSurveys = SurveyService.GetAll().Where(x => x.Visible).ToList();
+        Surveys = SurveyService.GetAll();
+
+        AttendableSurveys = Surveys.Where(x => x.Attendable).ToList();
+        VisibleSurveys = Surveys.Where(x => x.Visible).ToList();
         
     }
 }

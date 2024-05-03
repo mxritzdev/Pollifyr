@@ -17,6 +17,8 @@ public class ConfigModel
     {
         [JsonProperty("App-Name")] public string AppName { get; set; } = "Pollifyr";
 
+        [JsonProperty("Visible-Surveys-On-HomePage")] public int VisibleSurveysOnHomePage = 3;
+
         [JsonProperty("Use-Imprint")] public bool UseImprint { get; set; }
         
         [JsonProperty("Show-Credits")] public bool ShowCredits { get; set; } = true;
