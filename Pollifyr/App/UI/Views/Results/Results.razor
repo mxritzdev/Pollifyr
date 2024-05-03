@@ -1,7 +1,78 @@
 @page "/results"
 
-<h3>Results</h3>
+@using Pollifyr.App.Database.Models
+@using MoonCoreUI.Components
+@using Pollifyr.App.Services
+@using Pollifyr.App.Services.Auth
+@using Pollifyr.App.Services.Surveys
+@using Pollifyr.App.UI.Components.Alerts
+@using Pollifyr.App.UI.Components.Utils
 
-@code {
+@inject ConfigService ConfigService
+@inject SurveyService SurveyService
+@inject IdentityService IdentityService
+
+<Name>Results</Name>
+
+<LazyLoader Load="Load">
+    <div class="card card-body bg-info mb-5 border-none">
+        <h2 class="m-0">
+            <span>
+                <i class="bx bxs-bar-chart-alt-2"></i> @(ConfigService.Get().Information.AppName) - Results
+            </span>
+        </h2>
+    </div>
     
+    @if (AllSurveys.Any())
+    {
+        <div class="row row-deck row-cards">
+            @foreach (var survey in AllSurveys)
+            {
+                <div class="col-12 col-lg-6 mb-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h3>@survey.Name</h3>
+                                    <h5 class="text-muted">@survey.Description</h5>
+                                </div>
+                                <div class="col-auto">
+                                    <a class="btn btn-info" href="/survey/@survey.Id">
+                                        <i class='bx bx-pie-chart-alt-2'></i> View Results
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            @if (IdentityService.IsAdmin)
+                            {
+                                <hr class="mb-4"/>
+                                <span class="text-muted text-uppercase fs-7 fw-bold d-inline-block mb-2">Admin Controls</span>
+                                <div>
+                                    <a class="btn btn-secondary btn-sm" href="/admin/survey/@survey.Id">
+                                        <i class='bx bxs-edit'></i> Edit
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <IconAlert Icon="bx-file-find" Title="No surveys with ready results found" Color="warning">
+            We couldn't find any surveys where you can see the results right now. <a href="/">Go back home</a>
+        </IconAlert>
+    }
+</LazyLoader>
+@code {
+
+    private List<Survey> AllSurveys;
+
+    private async Task Load(LazyLoader arg)
+    {
+        AllSurveys = SurveyService.GetAll().Where(x => x.Visible).ToList();
+    }
+
 }
