@@ -1,6 +1,7 @@
 @page "/results/{SurveyId}"
 @using MoonCoreUI.Components
 @using Pollifyr.App.Database.Models
+@using Pollifyr.App.Services.Auth
 @using Pollifyr.App.Services.Surveys
 @using Pollifyr.App.UI.Components.Charts
 @using Pollifyr.App.UI.Views.Errors
@@ -9,10 +10,11 @@
 @inject SurveyService SurveyService
 @inject QuestionService QuestionService
 @inject AnswerService AnswerService
+@inject IdentityService IdentityService
 
 <LazyLoader Load="Load">
     <div class="mx-2 mx-lg-6">
-        @if (Survey == null || Survey.Visible == false)
+        @if (!Visible)
         {
             <RessourceNotFound/>
         }
@@ -76,6 +78,8 @@
     private List<Question> Questions;
     private List<Answer> Answers;
 
+    private bool Visible;
+
     private async Task Load(LazyLoader arg)
     {
         await Reload();
@@ -103,6 +107,19 @@
         
         Questions = await QuestionService.GetAllFromSurvey(Survey);
         Answers = await AnswerService.GetAllFromSurvey(Survey);
+
+        if (Survey.Visible)
+        {
+            Visible = true;
+        }
+        else
+        {
+            if (IdentityService.IsAdmin)
+            {
+                Visible = true;
+            }
+        }
+        
     }
 
 }
