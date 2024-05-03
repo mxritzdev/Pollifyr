@@ -60,7 +60,7 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="MoonCore" Version="1.2.7" />
+      <PackageReference Include="MoonCore" Version="1.2.9" />
       <PackageReference Include="MoonCoreUI" Version="1.1.6" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
