@@ -21,7 +21,6 @@
 @inject UserService UserService
 
 <LazyLoader Load="Load">
-    @SurveyState
     @switch (SurveyState)
     {
         case 3:
@@ -169,17 +168,12 @@
         {
             if (AttendedSurveysCookie.Split("/").Any(x => x == Survey.Id.ToString()))
             {
-                Console.WriteLine(AttendedSurveysCookie);
-                Console.WriteLine("Cookie Attended");
                 SurveyState = 2;
                 return;
             } 
             
             if (AttendedSurveysUser.Split("/").Any(x => x == Survey.Id.ToString()))
             {
-                Console.WriteLine(AttendedSurveysUser);
-                
-                Console.WriteLine("User Attended");
                 SurveyState = 2;
                 return;
             }
