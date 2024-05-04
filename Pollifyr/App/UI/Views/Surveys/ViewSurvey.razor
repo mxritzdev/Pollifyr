@@ -21,81 +21,78 @@
 @inject UserService UserService
 
 <LazyLoader Load="Load">
-    @if (Survey == null || Survey.Attendable == false)
+    @SurveyState
+    @switch (SurveyState)
     {
-        <RessourceNotFound/>
-    } 
-    else 
-    {
-        if (attendedSurveysCookie!.Split("/").Any(x => x == Survey.Id.ToString())
-            || attendedSurveysUser!.Split("/").Any(x => x == Survey.Id.ToString()))
-        {
-            <Name>@Survey.Name</Name>
+        case 3:
+            <RessourceNotFound/>
+            break;
+        case 2:
+            <Name>@Survey!.Name</Name>
             <SurveyAlreadyAttended/>
-        }
-        else
+            break;
+        case 1:
         {
-            <Name>@Survey.Name</Name>
-        
-        <div class="p-5 p-md-8">
-            <div class="card">
-                <div class="card-body position-relative">
-                    <h2 class="card-title mb-2">@Survey.Name</h2>
-                    
-                    @if(Questions.Count > 0)
-                    {
-                        <h5 class="card-subtitle mb-2 text-muted">@Survey.Description - Question @(QuestionId + 1)/@Questions.Count</h5>
-                        <hr class="mb-4"/>
+            <div class="p-5 p-md-8">
+                <div class="card">
+                    <div class="card-body position-relative">
+                        <h2 class="card-title mb-2">@Survey.Name</h2>
 
-                        <h3 class="mb-4">@Questions[QuestionId].Text</h3>
-                        <div class="mb-4">
-                            @foreach (var answer in Answers.Where(x => x.QuestionId == Questions[QuestionId].Id))
-                            {
-                                <div class="form-check mb-2 d-block position-relative">
-                                    <label class="form-check-label w-100 d-flex align-items-center gap-2 cursor-pointer" for="@(answer.Id)" @onclick="() => SetAnswer(Questions[QuestionId], answer)">
-                                        @if (CheckSelected(Questions[QuestionId], answer))
-                                        {
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="@(answer.Id)" checked/>
-                                        }
-                                        else
-                                        {
-                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="@(answer.Id)"/>
-                                        }
-                                        <span class="fs-3">@answer.Text</span>
-                                    </label>
+                        @if (Questions.Count > 0)
+                        {
+                            <h5 class="card-subtitle mb-2 text-muted">@Survey.Description - Question @(QuestionId + 1)/@Questions.Count</h5>
+                            <hr class="mb-4"/>
+
+                            <h3 class="mb-4">@Questions[QuestionId].Text</h3>
+                            <div class="mb-4">
+                                @foreach (var answer in Answers.Where(x => x.QuestionId == Questions[QuestionId].Id))
+                                {
+                                    <div class="form-check mb-2 d-block position-relative">
+                                        <label class="form-check-label w-100 d-flex align-items-center gap-2 cursor-pointer" for="@answer.Id" @onclick="() => SetAnswer(Questions[QuestionId], answer)">
+                                            @if (CheckSelected(Questions[QuestionId], answer))
+                                            {
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="@answer.Id" checked/>
+                                            }
+                                            else
+                                            {
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="@answer.Id"/>
+                                            }
+                                            <span class="fs-3">@answer.Text</span>
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="d-flex w-100 justify-content-between">
+                                <div class="d-flex gap-2">
+                                    <a class="btn btn-primary btn-sm btn-icon @(QuestionId == 0 ? "disabled" : "")" @onclick:preventDefault @onclick="() => { if (QuestionId != 0) { QuestionId--; StateHasChanged(); } }">
+                                        <i class='bx bx-sm bx-left-arrow-alt'></i>
+                                    </a>
+                                    <a class="btn btn-info btn-sm btn-icon @(QuestionId + 1 == Questions.Count ? "disabled" : "")" @onclick:preventDefault @onclick="() => { if (QuestionId + 1 != Questions.Count) { QuestionId++; StateHasChanged(); } }">
+                                        <i class='bx bx-sm bx-right-arrow-alt'></i>
+                                    </a>
                                 </div>
-                            }
-                        </div>
 
-                        <div class="d-flex w-100 justify-content-between">
-                            <div class="d-flex gap-2">
-                                <a class="btn btn-primary btn-sm btn-icon @(QuestionId == 0 ? "disabled" : "")" @onclick:preventDefault @onclick="() => { if (QuestionId != 0) { QuestionId--; StateHasChanged(); } }">
-                                    <i class='bx bx-sm bx-left-arrow-alt'></i>
-                                </a>
-                                <a class="btn btn-info btn-sm btn-icon @(QuestionId + 1 == Questions.Count ? "disabled" : "")" @onclick:preventDefault @onclick="() => { if (QuestionId + 1 != Questions.Count) { QuestionId++; StateHasChanged(); } }">
-                                    <i class='bx bx-sm bx-right-arrow-alt'></i>
-                                </a>
+                                <div>
+                                    <a class="btn btn-primary btn-sm @(QuestionsAndAnswers.Any(x => x.Answer == null) ? "disabled" : "")" @onclick:preventDefault @onclick="Submit">
+                                        <i class='bx bxs-paper-plane'></i> Submit
+                                    </a>
+                                </div>
+
                             </div>
+                        }
+                        else
+                        {
+                            <h5 class="card-subtitle mb-2 text-muted">@Survey.Description</h5>
+                            <hr class="mb-4"/>
 
-                            <div>
-                                <a class="btn btn-primary btn-sm @(QuestionsAndAnswers.Any(x => x.Answer == null) ? "disabled" : "")" @onclick:preventDefault @onclick="Submit">
-                                    <i class='bx bxs-paper-plane'></i> Submit
-                                </a>
-                            </div>
+                            <IconAlert Icon="bx-x-circle" Color="danger" Title="No Questions for this Survey">No Questions where created for this survey, please contact an administrator if you think this is not true.</IconAlert>
+                        }
 
-                        </div>
-                    }
-                    else
-                    {
-                        <h5 class="card-subtitle mb-2 text-muted">@Survey.Description</h5>
-                        <hr class="mb-4"/>
-                        
-                        <IconAlert Icon="bx-x-circle" Color="danger" Title="No Questions for this Survey">No Questions where created for this survey, please contact an administrator if you think this is not true.</IconAlert>
-                    }
-                    
+                    </div>
                 </div>
             </div>
-        </div>
+            break;
         }
     }
 </LazyLoader>
@@ -114,9 +111,15 @@
 
     private int QuestionId = 0;
 
-    string? attendedSurveysCookie = "";
-    string? attendedSurveysUser = "";
+    private string AttendedSurveysCookie = "";
+    private string AttendedSurveysUser = "";
 
+    private int SurveyState = 0;
+    
+    // 1 = Attendable
+    // 2 = Already Attended
+    // 3 = Not Found
+    
     private async Task Load(LazyLoader arg)
     {
         await Reload();
@@ -140,6 +143,7 @@
 
         if (Survey == null)
         {
+            SurveyState = 3;
             await InvokeAsync(StateHasChanged);
             return;
         }
@@ -159,6 +163,28 @@
                 Answer = null
             };
             QuestionsAndAnswers.Add(questionAndAnswer);
+        }
+
+        if (Survey.Attendable)
+        {
+            if (AttendedSurveysCookie.Split("/").Any(x => x == Survey.Id.ToString()))
+            {
+                Console.WriteLine(AttendedSurveysCookie);
+                Console.WriteLine("Cookie Attended");
+                SurveyState = 2;
+                return;
+            } 
+            
+            if (AttendedSurveysUser.Split("/").Any(x => x == Survey.Id.ToString()))
+            {
+                Console.WriteLine(AttendedSurveysUser);
+                
+                Console.WriteLine("User Attended");
+                SurveyState = 2;
+                return;
+            }
+
+            SurveyState = 1;
         }
     }
 
@@ -195,7 +221,7 @@
 
         Survey!.Attends += 1;
 
-        SurveyService.Update(Survey);
+        await SurveyService.Update(Survey);
 
         foreach (var answer in QuestionsAndAnswers.Select(submission => submission.Answer).OfType<Answer>())
         {
@@ -203,13 +229,13 @@
             await AnswerService.Update(answer);
         }
 
-        attendedSurveysCookie = attendedSurveysCookie + Survey!.Id + "/";
+        AttendedSurveysCookie = AttendedSurveysCookie + Survey!.Id + "/";
 
-        await CookieService.SetValue("attendedSurveys", attendedSurveysCookie, 100);
+        await CookieService.SetValue("attendedSurveys", AttendedSurveysCookie, 100);
 
         if (IdentityService.LoggedIn)
         {
-            IdentityService.User.CompletedSurveys = attendedSurveysUser + "/";
+            IdentityService.User.CompletedSurveys = AttendedSurveysUser + Survey!.Id + "/";
             await UserService.Update(IdentityService.User);
         }
         
@@ -224,17 +250,17 @@
 
             if (request.Cookies.ContainsKey("attendedSurveys"))
             {
-                attendedSurveysCookie = request.Cookies["attendedSurveys"];
+                AttendedSurveysCookie = request.Cookies["attendedSurveys"]!;
             }
         }
         else
         {
-            attendedSurveysCookie = await CookieService.GetValue("attendedSurveys", "none");
+            AttendedSurveysCookie = await CookieService.GetValue("attendedSurveys", "none");
         }
 
         if (IdentityService.LoggedIn)
         {
-            attendedSurveysUser = IdentityService.User.CompletedSurveys + Survey!.Id + "/";
+            AttendedSurveysUser = IdentityService.User.CompletedSurveys;
         }
     }
 
