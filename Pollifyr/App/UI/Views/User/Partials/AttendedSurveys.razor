@@ -1,0 +1,86 @@
+@using MoonCoreUI.Components
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Services.Auth
+@using Pollifyr.App.Services.Surveys
+
+@inject IdentityService IdentityService
+@inject SurveyService SurveyService
+
+<LazyLoader Load="Load">
+    @if (IdentityService.LoggedIn)
+    {
+        if (AttendedSurveysList!.Any()){
+            
+            foreach (var survey in AttendedSurveysList!)
+            {
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-auto mb-4 mb-sm-0 d-flex align-items-center">
+                                <i class="bx bxs-bar-chart-alt-2 bx-sm ms-1"></i>
+                            </div>
+                            <div class="col mb-4 mb-sm-0">
+                                <h4>@survey.Name</h4>
+                                <h6 class="text-muted m-0">@survey.Description</h6>
+                            </div>
+                            <div class="col-sm-auto d-flex align-items-center">
+                                @if (survey.Visible)
+                                {
+                                    <a href="/results/@survey.Id" class="btn btn-sm btn-success">
+                                        <i class='bx bx-pie-chart-alt-2'></i> View Results
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a @onclick:preventDefault class="btn btn-sm btn-secondary disabled">
+                                        <i class='bx bx-pie-chart-alt-2'></i> No Results available
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        
+        }
+    }
+</LazyLoader>
+
+@code {
+
+    private User User;
+
+    private List<Survey>? AttendedSurveysList;
+
+    private async Task Load(LazyLoader arg)
+    {
+        AttendedSurveysList = new List<Survey>();
+
+        if (IdentityService.LoggedIn)
+        {
+            User = IdentityService.User;
+
+            foreach (var surveyId in User.CompletedSurveys.Split("/"))
+            {
+                int id;
+                Survey? survey;
+
+                try
+                {
+                    id = Int32.Parse(surveyId);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+
+                survey = await SurveyService.GetById(id);
+
+                if (survey == null)
+                    continue;
+
+                AttendedSurveysList.Add(survey);
+            }
+        }
+    }
+}

@@ -1,0 +1,77 @@
+@page "/account/{Route?}"
+@using Pollifyr.App.Services.Auth
+@using MoonCoreUI.Components
+@using Pollifyr.App.UI.Views.User.Partials
+@using Pollifyr.App.UI.Components.TabNavigations
+
+@inject IdentityService IdentityService
+@inject NavigationManager NavigationManager
+
+<LazyLoader Load="Load">
+    @if (IdentityService.LoggedIn)
+    {
+        <div class="p-5 p-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-auto d-flex align-items-center">
+                            <div class="cursor-pointer symbol symbol-circle symbol-40px symbol-lg-45px w-40px w-lg-45px h-40px h-lg-45px bg-gray-200 d-flex justify-content-center align-items-center">
+                                <i class="bx bx-user bx-sm text-white"></i>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h2>@IdentityService.User.Username</h2>
+                            <h4 class="text-muted">@IdentityService.User.Email</h4>
+                        </div>
+                    </div>
+                    <hr class="mb-4"/>
+
+                    <AccountNavigation Index="GetIndex()"/>
+
+                    <div class="mx-6 mt-4">
+                        <SmartRouter Route="@Route">
+                            <Route Path="/">
+                                <AttendedSurveys/>
+                            </Route>
+                            <Route Path="/security">
+                                <Security/>
+                            </Route>
+                        </SmartRouter>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</LazyLoader>
+
+@code {
+
+    [Parameter]
+    public string? Route { get; set; }
+    
+    
+    private async Task Load(LazyLoader arg)
+    {
+        if (!IdentityService.LoggedIn)
+        {
+            NavigationManager.NavigateTo("/login", true);
+        }
+    }
+    
+    private int GetIndex()
+    {
+        if (string.IsNullOrEmpty(Route))
+            return 0;
+
+        var route = "/" + (Route ?? "");
+
+        switch (route)
+        {
+            case "/security":
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
+}
