@@ -68,9 +68,9 @@
     {
         await lazyLoader.SetText("Loading Stats");
 
+        var tempSurveys = await SurveyService.GetAll();
         
-        
-        SurveyCount = SurveyService.GetAll().Count;
+        SurveyCount = tempSurveys.Count;
 
         UserCount = AuthService.GetAll().Count;
     }

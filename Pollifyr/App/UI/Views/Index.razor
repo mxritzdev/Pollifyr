@@ -138,11 +138,12 @@
         AttendableSurveys = new List<Survey>();
         VisibleSurveys = new List<Survey>();
 
-        Surveys = SurveyService.GetAll();
+        Surveys = await SurveyService.GetAll();
 
         AttendableSurveys = Surveys.Where(x => x.Attendable).ToList();
         VisibleSurveys = Surveys.Where(x => x.Visible).ToList();
     }
+    
     
 }
 

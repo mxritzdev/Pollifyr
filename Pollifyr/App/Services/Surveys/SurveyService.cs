@@ -15,7 +15,7 @@ public class SurveyService
         QuestionService = questionService;
     }
 
-    public List<Survey> GetAll()
+    public async Task<List<Survey>> GetAll()
     {
         return Surveys.Get().ToList();
     }

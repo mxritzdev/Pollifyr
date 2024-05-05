@@ -75,7 +75,8 @@
 
     private async Task Load(LazyLoader arg)
     {
-        AllSurveys = SurveyService.GetAll().Where(x => x.Attendable).ToList();
+        AllSurveys = await SurveyService.GetAll();
+        AllSurveys = AllSurveys.Where(x => x.Attendable).ToList();
     }
 
 }
