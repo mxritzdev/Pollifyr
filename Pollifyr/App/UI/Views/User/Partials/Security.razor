@@ -1,5 +1,78 @@
-<h3>Security</h3>
+@using MoonCoreUI.Components
+@using MoonCoreUI.Services
+@using Pollifyr.App.Database.Models
+@using Pollifyr.App.Exceptions
+@using Pollifyr.App.Models.Forms
+@using Pollifyr.App.Services.Auth
+@using Pollifyr.App.UI.Components.Utils
+
+@inject IdentityService IdentityService
+@inject AuthService AuthService
+@inject AlertService AlertService
+
+<Name>Account Security</Name>
+
+<LazyLoader Load="Load">
+    <div>
+        <h4 class="mb-4">Change Password</h4>
+        <form @onsubmit="() => ChangePassword(Form)" class="mx-4">
+            <div class="form-group mb-3">
+                <label for="currentPassword">Current Password</label>
+                <input @bind="Form.CurrentPassword" type="password" class="form-control form-control-sm" id="currentPassword" placeholder="Current Password">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="newPassword">New Password</label>
+                <input @bind="Form.NewPassword" type="password" class="form-control form-control-sm" id="newPassword" placeholder="New Password">
+            </div>
+
+            <div class="form-group mb-4">
+                <label for="repeatNewPassword">Repeat New Password</label>
+                <input @bind="Form.RepeatNewPassword" type="password" class="form-control form-control-sm" id="repeatNewPassword" placeholder="Repeat New Password">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm">
+                Change Password
+            </button>
+        </form>
+    </div>
+    <hr class="mb-4"/>
+</LazyLoader>
 
 @code {
+    private User User;
+
+    private ChangePasswordForm Form = new();
+
+    [CascadingParameter]
+    private SoftErrorHandler? SoftErrorHandler { get; set; }
     
+    private async Task Load(LazyLoader arg)
+    {
+        User = IdentityService.User;
+    }
+
+    private async Task ChangePassword(ChangePasswordForm form)
+    {
+        if (form.NewPassword != form.RepeatNewPassword)
+            throw new DisplayException("The new passwords have to match");
+
+        var user = AuthService.VerifyEmailAndPassword(User.Email, form.CurrentPassword);
+
+        if (user == null)
+        {
+            throw new DisplayException("Invalid current password");
+        }
+
+        if (form.NewPassword.Length < 8)
+            throw new DisplayException("The password has to be at least 8 letters long.");
+        
+        await AuthService.ChangePassword(user, form.NewPassword);
+
+        await AlertService.Success("Successfully changed your password");
+
+        await InvokeAsync(StateHasChanged);
+        await SoftErrorHandler!.Reload();
+    }
+
 }

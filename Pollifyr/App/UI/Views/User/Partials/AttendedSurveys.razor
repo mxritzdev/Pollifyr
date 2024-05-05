@@ -2,9 +2,12 @@
 @using Pollifyr.App.Database.Models
 @using Pollifyr.App.Services.Auth
 @using Pollifyr.App.Services.Surveys
+@using Pollifyr.App.UI.Components.Utils
 
 @inject IdentityService IdentityService
 @inject SurveyService SurveyService
+
+<Name>Attended Surveys</Name>
 
 <LazyLoader Load="Load">
     @if (IdentityService.LoggedIn)

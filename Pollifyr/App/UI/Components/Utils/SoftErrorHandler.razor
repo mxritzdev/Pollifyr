@@ -1,42 +1,44 @@
 @using Pollifyr.App.Exceptions
 @using Pollifyr.App.Services
 @using Logging.Net
+@using Pollifyr.App.UI.Components.Alerts
 @inherits ErrorBoundaryBase
 
 @inject NavigationManager NavigationManager
 
-@if (HardCrashed)
-{
-    <IconAlert Title="Error" Icon="bx-error-circle">
+<CascadingValue Value="this">
+    @if (HardCrashed)
+    {
+        <IconAlert Title="Error" Icon="bx-error-circle">
+            
+            @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                <pre>
+                    @ErrorMessage
+                </pre>
+            }
+            else
+            {
+                <span>This Page Crashed, this incident has been logged and reported! Try <a @onclick:preventDefault @onclick="Reload"></a></span>
+            }
+
+        </IconAlert>
+    }
+    else if (SoftCrashed)
+    {
+        <div class="card card-body bg-danger mb-5">
+            <span class="text-center">
+                @(ErrorMessage)
+            </span>
+        </div>
         
-        @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
-        {
-            <pre>
-                @ErrorMessage
-            </pre>
-        }
-        else
-        {
-            <span>This Page Crashed, this incident has been logged and reported! Try <a @onclick:preventDefault @onclick="Reload"></a></span>
-        }
-
-    </IconAlert>
-}
-else if (SoftCrashed)
-{
-    <div class="card card-body bg-danger mb-5">
-        <span class="text-center">
-            @(ErrorMessage)
-        </span>
-    </div>
-    
-    @ChildContent
-}
-else
-{
-    @ChildContent
-}
-
+        @ChildContent
+    }
+    else
+    {
+        @ChildContent
+    }
+</CascadingValue>
 @code
 {
     private bool HardCrashed = false;
@@ -87,8 +89,11 @@ else
         return Task.CompletedTask;
     }
 
-    private async Task Reload()
+    public async Task Reload()
     {
-        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+        SoftCrashed = false;
+        ErrorMessage = "";
+        HardCrashed = false;
+        await InvokeAsync(StateHasChanged);
     }
 }

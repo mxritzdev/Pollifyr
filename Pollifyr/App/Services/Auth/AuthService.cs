@@ -93,27 +93,13 @@ public class AuthService
         return token;
     }
     
-    public Task ChangePassword(User user, string password, bool isSystemAction = false)
+    public Task ChangePassword(User user, string password)
     {
         user.Password = HashHelper.HashToString(password);
         user.TokenValidTimestamp = DateTimeService.GetCurrent();
         Users.Update(user);
 
         return Task.CompletedTask;
-    }
-    
-    public async Task ResetPassword(string email)
-    {
-        email = email.ToLower().Trim();
-
-        var user = GetUserByEmail(email);
-
-        if (user == null)
-            throw new DisplayException("A user with this email can not be found");
-
-        var newPassword = StringHelper.GenerateString(16);
-        await ChangePassword(user, newPassword, true);
-        
     }
 
     public async Task ChangeDetails(User user, string email, string username, bool admin)
@@ -128,7 +114,7 @@ public class AuthService
     }
     
     
-    private User? VerifyEmailAndPassword(string email, string password)
+    public User? VerifyEmailAndPassword(string email, string password)
     {
         var user = GetUserByEmail(email);
 
