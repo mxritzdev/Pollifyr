@@ -41,7 +41,7 @@ public class AuthService
         return await GenerateToken(user);
     }
 
-    public async Task<User?> AddUser(string email, string password, string username)
+    public async Task<User?> AddUser(string email, string username, string password)
     {
         var emailTaken = Users.Get().FirstOrDefault(x => x.Email == email) != null;
 

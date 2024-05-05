@@ -53,7 +53,7 @@
 
     private async Task Add(User user)
     {
-        await AuthService.AddUser(user.Username, user.Email.Trim().ToLower(), user.Password);
+        await AuthService.AddUser(user.Email.Trim().ToLower(), user.Username, user.Password);
     }
     
     private async Task ValidateUpdate(User user)
