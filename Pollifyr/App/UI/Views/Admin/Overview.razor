@@ -72,7 +72,9 @@
         
         SurveyCount = tempSurveys.Count;
 
-        UserCount = AuthService.GetAll().Count;
+        var tempUsers = await AuthService.GetAll();
+        
+        UserCount = tempUsers.Count;
     }
 
 }

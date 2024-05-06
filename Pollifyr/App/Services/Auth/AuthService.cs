@@ -75,7 +75,7 @@ public class AuthService
         return await GenerateToken(user);
     }
 
-    public List<User> GetAll()
+    public async Task<List<User>> GetAll()
     {
         return Users.Get().ToList();
     }
@@ -105,14 +105,39 @@ public class AuthService
     public async Task ChangeDetails(User user, string email, string username, bool admin)
     {
         user.Email = email;
-
         user.Username = username;
-
         user.Admin = admin;
         
         Users.Update(user);
     }
+
+    public async Task ChangeEmail(User user, string email)
+    {
+        if(!Users.Get().Any(x => x.Email == email))
+        {
+            user.Email = email;
+            Users.Update(user);
+        }
+        else
+        {
+            throw new DisplayException("A user with this email already exists.");
+        }
+
+    }
     
+    public async Task ChangeUsername(User user, string username)
+    {
+        if(!Users.Get().Any(x => x.Username == username))
+        {
+            user.Username = username;
+            Users.Update(user);
+        }
+        else
+        {
+            throw new DisplayException("A user with this username already exists.");
+        }
+
+    }
     
     public User? VerifyEmailAndPassword(string email, string password)
     {

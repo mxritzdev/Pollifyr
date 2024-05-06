@@ -1,3 +1,4 @@
+@using System.Text.RegularExpressions
 @using MoonCoreUI.Components
 @using MoonCoreUI.Services
 @using Pollifyr.App.Database.Models
@@ -9,26 +10,58 @@
 @inject IdentityService IdentityService
 @inject AuthService AuthService
 @inject AlertService AlertService
+@inject NavigationManager NavigationManager
 
 <Name>Account Security</Name>
 
 <LazyLoader Load="Load">
+
+    <div>
+        <h4 class="mb-4">Change Username</h4>
+        <form @onsubmit="() => ChangeUsername(DetailsForm)" class="mx-4  mw-lg-500px">
+
+            <div class="form-group mb-3">
+                <label for="newUsername">New Username</label>
+                <input @bind="DetailsForm.NewUsername" type="text" class="form-control form-control-sm" id="newUsername" placeholder="johndoe123">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm">
+                Change Username
+            </button>
+        </form>
+    </div>
+    <hr class="mb-8"/>
+    <div>
+        <h4 class="mb-4">Change Email</h4>
+        <form @onsubmit="() => ChangeEmail(DetailsForm)" class="mx-4 mw-lg-500px">
+
+            <div class="form-group mb-3">
+                <label for="newEmail">New Email Adress</label>
+                <input @bind="DetailsForm.NewEmail" type="text" class="form-control form-control-sm" id="newEmail" placeholder="your@mail.com">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-sm">
+                Change Email
+            </button>
+        </form>
+    </div>
+    <hr class="mb-8"/>
     <div>
         <h4 class="mb-4">Change Password</h4>
-        <form @onsubmit="() => ChangePassword(Form)" class="mx-4">
+        <form @onsubmit="() => ChangePassword(PasswordForm)" class="mx-4  mw-lg-500px">
             <div class="form-group mb-3">
                 <label for="currentPassword">Current Password</label>
-                <input @bind="Form.CurrentPassword" type="password" class="form-control form-control-sm" id="currentPassword" placeholder="Current Password">
+                <input @bind="PasswordForm.CurrentPassword" type="password" class="form-control form-control-sm" id="currentPassword" placeholder="Current Password">
             </div>
 
             <div class="form-group mb-3">
                 <label for="newPassword">New Password</label>
-                <input @bind="Form.NewPassword" type="password" class="form-control form-control-sm" id="newPassword" placeholder="New Password">
+                <input @bind="PasswordForm.NewPassword" type="password" class="form-control form-control-sm" id="newPassword" placeholder="New Password">
             </div>
 
             <div class="form-group mb-4">
                 <label for="repeatNewPassword">Repeat New Password</label>
-                <input @bind="Form.RepeatNewPassword" type="password" class="form-control form-control-sm" id="repeatNewPassword" placeholder="Repeat New Password">
+                <input @bind="PasswordForm.RepeatNewPassword" type="password" class="form-control form-control-sm" id="repeatNewPassword" placeholder="Repeat New Password">
             </div>
 
             <button type="submit" class="btn btn-primary btn-sm">
@@ -36,13 +69,13 @@
             </button>
         </form>
     </div>
-    <hr class="mb-4"/>
 </LazyLoader>
 
 @code {
     private User User;
 
-    private ChangePasswordForm Form = new();
+    private ChangePasswordForm PasswordForm = new();
+    private DetailsForm DetailsForm = new();
 
     [CascadingParameter]
     private SoftErrorHandler? SoftErrorHandler { get; set; }
@@ -50,6 +83,11 @@
     private async Task Load(LazyLoader arg)
     {
         User = IdentityService.User;
+
+        DetailsForm.User = User;
+
+        DetailsForm.NewEmail = DetailsForm.User.Email;
+        DetailsForm.NewUsername = DetailsForm.User.Username;
     }
 
     private async Task ChangePassword(ChangePasswordForm form)
@@ -67,12 +105,51 @@
         if (form.NewPassword.Length < 8)
             throw new DisplayException("The password has to be at least 8 letters long.");
         
+        await SoftErrorHandler!.Reload();
+        
         await AuthService.ChangePassword(user, form.NewPassword);
 
         await AlertService.Success("Successfully changed your password");
 
         await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ChangeEmail(DetailsForm form)
+    {
+        var confirm = await AlertService.YesNo("Do you really want to change your email adress?");
+        
+        if (!confirm) 
+            return;
+        
+        string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
+        bool isValidEmail = Regex.IsMatch(form.NewEmail, pattern);
+
+        if (!isValidEmail)
+        {
+            throw new DisplayException("Please input a valid email");
+        }
+        
         await SoftErrorHandler!.Reload();
+        await AuthService.ChangeEmail(form.User, form.NewEmail);
+        
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
+    
+    private async Task ChangeUsername(DetailsForm form)
+    {
+        var confirm = await AlertService.YesNo("Do you really want to change your username?");
+        
+        if (!confirm) 
+            return;
+        
+        if (form.NewUsername.Length < 6)
+            throw new DisplayException("The provided username is to short");
+        
+        await SoftErrorHandler!.Reload();
+        await AuthService.ChangeUsername(form.User, form.NewUsername);
+        
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
     }
 
 }
