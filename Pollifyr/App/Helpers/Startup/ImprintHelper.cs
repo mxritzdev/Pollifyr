@@ -4,7 +4,7 @@ namespace Pollifyr.App.Helpers.Startup;
 
 public class ImprintHelper
 {
-    private readonly string defaultImprint = "# Impressum\r\n---\r\nLorem ipsum dolor sit amet";
+    private readonly string defaultImprint = "# Imprint\r\nLorem ipsum dolor sit amet";
     
     public ImprintHelper()
     {
