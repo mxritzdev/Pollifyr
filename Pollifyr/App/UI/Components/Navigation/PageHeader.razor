@@ -1,4 +1,5 @@
 @using MoonCoreUI.Services
+@using Pollifyr.App.Config
 @using Pollifyr.App.UI.Layouts
 @using Pollifyr.App.UI.Components.Navigation.Partials
 @using Pollifyr.App.Services.Auth
@@ -26,15 +27,30 @@
                 
                 <div class="app-navbar-item ms-2 ms-lg-6 me-8">
 
-                    <div class="cursor-pointer symbol symbol-circle symbol-40px symbol-lg-45px w-40px w-lg-45px h-40px h-lg-45px bg-gray-200 d-flex justify-content-center align-items-center ms-2" id="dropdownMenuLink" data-bs-toggle="dropdown">
-                        <i class="bx bx-user bx-sm text-white"></i>
+                    <div class="cursor-pointer symbol symbol-circle symbol-40px symbol-lg-45px w-40px w-lg-45px h-40px h-lg-45px @(IdentityService.LoggedIn ? LoggedInProfileColor : NotLoggedInProfileColor) d-flex justify-content-center align-items-center ms-2" id="dropdownMenuLink" data-bs-toggle="dropdown">
+                        @if (IdentityService.LoggedIn)
+                        {
+                            <i class='bx bxs-user bx-sm text-white'></i>
+                        }
+                        else
+                        {
+                            <i class="bx bx-user bx-sm text-white"></i>
+                        }
                     </div>
 
                     <div class="dropdown-menu dropdown-menu-end menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" aria-labelledby="dropdownMenuLink">
                         <div class="menu-item px-3">
                             <div class="menu-content d-flex align-items-center px-3">
-                                <div class="symbol symbol-50px symbol-circle w-40px h-40px me-5 d-flex justify-content-center align-items-center bg-gray-200">
-                                    <i class="bx bx-user bx-sm text-white"></i>
+                                <div class="symbol symbol-50px symbol-circle w-40px h-40px me-5 d-flex justify-content-center align-items-center @(IdentityService.LoggedIn ? LoggedInProfileColor : NotLoggedInProfileColor)">
+                                    
+                                    @if (IdentityService.LoggedIn)
+                                    {
+                                        <i class='bx bxs-user bx-sm text-white'></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bx bx-user bx-sm text-white"></i>
+                                    }
                                 </div>
                                 
                                 @if (IdentityService.LoggedIn)
@@ -96,6 +112,9 @@
 {
     [CascadingParameter]
     public DefaultLayout? Layout { get; set; }
+
+    private const string LoggedInProfileColor = "bg-primary-subtle";
+    private const string NotLoggedInProfileColor = "bg-gray-200";
     
     private async Task Logout()
     {
