@@ -39,7 +39,7 @@ public class ConfigModel
 
     public class SecurityData
     {
-        [JsonProperty("Token-Duration")] public int TokenDuration { get; set; } = 30;
+        [JsonProperty("Token-Duration")] public int TokenDuration { get; set; } = 10;
         
         [JsonProperty("Token-Secret")] public string Secret { get; set; } = "s3cr3t";
     }

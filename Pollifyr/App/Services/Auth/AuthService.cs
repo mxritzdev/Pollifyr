@@ -50,7 +50,7 @@ public class AuthService
         if (emailTaken || usernameTaken)
             return null;
 
-        var admin = !Users.Get().Any(x => x.Admin == true);
+        var admin = !Users.Get().Any(x => x.Admin);
             
         
         var user = Users.Add(new User()

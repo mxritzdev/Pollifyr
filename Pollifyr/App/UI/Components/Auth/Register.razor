@@ -1,11 +1,14 @@
 @page "/register"
 
+@using System.Text.RegularExpressions
 @using Pollifyr.App.Services
 @using Pollifyr.App.Models.Forms
 @using MoonCoreUI.Components.Forms
 @using MoonCoreUI.Services
+@using Pollifyr.App.Exceptions
 @using Pollifyr.App.Services.Auth
 @using Pollifyr.App.UI.Components.Utils
+@using Pollifyr.App.UI.Views.Errors
 
 @inject AuthService AuthService
 @inject CookieService CookieService
@@ -15,39 +18,43 @@
 
 <Name>Login</Name>
 
-<div class="p-2 px-md-12">
+@if (ConfigService.Get().Properties.AllowRegister)
+{
+    <div class="p-2 px-md-12">
+        <div class="d-flex justify-content-center align-items-center flex-column">
+            <img src="/img/logo.svg" alt="Logo" class="h-30px">
+            <span class="fs-1 d-block fw-bold">Login</span>
+        </div>
 
-    <div class="d-flex justify-content-center align-items-center flex-column">
-        <img src="/img/logo.svg" alt="Logo" class="h-30px">
-        <span class="fs-1 d-block fw-bold">Login</span>
-    </div>
+        <div class="form-outline mb-4">
+            <label class="form-label fs-3" for="email">Email Address</label>
+            <input type="email" id="email" class="form-control" placeholder="mail@example.com" @bind="Form.Email"/>
+        </div>
 
-    <div class="form-outline mb-4">
-        <label class="form-label fs-3" for="email">Email Address</label>
-        <input type="email" id="email" class="form-control" placeholder="mail@example.com" @bind="Form.Email"/>
-    </div>
+        <div class="form-outline mb-4">
+            <label class="form-label fs-3" for="username">Username</label>
+            <input type="email" id="username" class="form-control" placeholder="maxmustermann123" @bind="Form.Username"/>
+        </div>
 
-    <div class="form-outline mb-4">
-        <label class="form-label fs-3" for="username">Username</label>
-        <input type="email" id="username" class="form-control" placeholder="maxmustermann123" @bind="Form.Username"/>
-    </div>
+        <div class="form-outline mb-4">
+            <label class="form-label fs-3" for="password">Password</label>
+            <input type="@(ShowPassword ? "text" : "password")" class="form-control" placeholder="Password" id="password" @bind="Form.Password">
+            <label class="form-label" for="password"> <a class="text-secondary cursor-pointer" @onclick="() => { ShowPassword = !ShowPassword; StateHasChanged(); }">@(ShowPassword ? "Hide" : "Show") Password</a></label>
+        </div>
 
-    <div class="form-outline mb-4">
-        <label class="form-label fs-3" for="password">Password</label>
-        <input type="@(ShowPassword ? "text" : "password")" class="form-control" placeholder="Password" id="password" @bind="Form.Password">
-        <label class="form-label" for="password"> <a class="text-secondary cursor-pointer" @onclick="() => { ShowPassword = !ShowPassword; StateHasChanged(); }">@(ShowPassword ? "Hide" : "Show") Password</a></label>
-    </div>
+        <div class="d-flex justify-content-center">
+            <WButton Text="Register" CssClasses="btn-primary btn-block mb-4 w-100 w-md-50" WorkingText="Registering" OnClick="Callback"/>
+        </div>
 
-    <div class="d-flex justify-content-center">
-        <WButton Text="Register" CssClasses="btn-primary btn-block mb-4 w-100 w-md-50" WorkingText="Registering" OnClick="Callback"/>
+        <div class="text-center">
+            <p>Already Logged in? <a href="/login">Log in</a></p>
+        </div>
     </div>
-    
-    <div class="text-center">
-        <p>Already Logged in? <a href="/login">Log in</a></p>
-    </div>
-    
-
-</div>
+}
+else
+{
+    <NotFound/>
+}
 
 @code {
     private RegisterForm Form = new();
@@ -69,13 +76,22 @@
     
     private async Task Callback()
     {
+        if (string.IsNullOrEmpty(Form.Username.Trim()) || Form.Username.Trim().Length < 6)
+            throw new DisplayException("The username has to be at least 6 characters long");
+
+        if (string.IsNullOrEmpty(Form.Email.Trim()) || Regex.IsMatch(Form.Email.Trim(), "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
+            throw new DisplayException("Invalid email address");
+
+        if (string.IsNullOrEmpty(Form.Password) || Form.Password.Length < 8)
+            throw new DisplayException("Your password has to be at least 8 characters long");
+        
         Form.Email = Form.Email.ToLower().Trim();
 
         var token = await AuthService.Register(Form.Email, Form.Password, Form.Username);
 
         if (token != string.Empty)
         {
-            await CookieService.SetValue("token", token, 10);
+            await CookieService.SetValue("token", token, ConfigService.Get().Security.TokenDuration);
             NavigationManager.NavigateTo("/", true);
         }
     }
