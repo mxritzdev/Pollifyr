@@ -16,12 +16,12 @@ public class ConfigModel
     public class InformationData
     {
         [JsonProperty("App-Name")] public string AppName { get; set; } = "Pollifyr";
-
-        [JsonProperty("Visible-Surveys-On-HomePage")] public int VisibleSurveysOnHomePage = 3;
-
+        
         [JsonProperty("Use-Imprint")] public bool UseImprint { get; set; }
         
         [JsonProperty("Show-Credits")] public bool ShowCredits { get; set; } = true;
+        
+        [JsonProperty("Visible-Surveys-On-HomePage")] public int VisibleSurveysOnHomePage = 3;
     }
     
     public class DatabaseData
@@ -41,7 +41,7 @@ public class ConfigModel
     {
         [JsonProperty("Token-Duration")] public int TokenDuration { get; set; } = 30;
         
-        [JsonProperty("Token-Secret")] public string Secret { get; set; } = "S1QFoCJQ2TAZDRGjO5eWD4g5gT0kUgdUcyWq4w0AVWUEW";
+        [JsonProperty("Token-Secret")] public string Secret { get; set; } = "s3cr3t";
     }
 
     public class PropertyData

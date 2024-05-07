@@ -27,6 +27,12 @@ public class ConfigService
         Save();
     }
 
+    public void Set(ConfigModel model)
+    {
+        Data = model;
+        Save();
+    }
+
     public void Save()
     {
         var text = JsonConvert.SerializeObject(Data, Formatting.Indented);
