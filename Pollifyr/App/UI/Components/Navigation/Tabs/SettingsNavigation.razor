@@ -1,0 +1,13 @@
+<ul class="nav nav-tabs nav-line-tabs nav-line-tabs-2x mt-5 mx-3 fs-6 border-bottom-0 text-nowrap flex-nowrap hide-scrollbar pb-1" style="overflow-x: auto; overflow-y: hidden;">
+    <li class="nav-item">
+        <a class="nav-link text-white @(Index == 0 ? "active" : "")" href="/admin/settings">General Settings</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white @(Index == 1 ? "active" : "")" href="/admin/settings/imprint">Imprint</a>
+    </li>
+</ul>
+
+@code
+{
+    [Parameter] public int Index { get; set; } = 0;
+}

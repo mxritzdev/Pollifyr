@@ -1,0 +1,49 @@
+@page "/admin/settings/{Route?}"
+@using Pollifyr.App.UI.Components.Utils
+@using MoonCoreUI.Components
+@using Pollifyr.App.UI.Views.Admin.Settings.Partials
+@using Pollifyr.App.UI.Components.Navigation.Tabs
+
+
+<NeedsAdmin/>
+
+<Name>Admin Settings</Name>
+
+<div class="mb-4">
+    <h1>Settings</h1>
+</div>
+
+<SettingsNavigation Index="GetIndex()"/>
+
+<div class="mx-4 mx-md-6 mt-4">
+    <SmartRouter Route="@Route">
+        <Route Path="/">
+            <ConfigSettings/>
+        </Route>
+        <Route Path="/imprint">
+            <ImprintEditor/>
+        </Route>
+    </SmartRouter>
+</div>
+@code {
+
+    [Parameter]
+    public string? Route { get; set; }
+    
+    private int GetIndex()
+    {
+        if (string.IsNullOrEmpty(Route))
+            return 0;
+
+        var route = "/" + (Route ?? "");
+
+        switch (route)
+        {
+            case "/imprint":
+                return 1;
+            default:
+                return 0;
+        }
+    }
+    
+}

@@ -1,4 +1,4 @@
-namespace Pollifyr.App.Models.Forms;
+namespace Pollifyr.App.Models.Forms.Auth;
 
 public class LoginForm
 {

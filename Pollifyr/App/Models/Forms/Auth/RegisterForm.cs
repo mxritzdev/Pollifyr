@@ -1,6 +1,6 @@
 using System.Diagnostics.Contracts;
 
-namespace Pollifyr.App.Models.Forms;
+namespace Pollifyr.App.Models.Forms.Auth;
 
 public class RegisterForm
 {

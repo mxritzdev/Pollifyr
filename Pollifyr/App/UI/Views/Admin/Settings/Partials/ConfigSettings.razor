@@ -1,0 +1,37 @@
+@using Pollifyr.App.Helpers.Utils
+@using Pollifyr.App.Models.Forms.Settings
+@using MoonCoreUI.Components
+@using MoonCoreUI.Components.Forms
+@using MoonCoreUI.Services
+@using Pollifyr.App.Services
+
+@inject ConfigService ConfigService
+@inject AlertService AlertService
+
+
+<LazyLoader Load="Load">
+    <SmartForm Model="SettingsForm" OnValidSubmit="OnValidSubmit">
+        <AdvancedAutoForm Model="SettingsForm" Columns="@(SettingsForm.GetType().GetProperties().Length > 1 ? 6 : 12)"></AdvancedAutoForm>
+        
+        <button type="submit" class="btn btn-success mt-4">
+            <i class='bx bx-save bx-sm' ></i> Save
+        </button>
+    </SmartForm>
+</LazyLoader>
+
+@code {
+
+    private SettingsForm SettingsForm;
+
+    private async Task Load(LazyLoader arg)
+    {
+        SettingsForm = await SettingsMapper.Map(ConfigService.Get());
+    }
+
+    private async Task OnValidSubmit()
+    {
+        ConfigService.Set(await SettingsMapper.ReverseMap(ConfigService.Get(), SettingsForm));
+        await AlertService.Success("Successfully updated the settings! Reload the page to see them!");
+    }
+
+}
