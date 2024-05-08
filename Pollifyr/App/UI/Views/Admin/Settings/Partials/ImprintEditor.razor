@@ -2,17 +2,22 @@
 @using Pollifyr.App.Services
 @using Pollifyr.App.Models.Forms.Other
 @using Pollifyr.App.Services.Partials
+@using MoonCoreUI.Components.Forms
+@using Pollifyr.App.UI.Components.Utils
 
 @inject ConfigService ConfigService
 @inject ImprintService ImprintService
 
 <LazyLoader Load="Load">
+    
+    <Name>Admin Settings Imprint</Name>
+    
     @if (!ConfigService.Get().Information.UseImprint)
     {
         <span class="text-warning mb-4">Warning! The imprint is not enabled in the config! Your changes wont show on "/imprint"! <a href="/admin/settings">Enable it here</a></span>
     }
 
-    <EditForm OnValidSubmit="Save" Model="Model">
+    <SmartForm OnValidSubmit="Save" Model="Model">
 
         <div class="form-floating">
             <textarea class="form-control mh-500px" style="min-height: 200px" placeholder="Leave a comment here" id="floatingTextarea" @bind="Model.Text"></textarea>
@@ -25,10 +30,10 @@
             </span>
         </div>
         <button type="submit" class="btn btn-success mt-4">
-            <i class='bx bx-save bx-sm'></i> Save
+            <i class="bx bx-save bx-sm"></i> Save
         </button>
-    </EditForm>
-    
+    </SmartForm>
+
 </LazyLoader>
 
 @code {
