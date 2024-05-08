@@ -72,72 +72,90 @@ public class Startup
 
     private async Task AddSingletonServices()
     {
-        WebApplicationBuilder.Services.AddSingleton<ConfigService>();
-        WebApplicationBuilder.Services.AddSingleton<DateTimeService>();
-        WebApplicationBuilder.Services.AddSingleton<ImprintService>();
+        await Task.Run(() =>
+        {
+            WebApplicationBuilder.Services.AddSingleton<ConfigService>();
+            WebApplicationBuilder.Services.AddSingleton<DateTimeService>();
+            WebApplicationBuilder.Services.AddSingleton<ImprintService>();
+        });
+        
     }
     
     private async Task AddScopedServices()
     {
-        WebApplicationBuilder.Services.AddScoped<CookieService>();
-        WebApplicationBuilder.Services.AddScoped<IdentityService>();
-        WebApplicationBuilder.Services.AddScoped<AuthService>();
-        WebApplicationBuilder.Services.AddScoped<UserService>();
-        
-        WebApplicationBuilder.Services.AddScoped<SurveyService>();
-        WebApplicationBuilder.Services.AddScoped<QuestionService>();  
-        WebApplicationBuilder.Services.AddScoped<AnswerService>();
-        
-        ToastService.Prefix = "pollifyr.toasts";
-        ModalService.Prefix = "pollifyr.modals";
-        AlertService.Prefix = "pollifyr.alerts";
-        ClipboardService.Prefix = "pollifyr.clipboard";
-        
-        WebApplicationBuilder.Services.AddScoped<AlertService>();
-        WebApplicationBuilder.Services.AddScoped<ClipboardService>();
-        WebApplicationBuilder.Services.AddScoped<ModalService>();
-        WebApplicationBuilder.Services.AddScoped<ToastService>();
-
+        await Task.Run(() =>
+        {
+            WebApplicationBuilder.Services.AddScoped<CookieService>();
+            WebApplicationBuilder.Services.AddScoped<IdentityService>();
+            WebApplicationBuilder.Services.AddScoped<AuthService>();
+            WebApplicationBuilder.Services.AddScoped<UserService>();
+            
+            WebApplicationBuilder.Services.AddScoped<SurveyService>();
+            WebApplicationBuilder.Services.AddScoped<QuestionService>();  
+            WebApplicationBuilder.Services.AddScoped<AnswerService>();
+            
+            ToastService.Prefix = "pollifyr.toasts";
+            ModalService.Prefix = "pollifyr.modals";
+            AlertService.Prefix = "pollifyr.alerts";
+            ClipboardService.Prefix = "pollifyr.clipboard";
+            
+            WebApplicationBuilder.Services.AddScoped<AlertService>();
+            WebApplicationBuilder.Services.AddScoped<ClipboardService>();
+            WebApplicationBuilder.Services.AddScoped<ModalService>();
+            WebApplicationBuilder.Services.AddScoped<ToastService>();
+        });
     }
     
     private async Task AddOtherServices()
     {
-        WebApplicationBuilder.Services.AddHttpContextAccessor();
-        WebApplicationBuilder.Services.AddRazorPages();
-        WebApplicationBuilder.Services.AddServerSideBlazor();
+        await Task.Run(() =>
+        {
+            WebApplicationBuilder.Services.AddHttpContextAccessor();
+            WebApplicationBuilder.Services.AddRazorPages();
+            WebApplicationBuilder.Services.AddServerSideBlazor();
+        });
     }
     
     private async Task ConfigurePipeline()
     {
-        if (configService.Get().Properties.UseHsts)
+        await Task.Run(() =>
         {
-            WebApplication.UseHsts();
-        }
+            if (configService.Get().Properties.UseHsts)
+            {
+                WebApplication.UseHsts();
+            }
 
-        WebApplication.UseHttpsRedirection();
-        WebApplication.UseStaticFiles();
-        WebApplication.UseRouting();
-        WebApplication.MapBlazorHub();
-        WebApplication.MapFallbackToPage("/_Host");
+            WebApplication.UseHttpsRedirection();
+            WebApplication.UseStaticFiles();
+            WebApplication.UseRouting();
+            WebApplication.MapBlazorHub();
+            WebApplication.MapFallbackToPage("/_Host");
+        });
     }
 
     private async Task Configure()
     {
-        WebApplicationBuilder.WebHost.ConfigureKestrel(serverOptions =>
+        await Task.Run(() =>
         {
-            serverOptions.ListenAnyIP(configService.Get().Properties.Port);
+            WebApplicationBuilder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.ListenAnyIP(configService.Get().Properties.Port);
+            });
         });
     } 
 
     private async Task SetupLogger()
     {
-        Logger.UseSBLogger();
+        await Task.Run(Logger.UseSBLogger);
     }
     
     private async Task AddDatabase()
     {
-        WebApplicationBuilder.Services.AddDbContext<DatabaseContext>();
-        WebApplicationBuilder.Services.AddScoped(typeof(Repository<>), typeof(GenericRepository<>));
+        await Task.Run(() =>
+        {
+            WebApplicationBuilder.Services.AddDbContext<DatabaseContext>();
+            WebApplicationBuilder.Services.AddScoped(typeof(Repository<>), typeof(GenericRepository<>));
+        });
     }
 
     private async Task PerformHelpers()
