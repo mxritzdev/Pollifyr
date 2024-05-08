@@ -1,6 +1,7 @@
 ﻿@using Pollifyr.App.UI.Components.Utils
 @using Pollifyr.App.Services
 @using MoonCoreUI.Components
+@using MoonCoreUI.Services
 @using Pollifyr.App.Database.Models
 @using Pollifyr.App.Services.Auth
 @using Pollifyr.App.Services.Surveys
@@ -8,6 +9,8 @@
 @inject ConfigService ConfigService
 @inject IdentityService IdentityService
 @inject SurveyService SurveyService
+@inject IHttpContextAccessor HttpContextAccessor
+@inject CookieService CookieService
 
 @page "/"
 
@@ -40,22 +43,32 @@
                     <h5 class="card-subtitle text-muted mb-2">Here are some surveys where you can attend.</h5>
                     <hr class="mb-4"/>
                     
-                    @if (AttendableSurveys.Any())
+                    @if (AttendableSurveys!.Any())
                     {
-                        foreach (var survey in AttendableSurveys.Take(SurveysCount).ToList())
+                        foreach (var survey in AttendableSurveys!.Take(SurveysCount).ToList())
                         {
                             <div class="row d-flex align-items-center mb-1">
                                 <span class="col fs-5">
                                     @survey.Name
                                 </span>
                                 <span class="col-auto">
-                                    <a class="btn btn-primary btn-sm" href="/survey/@survey.Id">
-                                        <i class='bx bx-bar-chart'></i> Attend
-                                    </a>
+                                    
+                                    @if (AttendedSurveysCookie.Split("/").Any(x => x == survey.Id.ToString()) || AttendedSurveysUser.Split("/").Any(x => x == survey.Id.ToString()))
+                                    {
+                                        <a class="btn btn-secondary btn-sm disabled">
+                                            <i class='bx bx-bar-chart'></i> Already Attended
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-primary btn-sm" href="/survey/@survey.Id">
+                                            <i class='bx bx-bar-chart'></i> Attend
+                                        </a>
+                                    }
                                 </span>
                             </div>
                         }
-                        if (AttendableSurveys.Count >= SurveysCount)
+                        if (AttendableSurveys!.Count >= SurveysCount)
                         {
                             <div class="d-flex justify-content-center">
                                 <a href="/surveys">View All</a>
@@ -83,9 +96,9 @@
                     </h5>
                     <hr class="mb-4"/>
 
-                    @if (VisibleSurveys.Any())
+                    @if (VisibleSurveys!.Any())
                     {
-                        foreach (var survey in VisibleSurveys.Take(SurveysCount).ToList())
+                        foreach (var survey in VisibleSurveys!.Take(SurveysCount).ToList())
                         {
                             <div class="row d-flex align-items-center mb-1">
                                 <span class="col fs-5">
@@ -99,7 +112,7 @@
                             </div>
                         }
 
-                        if (VisibleSurveys.Count >= SurveysCount)
+                        if (VisibleSurveys!.Count >= SurveysCount)
                         {
                             <div class="d-flex justify-content-center">
                                 <a href="/results">View All</a>
@@ -121,12 +134,15 @@
 
 @code {
 
-    private List<Survey> Surveys;
+    private List<Survey>? Surveys;
     
-    private List<Survey> AttendableSurveys;
+    private List<Survey>? AttendableSurveys;
     
-    private List<Survey> VisibleSurveys;
+    private List<Survey>? VisibleSurveys;
 
+    private string AttendedSurveysCookie = "";
+    private string AttendedSurveysUser = "";
+    
     private int SurveysCount;
     
     private async Task Load(LazyLoader arg)
@@ -142,8 +158,31 @@
 
         AttendableSurveys = Surveys.Where(x => x.Attendable).ToList();
         VisibleSurveys = Surveys.Where(x => x.Visible).ToList();
+
+        await LoadCompletedSurveys();
     }
     
+    private async Task LoadCompletedSurveys()
+    {
+        if (HttpContextAccessor.HttpContext != null)
+        {
+            var request = HttpContextAccessor.HttpContext.Request;
+
+            if (request.Cookies.ContainsKey("attendedSurveys"))
+            {
+                AttendedSurveysCookie = request.Cookies["attendedSurveys"]!;
+            }
+        }
+        else
+        {
+            AttendedSurveysCookie = await CookieService.GetValue("attendedSurveys", "none");
+        }
+
+        if (IdentityService.LoggedIn)
+        {
+            AttendedSurveysUser = IdentityService.User.CompletedSurveys;
+        }
+    }
     
 }
 

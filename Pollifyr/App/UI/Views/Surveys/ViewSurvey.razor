@@ -166,18 +166,12 @@
 
         if (Survey.Attendable)
         {
-            if (AttendedSurveysCookie.Split("/").Any(x => x == Survey.Id.ToString()))
+            if (AttendedSurveysCookie.Split("/").Any(x => x == Survey.Id.ToString()) || AttendedSurveysUser.Split("/").Any(x => x == Survey.Id.ToString()))
             {
                 SurveyState = 2;
                 return;
             } 
             
-            if (AttendedSurveysUser.Split("/").Any(x => x == Survey.Id.ToString()))
-            {
-                SurveyState = 2;
-                return;
-            }
-
             SurveyState = 1;
         }
     }
