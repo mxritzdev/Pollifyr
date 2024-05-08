@@ -2,6 +2,7 @@
 
 @using Pollifyr.App.Database.Models
 @using MoonCoreUI.Components
+@using MoonCoreUI.Services
 @using Pollifyr.App.Services
 @using Pollifyr.App.Services.Auth
 @using Pollifyr.App.Services.Surveys
@@ -11,6 +12,8 @@
 @inject ConfigService ConfigService
 @inject SurveyService SurveyService
 @inject IdentityService IdentityService
+@inject IHttpContextAccessor HttpContextAccessor
+@inject CookieService CookieService
 
 <Name>Surveys</Name>
 
@@ -23,10 +26,10 @@
         </h2>
     </div>
     
-    @if (AllSurveys.Any())
+    @if (AllSurveys!.Any())
     {
         <div class="row row-deck row-cards">
-            @foreach (var survey in AllSurveys)
+            @foreach (var survey in AllSurveys!)
             {
                 <div class="col-12 col-lg-6 mb-6">
                     <div class="card">
@@ -37,9 +40,20 @@
                                     <h5 class="text-muted">@survey.Description</h5>
                                 </div>
                                 <div class="col-auto">
-                                    <a class="btn btn-primary" href="/survey/@survey.Id">
-                                        <i class='bx bx-bar-chart'></i> Attend
-                                    </a>
+
+                                    @if (AttendedSurveysCookie.Split("/").Any(x => x == survey.Id.ToString()) || AttendedSurveysUser.Split("/").Any(x => x == survey.Id.ToString()))
+                                    {
+                                        <a class="btn btn-secondary disabled">
+                                            <i class='bx bx-bar-chart'></i> Already Attended
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-primary" href="/survey/@survey.Id">
+                                            <i class='bx bx-bar-chart'></i> Attend
+                                        </a>
+                                    }
+                                   
                                 </div>
                             </div>
                             
@@ -71,12 +85,39 @@
 </LazyLoader>
 @code {
 
-    private List<Survey> AllSurveys;
+    private List<Survey>? AllSurveys;
+
+    private string AttendedSurveysCookie = "";
+    private string AttendedSurveysUser = "";
 
     private async Task Load(LazyLoader arg)
     {
         AllSurveys = await SurveyService.GetAll();
         AllSurveys = AllSurveys.Where(x => x.Attendable).ToList();
+
+        await LoadCompletedSurveys();
+    }
+    
+    private async Task LoadCompletedSurveys()
+    {
+        if (HttpContextAccessor.HttpContext != null)
+        {
+            var request = HttpContextAccessor.HttpContext.Request;
+
+            if (request.Cookies.ContainsKey("attendedSurveys"))
+            {
+                AttendedSurveysCookie = request.Cookies["attendedSurveys"]!;
+            }
+        }
+        else
+        {
+            AttendedSurveysCookie = await CookieService.GetValue("attendedSurveys", "none");
+        }
+
+        if (IdentityService.LoggedIn)
+        {
+            AttendedSurveysUser = IdentityService.User.CompletedSurveys;
+        }
     }
 
 }
