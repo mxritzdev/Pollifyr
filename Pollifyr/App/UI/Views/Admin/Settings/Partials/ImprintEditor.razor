@@ -1,1 +1,48 @@
 @using MoonCoreUI.Components
+@using Pollifyr.App.Services
+@using Pollifyr.App.Models.Forms.Other
+@using Pollifyr.App.Services.Partials
+
+@inject ConfigService ConfigService
+@inject ImprintService ImprintService
+
+<LazyLoader Load="Load">
+    @if (!ConfigService.Get().Information.UseImprint)
+    {
+        <span class="text-warning mb-4">Warning! The imprint is not enabled in the config! Your changes wont show on "/imprint"! <a href="/admin/settings">Enable it here</a></span>
+    }
+
+    <EditForm OnValidSubmit="Save" Model="Model">
+
+        <div class="form-floating">
+            <textarea class="form-control mh-500px" style="min-height: 200px" placeholder="Leave a comment here" id="floatingTextarea" @bind="Model.Text"></textarea>
+            <label for="floatingTextarea">Imprint</label>
+        </div>
+        <div class="mb-2">
+            <span class="text-muted">
+                This feature uses markdown, learn more about markdown
+                <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" class="text-info">here</a>
+            </span>
+        </div>
+        <button type="submit" class="btn btn-success mt-4">
+            <i class='bx bx-save bx-sm'></i> Save
+        </button>
+    </EditForm>
+    
+</LazyLoader>
+
+@code {
+
+    private Imprint Model = new();
+    
+    private async Task Load(LazyLoader arg)
+    {
+        Model.Text = await ImprintService.GetMarkdown();
+    }
+
+    private async Task Save()
+    {
+        await ImprintService.Set(Model.Text);
+    }
+    
+}

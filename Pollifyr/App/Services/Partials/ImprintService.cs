@@ -9,6 +9,7 @@ namespace Pollifyr.App.Services.Partials;
 public class ImprintService
 {
     private MarkupString Imprint;
+    private string MarkdownImprint;
     private readonly string Path = PathBuilder.File("storage", "imprint.md");
     
     public ImprintService()
@@ -16,17 +17,21 @@ public class ImprintService
         Imprint = Load();
     }
 
-    public MarkupString Get()
+    public async Task<MarkupString> Get()
     {
         return Imprint;
     }
-    
-    
-    public void Set(string newImprintMarkdown)
+
+    public async Task<string> GetMarkdown()
     {
-        using (StreamWriter writer = new(Path))
+        return MarkdownImprint;
+    }
+    
+    public async Task Set(string newImprintMarkdown)
+    {
+        await using (StreamWriter writer = new(Path))
         {
-            writer.WriteLine(newImprintMarkdown);
+            await writer.WriteLineAsync(newImprintMarkdown);
             writer.Close();
         }
         
@@ -38,9 +43,9 @@ public class ImprintService
     {
         string[] lines = File.ReadAllLines(Path);
 
-        string markdownImprint = string.Join("\r\n", lines);
+        MarkdownImprint = string.Join("\r\n", lines);
 
-        MarkupString htmlString = (MarkupString)CommonMarkConverter.Convert(markdownImprint);
+        MarkupString htmlString = (MarkupString)CommonMarkConverter.Convert(MarkdownImprint);
         
         return htmlString;
     }

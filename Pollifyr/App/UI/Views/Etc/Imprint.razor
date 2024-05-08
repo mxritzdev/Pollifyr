@@ -23,13 +23,11 @@ else
 @code {
     MarkupString ImprintText = (MarkupString)"";
     
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        ImprintText = ImprintService.Get();
-        
-        StateHasChanged();
-        
-        return Task.CompletedTask;
+        ImprintText = await ImprintService.Get();
+
+        await InvokeAsync(StateHasChanged);
     }
 
 }
