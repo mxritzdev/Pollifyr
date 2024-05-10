@@ -43,8 +43,9 @@
                                     <h2>@question.Text</h2>
                                     @if (list.Any())
                                     {
-
-                                        <PieChart Title="" TItem="Answer" Items="list" XValue="@(x => x.Text)" YAggregate="@(x => x.Sum(y => y.Answers))"></PieChart>
+                                        <div class="mx-2 mx-lg-4">
+                                            <PieChart Title="" TItem="Answer" Items="list" XValue="@(x => x.Text)" YAggregate="@(x => x.Sum(y => y.Answers))"></PieChart>
+                                        </div>
                                     }
                                     else
                                     {
