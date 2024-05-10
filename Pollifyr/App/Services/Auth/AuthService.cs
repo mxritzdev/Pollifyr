@@ -30,7 +30,7 @@ public class AuthService
     public async Task<string> Register(string email, string password, string username)
     {
 
-        var user = await AddUser(email, password, username);
+        var user = await AddUser(email, username, password);
         
 
         if (user == null)
