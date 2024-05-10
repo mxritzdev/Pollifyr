@@ -20,6 +20,4 @@ public class UpdateUserForm
     [Description("This toggles if the user has admin permissions")]
     public bool Admin { get; set; } = false;
     
-    [Description("The surveys the user has completed, do not change this unless you know what you are doing")]
-    public string CompletedSurveys { get; set; }
 }
