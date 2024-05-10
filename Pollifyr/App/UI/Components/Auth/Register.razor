@@ -79,7 +79,7 @@ else
         if (string.IsNullOrEmpty(Form.Username.Trim()) || Form.Username.Trim().Length < 6)
             throw new DisplayException("The username has to be at least 6 characters long");
 
-        if (string.IsNullOrEmpty(Form.Email.Trim()) || Regex.IsMatch(Form.Email.Trim(), "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
+        if (string.IsNullOrEmpty(Form.Email.Trim()) || !Regex.IsMatch(Form.Email.Trim(), "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
             throw new DisplayException("Invalid email address");
 
         if (string.IsNullOrEmpty(Form.Password) || Form.Password.Length < 8)
