@@ -38,7 +38,7 @@
 
     @if (ConfigService.Get().Properties.AllowRegister) {
     <div class="text-center">
-      <p>Not signed up yet? <a href="/register">Register</a></p>
+      <p>Not signed up yet? <a href="/register@(Redirect == null ? "" : $"?redirect={Redirect}")">Register</a></p>
     </div>
     }
   </SmartForm>
@@ -47,6 +47,10 @@
 
 @code {
 
+  [Parameter]
+  [SupplyParameterFromQuery]
+  public string? Redirect { get; set; }
+  
   private LoginForm Form = new();
 
   private bool ShowPassword;
@@ -55,7 +59,7 @@
   {
     if (IdentityService.LoggedIn)
     { 
-      NavigationManager.NavigateTo("/", true);
+      NavigationManager.NavigateTo(Redirect ?? "/", true);
     }
   }
 
@@ -68,7 +72,7 @@
     if (token != string.Empty)
     {
       await CookieService.SetValue("token", token, 10);
-      NavigationManager.NavigateTo("/", true);
+      NavigationManager.NavigateTo(Redirect ?? "/", true);
     }
   }
 }

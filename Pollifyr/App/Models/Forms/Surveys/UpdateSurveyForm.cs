@@ -23,4 +23,7 @@ public class UpdateSurveyForm
     
     [Description("This toggles if the survey is attendable")]
     public bool Attendable { get; set; } = false;
+
+    [Description("This toggles if the users require a login to attend this survey")]
+    public bool NeedsAccount { get; set; } = false;
 }

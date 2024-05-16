@@ -48,6 +48,18 @@
                 }
             </Template>
         </CrudColumn>
+        <CrudColumn TItem="Survey" Title="Needs Account" Filterable="true">
+            <Template>
+                @if (context.NeedsAccount)
+                {
+                    <i class="bx bx-sm bx-check text-success"></i>
+                }
+                else
+                {
+                    <i class="bx bx-sm bx-x text-danger"></i>
+                }
+            </Template>
+        </CrudColumn>
         <CrudColumn TItem="Survey" Field="@(x => x.CreatedAt)" Title="Created at" />
     </View>
     <Actions>

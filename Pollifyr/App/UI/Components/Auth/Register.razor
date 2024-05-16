@@ -57,6 +57,11 @@ else
 }
 
 @code {
+    
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? Redirect { get; set; }
+    
     private RegisterForm Form = new();
     
     private bool ShowPassword;

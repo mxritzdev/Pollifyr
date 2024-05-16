@@ -26,6 +26,12 @@
         case 3:
             <RessourceNotFound/>
             break;
+        case 4:
+            <Name>Please Login</Name>
+            <IconAlert Title="This Survey requires an account" Color="primary" Icon="bxs-user-x">
+                This survey requires an account. <a class="btn btn-sm btn-primary" href="/login?redirect=/survey/@Survey.Id">Login</a>
+            </IconAlert>
+            break;
         case 2:
             <Name>@Survey!.Name</Name>
             <SurveyAlreadyAttended/>
@@ -118,6 +124,7 @@
     // 1 = Attendable
     // 2 = Already Attended
     // 3 = Not Found
+    // 4 = Needs Account to proceed
     
     private async Task Load(LazyLoader arg)
     {
@@ -164,14 +171,19 @@
             QuestionsAndAnswers.Add(questionAndAnswer);
         }
 
+        if (!IdentityService.LoggedIn && Survey.NeedsAccount)
+        {
+            SurveyState = 4;
+            return;
+        }
+        
         if (Survey.Attendable)
         {
             if (AttendedSurveysCookie.Split("/").Any(x => x == Survey.Id.ToString()) || AttendedSurveysUser.Split("/").Any(x => x == Survey.Id.ToString()))
             {
                 SurveyState = 2;
                 return;
-            } 
-            
+            }
             SurveyState = 1;
         }
     }

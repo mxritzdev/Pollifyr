@@ -12,6 +12,8 @@ public class Survey
     
     public bool Visible { get; set; } = false;
 
+    public bool NeedsAccount { get; set; } = false;
+
     public int Attends { get; set; } = 0;
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
