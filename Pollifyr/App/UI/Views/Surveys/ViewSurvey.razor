@@ -23,20 +23,20 @@
 <LazyLoader Load="Load">
     @switch (SurveyState)
     {
-        case 3:
+        case 2:
             <RessourceNotFound/>
             break;
-        case 4:
+        case 3:
             <Name>Please Login</Name>
             <IconAlert Title="This Survey requires an account" Color="primary" Icon="bxs-user-x">
                 This survey requires an account. <a class="btn btn-sm btn-primary" href="/login?redirect=/survey/@Survey.Id">Login</a>
             </IconAlert>
             break;
-        case 2:
+        case 1:
             <Name>@Survey!.Name</Name>
             <SurveyAlreadyAttended/>
             break;
-        case 1:
+        default:
         {
             <div class="p-5 p-md-8">
                 <div class="card">
@@ -97,6 +97,7 @@
                     </div>
                 </div>
             </div>
+            
             break;
         }
     }
@@ -121,10 +122,10 @@
 
     private int SurveyState = 0;
     
-    // 1 = Attendable
-    // 2 = Already Attended
-    // 3 = Not Found
-    // 4 = Needs Account to proceed
+    // 0 = Attendable
+    // 1 = Already Attended
+    // 2 = Not Found
+    // 3 = Needs Account to proceed
     
     private async Task Load(LazyLoader arg)
     {
@@ -171,20 +172,22 @@
             QuestionsAndAnswers.Add(questionAndAnswer);
         }
 
-        if (!IdentityService.LoggedIn && Survey.NeedsAccount)
+        if (!Survey.Attendable)
         {
-            SurveyState = 4;
-            return;
+            SurveyState = 2;
+            await InvokeAsync(StateHasChanged);
         }
-        
-        if (Survey.Attendable)
+        else
         {
+            if (!IdentityService.LoggedIn && Survey.NeedsAccount)
+            {
+                SurveyState = 3;
+            }
+
             if (AttendedSurveysCookie.Split("/").Any(x => x == Survey.Id.ToString()) || AttendedSurveysUser.Split("/").Any(x => x == Survey.Id.ToString()))
             {
-                SurveyState = 2;
-                return;
+                SurveyState = 1;
             }
-            SurveyState = 1;
         }
     }
 
